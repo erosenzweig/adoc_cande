@@ -1,0 +1,42 @@
+[[CANDE_COMMANDS_ADD]]
+=== anchor:CANDE_COMMANDS_ADD[]ADD
+
+[[CANDE_COMMANDS_ADD_SYNTAX]]
+==== Syntax
+Refer to the WFL Programming Reference Manual for the complete syntax diagrams.
+
+[[CANDE_COMMANDS_ADD_EXPLANATION]]
+==== Explanation
+The ADD command is similar to the COPY command. It copies files between disks,
+tapes or CD-ROMs. Refer to the COPY command later in this section.
+
+The ADD command has the following effects based on whether a disk or tape
+destination is specified:
+
+* For a disk destination, the ADD command only copies those files that are not already resident on the specified disk destination.
+* For a tape destination, the ADD command has the same effect as a COPY command that specifies a tape destination.
+
+The ADD command is particularly useful for adding a directory of files to a disk where
+some of the files are already resident and are to be preserved.
+
+An ADD command running under a nonprivileged usercode cannot copy a directory of
+files that resides under another usercode.
+
+The ADD command is processed by the Work Flow Language (WFL), not CANDE. The
+command (and any text appearing on the same line) is passed unedited to WFL. For a
+more detailed explanation, refer to the ADD statement in the WFL Programming
+Reference Manual.
+
+[[CANDE_COMMANDS_ADD_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_ADD_EXAMPLES_EXAMPLE1]]
+===== Example1
+The following example copies files under the directory Z/= from tape T to disk R and
+to DISK. Any files already resident on the destination volumes are not copied. Note
+that different files might be copied to R and DISK, depending on what is already
+resident on each destination volume before the ADD is done.
+
+----
+ADD Z/= FROM T(KIND=TAPE) TO R(KIND=DISK), TO DISK;
+----

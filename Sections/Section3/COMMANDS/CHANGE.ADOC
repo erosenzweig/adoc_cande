@@ -1,0 +1,241 @@
+[[CANDE_COMMANDS_CHANGE]]
+=== anchor:CANDE_COMMANDS_CHANGE[]CHANGE
+
+[[CANDE_COMMANDS_CHANGE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_CHANGE_SYNTAX_NEWFILENAME]]
+===== <new file name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_CHANGE_SYNTAX_CHANGEFILES]]
+===== <change files>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_CHANGE_SYNTAX_NEWDIRECTORYNAME]]
+===== <new directory name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_CHANGE_SYNTAX_CHANGEFROMGROUP]]
+===== <change from group>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_CHANGE_SYNTAX_CHANGEFROMFILES]]
+===== <change from files>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_CHANGE_EXPLANATION]]
+==== Explanation
+The TITLE and CHANGE commands are synonyms. They change the name (the value of
+the FILENAME attribute) of the work file or of files or directories. The only difference
+between the TITLE and CHANGE commands is that the keyword TO in the
+<change files> and <change from files> constructs is optional for the TITLE command,
+but required for the CHANGE command.
+
+If the <new file name> or the associated object file already exists, then the file name
+or file title specified is not changed. Also, any file names in the directory name or
+directory title specified that already exist in the <new directory name>, or any object
+files associated with file names that already exist in the object directory associated
+with the new directory name are not changed.
+
+If <family name> is specified, the command applies only to the file name or directory
+name on the volume associated with family name. For example, CHANGE FILEX ON
+DISK TO FILEZ affects only files found on DISK even though the family specification for
+the session is FAMILY DISK = USERPACK OTHERWISE OTHERPACK. Refer to “Family
+Substitution” in Section 1, “General Information” for more information.
+
+If <family name> is not specified, the command applies to the file name or directory
+name found on DISK. If DISK is also the <target family> in the family specification for
+the session, then the only files affected by the command are those on the <substitute
+family>. Files on the <alternate family> are not affected. (Refer to “Family
+Substitution” in Section 1, “General Information” for more information.)
+
+In a <change from group> construct, a FROM <family name> clause applies to all the
+file names or directory names in that <change from group>. An ON <family name>
+clause in the <file title> or <directory title> constructs applies only to the immediately
+preceding file name. An ON clause cannot precede a FROM clause in the same
+command.
+
+When specifying a file name, file title, or directory name, a user logged on under a
+nonprivileged usercode cannot enter a usercode specification other than the usercode
+for the current session.
+
+If SOURCE or OBJECT is used as a file name, then it must be enclosed in quotation
+marks to prevent ambiguity with the keywords SOURCE and OBJECT.
+If the CHANGE command is used to change the name of a file whose LOCKEDFILE file
+attribute is set to TRUE, the file name is not changed. CANDE displays the following
+message to indicate that the file name was not changed:
+
+----
+<file name> NOT CHANGED (LOCKEDFILE).
+----
+
+For more information about the LOCKEDFILE file attribute, refer to the File Attributes
+Programming Reference Manual. See the ALTER command earlier in this section for
+information about changing the LOCKEDFILE attribute.
+
+The following paragraphs contain an explanation for each syntactic variation of the
+CHANGE command.
+
+*CHANGE <new file name>* +
+*CHANGE TO <new file name>* +
+CHANGE <new file name> and CHANGE TO <new file name> change the name of the
+current work file to a new file name. Additionally, if a work object file exists, its name
+is changed to become the object file associated with the new file name. If no work file
+exists, the command is rejected with an error message. Neither a usercode nor an
+asterisk (*) is allowed in the new file name.
+
+*CHANGE <file title> TO <new file name>* +
+*CHANGE SOURCE <file title> TO <new file name>* +
+CHANGE <file title> TO <new file name> changes the name of the file specified by the
+file title to a new file name. Additionally, if the associated object file exists, its name is
+changed to the object file name associated with the new file name. If SOURCE is
+specified, the name of the file specified by the file title is changed to a new file name;
+any object file associated with the file title is not affected. The dollar sign ($) in front of
+a new file name is not allowed.
+
+*CHANGE <directory title> TO <new directory name>* +
+*CHANGE SOURCE <directory title> TO <new directory name>* +
+CHANGE <directory title> TO <new directory name> changes the names of the files in
+the directory specified by the directory title to the appropriate file names in the new
+directory name. The command also changes the names of the files in the associated
+object directory to the object file names associated with new directory name. If
+SOURCE is specified, the names of the files in the directory specified by the directory
+title are changed but the associated object directory is not affected. The dollar sign ($)
+in front of a new directory name is not allowed.
+
+*CHANGE OBJECT <directory title> TO <new directory name>* +
+*CHANGE OBJECT <directory title> TO $ <new directory name>* +
+*CHANGE OBJECT $ <directory title> TO <new directory name>* +
+*CHANGE OBJECT $ <directory title> TO $ <new directory name>* +
+CHANGE OBJECT <directory title> TO <new directory name> changes the names of
+the files in the object directory associated with the directory title to the appropriate
+file names in the object directory associated with the new directory name. The dollar
+sign ($) can precede either the directory title, or the new directory name, or both. For
+the directory title, the dollar sign indicates that the directory is not stored as the
+associated object directory name but is stored as a directory title.
+
+For the new directory name, the dollar sign indicates that the files in the changed
+directory receive a new directory name as their directory name instead of the object
+directory name associated with the new directory name.
+
+[[CANDE_COMMANDS_CHANGE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_CHANGE_EXAMPLES_EXAMPLE1]]
+===== Example1
+The following example renames the work file from A to B:
+
+----
+WHAT
+#WORKFILE A: ALGOL
+TITLE B
+#
+WHAT
+#WORKFILE B: ALGOL
+----
+
+[[CANDE_COMMANDS_CHANGE_EXAMPLES_EXAMPLE2]]
+===== Example2
+The following example renames the source file A to B and the object file OBJECT/A to
+
+----
+OBJECT/B:
+TITLE A B
+#(UZER)A ON USERPACK (& OBJECT) CHANGED TO (UZER)B
+----
+
+[[CANDE_COMMANDS_CHANGE_EXAMPLES_EXAMPLE3]]
+===== Example3
+The following example renames the source file A, the source file B, and the object file
+OBJECT/B to A1, B1, and OBJECT/B1, respectively. All files reside on the family
+OTHERPACK.
+
+----
+CHANGE SOURCE A TO A1, B TO B1 FROM OTHERPACK
+#(UZER)A ON OTHERPACK CHANGED TO (UZER)A1
+#(UZER)B ON OTHERPACK (& OBJECT) CHANGED TO (UZER)B1
+----
+
+[[CANDE_COMMANDS_CHANGE_EXAMPLES_EXAMPLE4]]
+===== Example4
+The following example renames the file A to B on the family USERPACK:
+
+----
+CHANGE A ON USERPACK TO B
+#(UZER)A ON USERPACK CHANGED TO (UZER)B
+----
+
+[[CANDE_COMMANDS_CHANGE_EXAMPLES_EXAMPLE5]]
+===== Example5
+The following example renames the object file associated with the file TEST (named
+OBJECT/TEST) to TEST:
+
+----
+CHAN OBJECT TEST TO $TEST
+#(UZER)OBJECT/TEST ON USERPACK CHANGED TO (UZER)TEST
+----
+
+[[CANDE_COMMANDS_CHANGE_EXAMPLES_EXAMPLE6]]
+===== Example6
+The following example renames the files of the directory PROGRAMLIB and its
+associated object directory:
+
+----
+FILE PROGRAMLIB
+(UZER) ON USERPACK
+. PROGRAMLIB
+. . A : ALGOL
+. . B : ALGOL
+#
+
+FILE LIB
+#NO FILE(S) ON USERPACK
+#
+
+FILE OBJECT
+(UZER) ON USERPACK
+. OBJECT
+. . LIB
+. . . B : FORTRANCODE
+. . PROGRAMLIB
+. . . A : ALGOLCODE
+#
+
+TITLE PROGRAMLIB/= LIB/=
+#2 FILES IN (UZER)PROGRAMLIB/= CHANGED TO (UZER)LIB/= ON USERPACK
+#1 FILE IN (UZER)OBJECT/PROGRAMLIB/= CHANGED TO (UZER)OBJECT/LIB/=
+ ON USERPACK
+
+FILE PROGRAMLIB
+#NO FILE(S) ON USERPACK
+#
+
+FILE LIB
+(UZER) ON USERPACK
+. LIB
+. . A : ALGOL
+. . B : ALGOL
+#
+
+FILE OBJECT
+(UZER) ON USERPACK
+. OBJECT
+. . LIB
+. . . A : ALGOLCODE
+. . . B : FORTRANCODE
+#
+----

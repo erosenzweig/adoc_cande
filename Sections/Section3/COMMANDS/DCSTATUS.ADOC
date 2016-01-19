@@ -1,0 +1,52 @@
+[[CANDE_COMMANDS_DCSTATUS]]
+=== anchor:CANDE_COMMANDS_DCSTATUS[]DCSTATUS
+
+[[CANDE_COMMANDS_DCSTATUS_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DCSTATUS_EXPLANATION]]
+==== Explanation
+The DCSTATUS command causes execution of the DCSTATUS utility. DCSTATUS
+allows a run-time analysis of the current state of the data comm subsystem to be
+performed. The <dcstatus option list> construct must consist of a string of standard
+options allowed by DCSTATUS. If the <dcstatus option list> is not specified, the
+default is the STATION option with <LSN> set to the user’s LSN.
+
+All output from DCSTATUS is directed to the user’s terminal unless the file LINE is fileequated
+to KIND=PRINTER in the input statement; the ALL, NSP, and CLUSTER/LSP
+options produce voluminous output. Refer to the System Software Utilities
+Operations Reference Manual for more information about DCSTATUS and the
+DCSTATUS options.
+
+[[CANDE_COMMANDS_DCSTATUS_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_DCSTATUS_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+DC
+#RUNNING 3854
+
+STATION 220
+
+SYSTEM/DCSTATUS (3.7.200) DATE : 06/10/87 TIME : 09:49:55
+DCPREFIX: LFA15/CD
+STATION 220
+
+DCC STATION TABLE
+ENABLED : READY : ATTACHED :
+MCS = 2: LSN = 220 : PSEUDOSTATION : WIDTH = 80
+STATION REMOTE TYPE = 0: RETRY COUNT = 0: NIF INDEX = 219
+
+PRIMARY Q = 14,CURRENT Q = 14,STN Q = 0,PSEUDOMCS = 1
+TRANSFERRED : DLS : UNASSIGNED ATTACHED TO FILE 22 REL STN NO = 1
+
+NORMAL TERMINATION
+#
+DCSTATUS GRAPH;FILE LINE(KIND=PRINTER)
+#RUNNING 40000
+#
+----

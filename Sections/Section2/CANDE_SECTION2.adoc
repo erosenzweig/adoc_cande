@@ -1,0 +1,520 @@
+[[CANDE_BASICCONSTRUCTS]]
+== Section 2. Basic Constructs
+
+[[CANDE_BASICCONSTRUCTS_ALPHANUMERICCHARACTER]]
+=== <alphanumeric character>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_BASE]]
+=== <base>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_CHARACTER]]
+=== <character>
+Any <alphanumeric character>, any <special character>, or a blank.
+
+[[CANDE_BASICCONSTRUCTS_COLUMN]]
+=== <column>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_COMPILERNAME]]
+=== <compiler name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_COMPILERTYPE]]
+=== <compiler type>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_CONTROLCHARMNEMONIC]]
+=== <control char mnemonic>
+----
+NUL SOH STX ETX HT DEL VT FF CR  SO  SI  DLE DC1 DC2 DC3 NL
+BS  CAN EM  FS  GS RS  US LF ETB ESC ENQ ACK BEL SYN EOT NAK
+SUB SP
+----
+
+[[CANDE_BASICCONSTRUCTS_DIGIT]]
+=== <digit>
+Any one of the decimal digits 0, 1, 2, 3, 4, 5, 6, 7, 8, 9.
+
+[[CANDE_BASICCONSTRUCTS_DIRECTORYNAME]]
+=== <directory name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+As an alternate syntax for indicating a file associated with a usercode, instead of
+preceding the file name with the usercode within parentheses, you can precede the
+file name with *USERCODE/<usercode>. You can use this alternate form when you
+refer either to a file or to a directory of files under the specified usercode.
+
+[[CANDE_BASICCONSTRUCTS_DIRECTORYTITLE]]
+=== <directory title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_DLM]]
+=== <dlm>
+The <dlm> character is a delimiter; it can be any special character except the comma
+(,), colon (:), or at sign (@).
+
+[[CANDE_BASICCONSTRUCTS_DOMAINNAME]]
+=== <domain name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The domain name consists of one or more nodes with each node made up of one to
+63 alphanumeric characters. The total length of the domain name including the period
+(.) as delimiters must not exceed 255 characters.
+
+[[CANDE_BASICCONSTRUCTS_DOMAINNAMENODE]]
+=== <domain name node>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The domain name node consists of one to 63 alphanumeric characters. The hyphen (-)
+and underscore (_) are special characters that are allowed as part of the node but
+cannot be the last character of a node. Consecutive occurrences of the hyphen,
+underscore, or period are not allowed in the domain name node.
+
+[[CANDE_BASICCONSTRUCTS_EBCDICCHARACTEROTHERTHANQUOTATIONMARK]]
+=== <EBCDIC character other than quotation mark>
+Any EBCDIC character for which the hexadecimal code is greater than or equal to 4"40"
+and that is not the EBCDIC character quotation mark (").
+
+[[CANDE_BASICCONSTRUCTS_EBCDICCHARACTEROTHERTHANAPOSTROPHE]]
+=== <EBCDIC character other than apostrophe>
+Any EBCDIC character for which the hexadecimal code is greater than or equal to 4"40"
+and that is not the EBCDIC apostrophe (’).
+
+[[CANDE_BASICCONSTRUCTS_ENDCOLUMN]]
+=== <end column>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_FAMILYNAME]]
+=== <family name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_FILEDIRECTORY]]
+=== <file directory>
+----
+RAILROAD DIAGRAM HERE
+----
+
+As an alternate syntax for indicating a file associated with a usercode, instead of
+preceding the file name with the usercode within parentheses, you can precede the
+file name with *USERCODE/<usercode>. You can use this alternate form when you
+refer either to a file or to a directory of files under the specified usercode.
+
+[[CANDE_BASICCONSTRUCTS_FILENAME]]
+=== <file name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A file name is a sequence of 1 to 12 names separated by slashes (/). A file name can
+optionally be preceded by a usercode enclosed within parentheses or by an asterisk
+(*) if the file is an unusercoded file.
+
+An alternate syntax to indicate that a file is associated with a usercode is to precede
+the file name with *USERCODE/<usercode>. This form of file name can be used to
+refer to either a file or directory of files under the specified usercode.
+
+The WRITE command does not recognize a file name that exceeds 11 nodes (excluding
+the usercode).
+
+[[CANDE_BASICCONSTRUCTS_FILETITLE]]
+=== <file title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+On certain commands, if <file name> is a valid <sequence number> value, then it must
+be enclosed in quotation marks to avoid confusion with a real <sequence number>
+value. For example, in order to list the file 100-200, you would enter LIST "100-200",
+instead of LIST 100-200. To list lines 100 through 200 of the file 100-200, you would
+enter LIST 100-200 "100-200". The commands for which this constraint is valid are
+DO, EXCLUDE, FIND, INSERT, LIST, MATCH, MERGE, RANGE, RMERGE, and WRITE.
+
+[[CANDE_BASICCONSTRUCTS_HOSTNAME]]
+=== <host name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_HYPHEN]]
+=== <hyphen>
+The single hyphen (-).
+
+[[CANDE_BASICCONSTRUCTS_IDCHAR]]
+=== <ID char>
+Any EBCDIC character for which the hexadecimal code is greater than or equal to 4"40"
+and which is not a quotation mark (")
+
+[[CANDE_BASICCONSTRUCTS_IDENTIFIER]]
+=== <identifier>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_INC]]
+=== <inc>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_INTEGER]]
+=== <integer>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_IPADDRESS]]
+=== <IP address>
+An IP address can be either an IPv4 address or an IPv6 address. An IPv4 address
+consists of exactly four nodes. Each node consists of a numeric string from 0 to 255.
+For example, 15.233.7.143 is a valid IPv4 address. An IPv6 address consists of up to
+eight 16-bit numbers that are separated by colons. For example,
+FE80::4:23FF:FE08:150B is a valid IPv6 address.
+
+For additional information on IP address formats, refer to "IPv6 and IPv4 Common
+Utilities" in the MCP System Interfaces Programming Reference Manual.
+
+[[CANDE_BASICCONSTRUCTS_IPADDRESSNODE]]
+=== <IP address node>
+----
+RAILROAD DIAGRAM HERE
+----
+
+An IP address node is a numberic string from 0 to 255. For example, 143
+is a valid IP address node.
+
+[[CANDE_BASICCONSTRUCTS_LETTER]]
+=== <letter>
+Any one of the alphabetic characters from A through Z, inclusive, in uppercase or lowercase.
+
+[[CANDE_BASICCONSTRUCTS_LONGDIRECTORYNAME]]
+=== <long directory name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A long directory name is limited to 215 characters, excluding any usercode. Instead
+of preceding the file name with the usercode within parentheses, you can
+precede the file name with *USERCODE/<usercode>. This alternate form can be used
+when you refer either to a file or to a directory of files under the specified usercode.
+
+[[CANDE_BASICCONSTRUCTS_LONGDIRECTORYTITLE]]
+=== <long directory title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_LONGFILEDIRECTORY]]
+=== <long file directory>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A long file directory is limited to 215 characters, excluding any usercode.
+
+Instead of preceding the file name with the usercode within parentheses, you can
+precede the file name with *USERCODE/<usercode>. This alternate form can be used
+when you refer either to a file or to a directory of files under the specified usercode.
+
+[[CANDE_BASICCONSTRUCTS_LONGFILENAME]]
+=== <long file name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A long file name is a sequence of 1 to 20 names separated by slashes (/). A file name
+can optionally be preceded by a usercode enclosed within parentheses or by an
+asterisk (*), if the file is a nonusercoded file. A long file name is limited to 215
+characters, excluding any usercode.
+
+Instead of preceding the file name with the usercode within the parantheses, you can
+precede the file name with *USERCODE/<usercode>. This alternate form can be used
+to refer to either a file or directory of files under the specified usercode.
+
+The WRITE command does not recognize a file name that exceeds 11 nodes (excluding
+the usercode).
+
+[[CANDE_BASICCONSTRUCTS_LONGFILETITLE]]
+=== <long file title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_LONGNAME]]
+=== <long name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_LSN]]
+=== <LSN>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The logical station number (LSN) is a unique integer assigned by NDLII to each station
+defined for a network. The most efficient method of station designation is by <LSN>.
+
+[[CANDE_BASICCONSTRUCTS_LSNRANGE]]
+=== <LSN range>
+The <LSN range> construct refers to a group of one or more LSNs. If a range is
+defined, the lower LSN must precede the higher LSN.
+
+[[CANDE_BASICCONSTRUCTS_MIXNUMBER]]
+=== <mix number>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_MIXNUMBERLIST]]
+=== <mix number list>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_NAME]]
+=== <name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A period is allowed only in the following commands that correspond to Work Flow
+Language (WFL) statements of the same name: ADD, ALTER, COPY, PRINT, UNWRAP,
+and WRAP. Use of the period allows file names to be entered without quotation
+marks. It is intended to simplify the use of files that are shared with other operating
+systems.
+
+[[CANDE_BASICCONSTRUCTS_NLS]]
+=== <NLS>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The network line station or <NLS> construct identifies a station by the network
+support processor (NSP) number, line number, and relative station number within the
+line, as specified in the Network Definition Language II (NDLII) definition for the line to
+which the station is assigned.
+
+Integer1, integer2, and integer3 represent the NSP, line, and station numbers,
+respectively. All three must be specified to identify one station on a multidrop line. To
+determine the <NLS> value for a given station, the following information is required:
+
+* The relative NSP number
+* The line number, which is computed by multiplying the cluster or relative Line Support Processor (LSP) number by 16 and then adding the adaptor number
+* The station numbers on the line, which are numbered 0 through n–1, where n is the number of stations assigned to the line
+
+When CANDE is initialized via an NSP, users on the NSP receive a message that
+CANDE is available.
+
+[[CANDE_BASICCONSTRUCTS_NUMBER]]
+=== <number>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_OPTIONLIST]]
+=== <option list>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_PASSWORD]]
+=== <password>
+----
+RAILROAD DIAGRAM HERE
+----
+
+CANDE supports the security option CASESENSITIVEPW. If this option is set, you can
+use lowercase and special characters in your passwords without enclosing the
+password in quotes. This makes it easier to use the same password in both MCP and
+Windows environments. When the option is set, CANDE does not automatically make
+passwords uppercase; the passwords are case-sensitive. However, it is still
+acceptable to enclose a password in quotes.
+
+For additional information about passwords, refer to "User Identification and Logging
+On" in Section 1, "General Information."
+
+[[CANDE_BASICCONSTRUCTS_PERIOD]]
+=== <period>
+The period character (.).
+
+[[CANDE_BASICCONSTRUCTS_SEQUENCENUMBER]]
+=== <sequence number>
+An integer that represents a value for the sequence field of a record. The maximum
+number of digits that might comprise a sequence number is determined by the
+FILEKIND value of the work file. Refer to Table 2–1 later in this section.
+
+[[CANDE_BASICCONSTRUCTS_SEQUENCERANGE]]
+=== <sequence range>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_SEQUENCERANGELIST]]
+=== <sequence range list>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_SPECIALCHARACTER]]
+=== <special character>
+Any one of the following characters:
+
+----
+@ at          ( left parenthesis    ! exclamation point
+# number      ) right parenthesis   ? question mark
+$ dollar      [ left bracket        ’ apostrophe
+% percent     ] right bracket       " quotation mark
+& ampersand   { left brace          + plus sign
+* asterisk    } right brace         - minus sign (hyphen)
+= equal       < less than           | split bar
+, comma       > greater than        ~ tilde
+; semicolon   / slash               ^ circumflex (carat)
+: colon       \ backslash           ` grave accent
+. period      _ underscore          d DEL (rubout)
+----
+
+[[CANDE_BASICCONSTRUCTS_STANDARDCOMPILER]]
+=== <standard compiler>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_STARTCOLUMN]]
+=== <start column>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_STATIONNAME]]
+=== <station name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The station name is a unique identifier chosen by the installation for each station that
+is a member of the network. Station names in NDLII follow the same syntactic
+conventions as file titles within the system, because any station may be assigned to a
+REMOTE file.
+
+[[CANDE_BASICCONSTRUCTS_STRING]]
+=== <string>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_TASKEQUATIONLIST]]
+=== <task equation list>
+----
+RAILROAD DIAGRAM HERE
+----
+
+CANDE can process task equations used in WFL statements. Refer to the Work Flow
+Language (WFL) Programming Reference Manual for the descriptions of the task
+attribute assignment, file equation, library equation, database equation, and local data
+specification. If the attributes assigned to a task by using either the EXECUTE or RUN
+command are invalid, CANDE uses the default session values for the attributes when
+the task is run and does not issue any warning messages.
+
+[[CANDE_BASICCONSTRUCTS_TYPE]]
+=== <type>
+----
+RAILROAD DIAGRAM HERE
+----
+
+
+.Table 2–1. Record Formats
+[caption=""]
+[[CANDE_BASICCONSTRUCTS_TABLE_RECORDFORMATS]]
+|====
+|Type |Text Field |Sequence Field |ID Field | Default Record Length |MinimumRecord Length |Compiler Type
+|ALGOL |1-72 |73-80 |81-90 |15 WD | 80 CH | YES
+|BASIC |5-72 |1-4 |73-80 |14 WD |72 CH |YES
+|BINDER |1-72 |73-80 |NA 14 |WD |80 CH |YES
+|CC |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|CDATA |1-80† |NA |NA‡ |80 CH |NA |NO
+|COBOL |7-72 |1-6 |73-80 |14 WD |72 CH |YES
+|CSEQ |7-80† |1-5 |NA |80 CH |NA |NO
+|C74 |7-72 |1-6 |73-80 |14 WD |72 CH |YES
+|C85 |7-72 |1-6 |73-80 |14 WD |72 CH |YES
+|DASDL |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|DATA |1-80 |NA |NA‡ |14 WD |80 CH |NO
+|DCALGOL |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|DMALGOL |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|ESPOL |1-72 |73-80 |81-88 |15 WD |80 CH |YES
+|FORTRAN |1-72 |73-80 |NA |14 WD |80 CH |YES
+|F77 |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|JAVA |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|JOB |1-80 |83-90 |NA |15 WD |90 CH |NO
+|NDLII |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|NEWP |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|PASCAL |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|PLI |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|RPG |6-80 |1-5 |81-90 |15 WD |80 CH |YES
+|SANS |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|SCHEDULE |1-80 |NA |NA‡ |80 CH |NA |NO
+|SEQ |1-72 |73-80 |81-90 |14 WD |80 CH |NO
+|SORT |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+|TEXT |1-72 |73-80 |81-90 |15 WD |80 CH |NO
+|WIDE |22-120† |1-11 |12-21 |20 WD |120 CH |NO
+|XFORTRAN |1-72 |73-80 |NA |14 WD |80 CH |YES
+|====
+
+† CDATA, CSEQ, and WIDE files have an arbitrary length; the text field extends
+through the end of the record.
+
+j A DATA file may have an arbitrary length. The text field extends through the end
+of the record with one exception: by convention, 14-word EBCDIC or ASCII records are
+assumed to have text only through column 80.
+
+‡ For files of type DATA, CDATA, and SCHEDULE, CANDE assigns pseudo-sequence
+numbers for its own internal use. CANDE computes these numbers by multiplying the
+relative record number by 100. Each time the file is updated, these pseudo-sequence
+numbers are recalculated.
+
+l A SCHEDULE file can be any type recognized by CANDE. (No type SCHEDULE
+exists.) The output for a SCHEDULE file is type SCHED. Any CANDE command treats a
+SCHED file as type CDATA.
+
+m Some software products might produce, and others expect, COBOL, C74, and C85
+files to have a default record length of 15 words, and a minimum record length of 90
+characters. CANDE might alert you if the record sizes of a COBOL, C74, or C85 file do
+not match its expectations (14-word or 80-character MAXRECSIZE).
+
+d SEQ files are created with 14 words and no ID field. If CANDE encounters a SEQ
+file with 15 or more words (90 or more characters), its treats columns 81 through 90 as
+an ID field. (For example, you can generate such a file by making a file type ALGOL and
+changing its type to SEQ.)
+
+[[CANDE_BASICCONSTRUCTS_UNDERSCORE]]
+=== <underscore>
+The underscore character (_).
+
+[[CANDE_BASICCONSTRUCTS_USERCODE]]
+=== <usercode>
+----
+RAILROAD DIAGRAM HERE
+----

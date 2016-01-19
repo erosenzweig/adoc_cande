@@ -1,0 +1,65 @@
+[[CANDE_COMMANDS_DESTNAME]]
+=== anchor:CANDE_COMMANDS_DESTNAME[]DESTNAME
+
+[[CANDE_COMMANDS_DESTNAME_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DESTNAME_EXPLANATION]]
+==== Explanation
+The DESTNAME command provides a means of specifying a non-CANDE station for
+the printed output of a task. This command
+
+* Interrogates the current DESTNAME
+* Assigns the DESTNAME to a specified station name
+* Returns the current DESTNAME to the default value for the user
+
+The DESTNAME is supplied on all task executions explicitly initiated by the user and on
+CANDE-initiated tasks, such as CANDE WRITE. The current DESTNAME can be
+overridden by an explicit specification on a RUN or COMPILE request.
+
+Changing the DESTNAME value during a session does not affect the tasks that have
+already been executed during the session.
+
+The <station name> in the DESTNAME command cannot be a station with an LSN
+value greater than 16,383.
+
+[[CANDE_COMMANDS_DESTNAME_EXPLANATION_DETERMININGTHEDEFAULTDESTNAME]]
+===== Determining the Default DESTNAME
+The default DESTNAME for a particular user is determined by the CANDEDESTNAME
+for that user in the USERDATAFILE. To change the default DESTNAME in the
+USERDATAFILE, MAKEUSER must be invoked by the installation. (Refer to the Security
+Administration Guide for further information about MAKEUSER.)
+
+The default DESTNAME for a given usercode is set at the beginning of each session
+associated with that usercode. The CANDE DESTNAME command can be used to
+override the default DESTNAME during a session
+
+[[CANDE_COMMANDS_DESTNAME_EXPLANATION_DESTNAMEOPTIONS]]
+===== DESTNAME Options
+When DESTNAME is the only input entered, CANDE reports the current value of the
+DESTNAME.
+
+*Station Name* +
+If the station name is supplied, it is saved by CANDE as the current value of
+DESTNAME until another DESTNAME action takes place. The station name can have a
+maximum of 107 characters to specify the DESTNAME.
+
+*Asterisk (*)* +
+The asterisk (*) option causes the current value of the DESTNAME to return to the
+default of the user associated with the session.
+
+*Period (.)* +
+The period (.) option causes the DESTNAME to be set to null. In this case, DESTNAME
+is not supplied by CANDE on any task execution request
+
+[[CANDE_COMMANDS_DESTNAME_EXPLANATION_CHANGINGTHEDESTNAMEVALUEINACOMMAND]]
+===== Changing the DESTNAME Value in a Command
+When the value of DESTNAME is explicitly changed in a RUN or EXECUTE command,
+the new value overrides the former value for the session for that request only. No
+abbreviation for DESTNAME is accepted in a RUN or EXECUTE command. (Refer to the
+RUN and EXECUTE statements for the correct syntax.) Changing the DESTNAME for
+execution of any given task in the session does not affect the current DESTNAME for
+the session.

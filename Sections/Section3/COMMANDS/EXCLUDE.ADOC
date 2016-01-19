@@ -1,0 +1,53 @@
+[[CANDE_COMMANDS_EXCLUDE]]
+=== anchor:CANDE_COMMANDS_EXCLUDE[]EXCLUDE
+
+[[CANDE_COMMANDS_EXCLUDE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_EXCLUDE_EXPLANATION]]
+==== Explanation
+The EXCLUDE command causes any line in the work file with the same sequence
+number as a line in the specified <file title> to be deleted. Unmatched lines in the
+excluded file are ignored. The UPDATE option is implicitly invoked after the EXCLUDE
+option has been executed.
+
+The EXCLUDE command is particularly helpful when used in combination with the FIND
+command FILE option. This command should not be used with type DATA or CDATA
+files because these files do not have sequence numbers stored in the text.
+
+[[CANDE_COMMANDS_EXCLUDE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_EXCLUDE_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+G TESTFILE
+#WORKFILE TESTFILE: SEQ, 8 RECORDS, SAVED
+
+LIST
+100 A
+200 *B
+300 C
+400 D
+500 *E
+600 *F
+800 *T
+#
+
+FIND/*/:FILE EXCLUDE/FILE
+#WORKFILE TESTFILE
+#
+
+EXCLUDE EXCLUDE/FILE
+#UPDATING
+#
+
+LIST
+100 A
+300 C
+400 D
+# 
+----

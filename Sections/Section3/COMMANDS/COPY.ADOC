@@ -1,0 +1,35 @@
+[[CANDE_COMMANDS_COPY]]
+=== anchor:CANDE_COMMANDS_COPY[]COPY
+
+[[CANDE_COMMANDS_COPY_SYNTAX]]
+==== Syntax
+Refer to the WFL Programming Reference Manual for the complete syntax diagrams.
+
+[[CANDE_COMMANDS_COPY_EXPLANATION]]
+==== Explanation
+The COPY command copies disk files between disks, tapes, or CD-ROMs. The ADD
+command is similar to the COPY command. Refer to the ADD command in this
+section.
+
+A COPY command running under a nonprivileged usercode cannot copy a directory of
+files that resides under another usercode.
+
+The COPY command is processed by the Work Flow Language (WFL), not CANDE. The
+command (and any text appearing on the same line) is passed unedited to WFL. For
+more explanation, refer to the COPY statement in the WFL Programming Reference
+Manual.
+
+[[CANDE_COMMANDS_COPY_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_COPY_EXAMPLES_EXAMPLE1]]
+===== Example1
+This statement copies the file X from DISK to disk Y:
+----
+COPY X TO Y(KIND=DISK);
+----
+
+This statement copies the file X from tape T to DISK:
+----
+COPY X FROM T(KIND=TAPE);
+----

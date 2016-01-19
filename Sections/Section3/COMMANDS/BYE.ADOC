@@ -1,0 +1,48 @@
+[[CANDE_COMMANDS_BYE]]
+=== anchor:CANDE_COMMANDS_BYE[]BYE
+
+[[CANDE_COMMANDS_BYE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_BYE_EXPLANATION]]
+==== Explanation
+The BYE command terminates the current CANDE session and disconnects dial-up
+lines.
+
+If an unsaved work file exists at the time BYE is entered, CANDE displays
+
+----
+#REMOVE OR SAVE WORKFILE
+----
+
+The previous message indicates the presence of the unsaved work file. The work file
+must be removed or saved. Then the BYE command must be re-entered before the
+session will terminate.
+
+System resource usage statistics are provided on termination of the session. The
+session number, elapsed time of session (ET), processor time consumed (PT), I/O time
+consumed (IO), usercode, current time, and the date are printed in the following
+format:
+
+----
+#END SESSION <session number> ET=<time> PT=<time> IO=<time>
+#USER = <usercode> <time> <date>
+----
+
+If a chargecode is used for the session, then the chargecode is printed following the
+usercode identification. If an accesscode is used, it is printed following the
+chargecode.
+
+[[CANDE_COMMANDS_BYE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_BYE_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+BYE
+#END SESSION 3003 ET=1:18:19.6 PT=1:08.9 IO=1:02.0
+#USER = UZER 11:27:06 04/20/78
+----

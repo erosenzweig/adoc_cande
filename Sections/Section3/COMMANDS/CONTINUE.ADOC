@@ -1,0 +1,253 @@
+[[CANDE_COMMANDS_CONTINUE]]
+=== anchor:CANDE_COMMANDS_CONTINUE[]CONTINUE
+
+[[CANDE_COMMANDS_CONTINUE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_CONTINUE_EXPLANATION]]
+==== Explanation
+The CONTINUE command enables you to define, reset, or interrogate a continuation
+character. The continuation character indicates that a line of input is to be continued.
+
+CANDE interprets a line of normal input (that is, a line not beginning with the control
+character for the user’s station) as needing to be continued when the defined
+continuation character is the last character of input. CANDE removes the continuation
+character and inserts one blank in its place. CANDE sends #% as a continuation
+prompt. The next line of input is then appended to this line.
+
+CANDE does not continue a line of normal input entered in sequence mode or page
+mode. (CANDE treats a defined continuation character entered in page or sequence
+mode as text.)
+
+*CONTINUE* +
+Entering CONTINUE without an option undefines the continuation character.
+
+*CONTINUE ?* +
+Entering CONTINUE ? displays your currently defined continuation character. If a
+continuation character is not currently defined, then the following message is
+returned:
+
+----
+#NO CONTINUATION CHARACTER DEFINED
+----
+
+*CONTINUE ** +
+Entering CONTINUE * sets the continuation character to the default value defined for
+it in the USERDATAFILE. If the default continuation character is not defined there, the
+tasking-only continuation character (%) is recognized as the default.
+
+*CONTINUE = <special character>* +
+Entering CONTINUE=<special character> defines the specified special character as
+the new continuation character. Any special character except the semicolon (;) can be
+used for the continuation character.
+
+The following CONTINUE command sets the continuation character to the special
+character ampersand (&):
+
+----
+CONTINUE = &
+----
+
+*CONTINUE = <control char mnemonic>* +
+Entering CONTINUE=<control char mnemonic> defines the specified control
+character mnemonic as a new continuation character. Any special character except
+the semicolon (;) can be used for the continuation character.
+
+To define a control character mnemonic as a continuation character, use the ESCAPE
+HEXADECIMAL CANDE command to define a special character to delimit a sequence
+of EBCDIC hexadecimal values for the nonprintable character.
+
+For example, to define the carriage return (CR) as a continuation character in a DO file
+named CONTINUE/TEST, do the following:
+
+. Define a special character as the delimiter for the EBCDIC hexadecimal value of
+the nonprintable character. In this example, the exclamation point is defined as the
+special character by the ESCAPE HEXADECIMAL command.
+ESCAPE HEX = !
+
+. In the DO file CONTINUE/TEST, enter the CONTINUE command to define the
+carriage return (CR) as the control character mnemonic for the continuation
+character.
+100 CONTINUE = CR
+
+. Use the newly defined continuation character by continuing an input line with the
+hexadecimal value representation for carriage return (CR) delimited by the
+exclamation point (!).
+----
+200 FILES !0D!
+300 UTIL
+----
+
+[start=4]
+. You can optionally redefine the continuation character to the default.
+----
+400 CONT *
+----
+
+The following example illustrates the previous steps taken, the records of the
+resultant DO file CONTINUE/TEST, and the results of running the DO file:
+
+----
+ESCAPE HEX = !
+#ESCAPE HEXADECIMAL = !
+
+MAKE CONTINUE/TEST; S
+
+100 CONTINUE = CR
+200 FILES !0D!
+300 UTIL
+400 CONT *
+
+SAVE
+#UPDATING
+#WORKSOURCE CONTINUE/TEST SAVED
+DO CONTINUE/TEST
+
+#FILE (USER)CONTINUE/TEST ON DISK
+#
+ CONTINUE = CR
+#CONTINUATION CHARACTER = CR
+
+ UTIL
+(USER) ON DISK
+. UTIL
+. . TEMP : ALGOL
+#
+ CONT *
+#TASKING-ONLY CONTINUATION CHARACTER (%) DEFINED
+----
+
+[[CANDE_COMMANDS_CONTINUE_EXPLANATION_DEFAULTCONTINUATIONCHARACTER]]
+===== Default Continuation Character
+You can have a default continuation character defined in your USERDATAFILE. The
+CANDECONTCHAR option is initialized at the start of each CANDE session as the
+default continuation character. You can override the default character during a
+particular session by using the CONTINUE command. Refer to the Security
+Administration Guide for more information about the USERDATAFILE.
+
+If no continuation character is defined in the USERDATAFILE, then the percent sign (%)
+is the default continuation character for task-type commands only. For example, RUN
+is a task-type command. You can change the continuation character at any time with
+the CONTINUE command.
+
+If this system default continuation character is in effect, a query of the continuation
+character results in the following message:
+
+----
+TASKING-ONLY CONTINUATION CHARACTER (%) DEFINED
+----
+
+[[CANDE_COMMANDS_CONTINUE_EXPLANATION_USINGTHECONTINUATIONCHARACTERINADOFILE]]
+===== Using the Continuation Character in a DO File
+When a continuation character is defined and that character appears as the last
+character of a line of input, CANDE interprets that character as a request for the input
+line to be continued. A situation where a previously defined continuation character is
+again defined (such as in a DO file in the following example) can result in an error
+condition.
+
+For example, assume that the continuation character has already been defined as the
+plus sign (+) and the following DO file named TEST/CHAR is run:
+
+----
+LIST TEST/CHAR
+
+100 CONT = +
+200 FILES +
+300 TEMP
+DO TEST/CHAR
+#FILE (USER)TEST/CHAR ON MYPACK
+#
+CONT=+
+FILES +
+
+#KEYWORD EXPECTED. SCANNING FILES
+----
+
+The error results because the continuation character plus sign (+) on line 100 of the
+TEST/CHAR file is interpreted as requesting a continuation of another input line rather
+than the plus sign (+) character being defined as a continuation character.
+
+You can circumvent this error condition in one of two ways:
+
+. In the DO file TEST/CHAR, undefine the current continuation character by entering:
+----
+CONTINUE
+----
+. Redefine the continuation character in the DO file:
+----
+CONTINUE = +
+----
+
+The DO file TEST/CHAR is modified to the following:
+
+----
+LIST TEST/CHAR
+050 CONTINUE
+100 CONT = +
+200 FILES +
+300 TEMP
+----
+
+[[CANDE_COMMANDS_CONTINUE_EXPLANATION_USINGTHESEMICOLONTOTERMINATETHECONTINUECOMMAND]]
+===== Using the Semicolon (;) to Terminate the CONTINUE Command
+Another method you can use to avoid the previously described error condition in a DO
+file is to place a semicolon (;) after the CONTINUE command. The semicolon signals to
+CANDE that it is to execute the CONTINUE command. The next input line is then read
+and the plus sign (+) is recognized as the continuation character.
+
+In the following DO file, the CONTINUE command is followed by a semicolon (;).
+
+----
+100 CONT = +;
+200 FILES +
+300 TEMP
+----
+
+[[CANDE_COMMANDS_CONTINUE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_CONTINUE_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+CONT
+#NO CONTINUATION CHARACTER DEFINED
+----
+
+[[CANDE_COMMANDS_CONTINUE_EXAMPLES_EXAMPLE2]]
+===== Example2
+----
+CONT *
+#TASKING-ONLY CONTINUATION CHARACTER (%) DEFINED
+----
+
+[[CANDE_COMMANDS_CONTINUE_EXAMPLES_EXAMPLE3]]
+===== Example3
+----
+CONT = *
+#CONTINUATION CHARACTER = *
+
+TERM WIDTH 28
+#LINE = 28, PAGE = 24, BUF =1920, SCREEN, WAIT, "\"
+
+MAKE*
+#%
+A*
+#%
+ALGOL
+#WORKFILE A: ALGOL
+100 ENTER A LONG LINE ON A*
+#%
+NARROW SCREEN
+
+LIST
+100 ENTER A LONG LINE ON\
+\A NARROW SCREEN
+#
+CONT
+#
+CONT ?
+#NO CONTINUATION CHARACTER DEFINED
+----

@@ -1,0 +1,105 @@
+[[CANDE_COMMANDS]]
+== Section 3. CANDE Commands
+
+[[CANDE_COMMANDS_OVERVIEW]]
+=== Overview
+This section contains the CANDE commands for
+
+* Task initiation
+* Work file creation, user library manipulation
+* Text editing
+* Miscellaneous tasks
+
+The commands are presented in alphabetical order along with the railroad syntax
+structure, explanation, and simple examples.
+
+Commands for which the syntax diagram terminates with a
+
+* Percent sign (%) must appear alone on the input record to CANDE or as the last command of that input record.
+* Vertical bar (|) may appear in sequence on the input record, each command separated from the following command by a semicolon (;).
+
+CANDE commands can be abbreviated for convenience. CANDE checks only the first
+four characters of a command; however, some frequently used commands have
+shorter abbreviations.
+
+For example, the MAKE command can be abbreviated to M, and the SAVE command
+can be abbreviated to SA.
+
+Acceptable forms of the MAKE command are
+
+* M
+* MA
+* MAK
+* MAKE
+* MAKEIT
+* MAKEFILE
+* MAKEWORKFILE
+
+[[CANDE_COMMANDS_OVERVIEW_USINGPERIODSINUNQUOTEDFIELSNAMESANDLONGFILENAMES]]
+==== Using Periods in Unquoted File Names and Long File Names
+
+In general, CANDE does not allow the use of periods in unquoted file names and
+provides limited support for long file names.
+
+You can use periods in unquoted file names for CANDE commands that directly invoke
+Work Flow Language (WFL) statements that have the same name.
+
+These CANDE commands are
+
+----
+ADD       ALTER      COPY
+PRINT     UNWRAP     WRAP
+ARCHIVE   CATALOG    MKDIR
+----
+
+You cannot use periods in unquoted file names for CANDE commands that have the
+same name as WFL statements but do not invoke WFL.
+
+These commands are
+
+----
+CHANGE    REMOVE    SECURITY    START
+----
+
+To allow the use of periods in unquoted file names in these four commands, precede
+the command with WFL to invoke the WFL statement directly and to apply the WFL
+syntax rules. Section 5, “Functional Command Groupings,” provides a quick reference
+to related commands.
+
+The following CANDE commands support long node file names:
+
+----
+ADD       ALTER     CHANGE      COPY      LFILES
+PRINT     REMOVE    SECURITY    TITLE     ?FA
+ARCHIVE   CATALOG   MKDIR       MODIFY
+----
+
+The long name node basic constructs listed in Section 2 apply to the file names used
+by these commands.
+
+On a system that is not configured to support long file names, these commands
+truncate file name nodes that are greater than 17 characters.
+
+On a system that is configured to support long file names, these commands do not
+truncate file name nodes that are greater than 17 characters.
+
+Although several CANDE commands have the same name as WFL statements, these
+commands do not invoke WFL (and in some cases have different syntax or function
+than the identically named WFL statement)..
+
+These CANDE commands are
+
+----
+ACCESS      BIND        CHANGE
+COMPILE     DO          LOG
+MOVE        PASSWORD    REMOVE
+REPLACE     RUN         START
+STOP
+----
+
+To invoke the WFL statements with these names, you must precede them with the
+CANDE WFL command, or include them in a job file and initiate the job with a START
+command.
+
+include::Commands\ACCESS.adoc[]
+include::Commands\ADD.adoc[]

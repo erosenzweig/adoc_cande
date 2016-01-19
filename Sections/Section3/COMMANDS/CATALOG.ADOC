@@ -1,0 +1,17 @@
+[[CANDE_COMMANDS_CATALOG]]
+=== anchor:CANDE_COMMANDS_CATALOG[]CATALOG
+
+[[CANDE_COMMANDS_CATALOG_SYNTAX]]
+==== Syntax
+Refer to the WFL Programming Reference Manual for the complete syntax diagrams.
+
+[[CANDE_COMMANDS_CATALOG_EXPLANATION]]
+==== Explanation
+The CATALOG command applies only to a cataloging system. Cataloging provides an
+automated method for locating copies of files that are on disk or tape.
+
+The CATALOG command is processed by the Work Flow Language (WFL), not CANDE.
+The command (and any text appearing on the same line) is passed unedited to WFL.
+
+For a more detailed explanation, refer to the CATALOG statement in the WFL
+Programming Reference Manual.

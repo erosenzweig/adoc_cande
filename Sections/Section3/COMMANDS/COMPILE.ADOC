@@ -1,0 +1,213 @@
+[[CANDE_COMMANDS_COMPILE]]
+=== anchor:CANDE_COMMANDS_COMPILE[]COMPILE
+
+[[CANDE_COMMANDS_COMPILE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_COMPILE_SYNTAX_COMPILERSPECIFICATION]]
+===== <compiler specification>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_COMPILE_SYNTAX_SOURCEFILETITLE]]
+===== <source file title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_COMPILE_SYNTAX_OBJECTFILENAME]]
+===== <object file name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_COMPILE_SYNTAX_CODEFILETASKATTRIBUTE]]
+===== <code file task attribute>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_COMPILE_EXPLANATION]]
+==== Explanation
+The COMPILE command invokes a compiler to compile a program, and if there are no
+syntax errors in the program, the result is an object program.
+
+The COMPILE command does not support long node file names. The traditional file
+naming constructs continue to apply to the file names used by this command.
+Regardless of whether a system is configured to support long file names, the
+COMPILE command always truncates file name nodes that are greater than 17
+characters. If you attempt to use a file name containing a node that is longer than 17
+characters, a warning message is issued, and the command proceeds using a
+truncated form of the name.
+
+[[CANDE_COMMANDS_COMPILE_EXPLANATION_SPECIFYAFILETOBECOMPILED]]
+===== Specify a File to Be Compiled
+You can specify the title of the source file that is to be compiled; however, if a sourcefile
+title is not specified, the work file is assumed. If the file to be compiled is the work
+file, an UPDATE operation is performed before the compiler is invoked. The following
+examples show a COMPILE command that specifies a source-file title, and a COMPILE
+command that assumes the work file, respectively:
+
+----
+COMPILE MY/ALGOL/PROGRAM
+
+COMPILE
+----
+
+If a source-file title is specified, the resulting object program is titled OBJECT/<source
+file title>. If the work file is specified or assumed and the work file is saved before it is
+compiled, then the object program is titled OBJECT/<work file title>. If an object file
+name other than the source-file title is desired, then the following COMPILE syntax
+should be used:
+
+----
+COMPILE <source file title> AS OUR/ALGOL/PROGRAM
+----
+
+If an object file name other than the work file title is desired, then either of the
+following COMPILE statements can be used, resulting in an object program titled
+OBJECT/OUR/ALGOL/PROGRAM:
+
+----
+COMPILE <work file title> AS OUR/ALGOL/PROGRAM
+
+COMPILE AS OUR/ALGOL/PROGRAM
+----
+
+If a dollar sign ($) precedes the object file name, the OBJECT directory is omitted. An
+asterisk (*) or usercode is not permitted with an object file name.
+
+[[CANDE_COMMANDS_COMPILE_EXPLANATION_SPECIFYINGACOMPUTER]]
+===== Specifying a Computer
+A particular compiler can be specified to compile a source file or work file; however, if
+a compiler is not specified, the compiler appropriate for the source-file type is
+invoked. For example, the ALGOL compiler is invoked for type ALGOL files.
+
+The following are examples of the COMPILE command with a compiler name
+specified:
+
+----
+COMPILE MY/ALGOL/PROGRAM ALGOL
+
+COMPILE HIS/COBOL74/PROGRAM C74 ON PACK
+----
+
+If a compiler is not specified and the type of the source file or work file is not a
+compiler type (such as SEQ or DATA), CANDE displays one of the following messages:
+
+----
+#SOURCE NOT COMPILER TYPE
+
+#WORKFILE NOT COMPILER TYPE
+----
+
+Nonstandard compilers (such as BDMSCOBOL and BDMSALGOL) can be invoked by
+using the WITH construct.
+
+Because the prefix SYSTEM/ is assumed to precede the first node of the compiler
+title after any usercode or asterisk (*), the prefix SYSTEM/ should not be explicitly
+specified. The compiler title has the same form as a file title, except that the maximum
+number of nodes is 11. For example, the following command uses SYSTEM/ALGOL
+compiler:
+
+----
+COMPILE PROGRAM/X WITH ALGOL
+----
+
+Some of the older (prior to Mark 3.1) compilers have been changed in their use of
+internal file names to make them consistent with the newer compilers. As a result of
+this change, the new internal file name ERRORS should be used instead of ERRORFILE
+when an ALGOL, COBOL, COBOL74, DASDL, or NEWP compilation is started from
+CANDE with a file equation for the error file. In addition, if you do not supply a value
+for the TITLE file attribute, but you do set the KIND file attribute to DISK and the
+PROTECTION file attribute to SAVE, then the error file is created under the name
+ERRORS rather than ERRORFILE.
+
+If you use the COMPILE command with the compiler specification syntax of COMPILE
+<file> WITH * <compiler name>, then CANDE uses the compiler *SYSTEM/<compiler
+name>.
+
+If you use the COMPILE command with the compiler specification syntax of COMPILE
+<file> : <compiler type>, then CANDE requires the short form notation of the
+compiler name. For example, C74 must be the compiler type used instead of
+COBOL74. The valid compiler types are listed in this manual under <standard
+compiler> in Section 2, "Basic Constructs."
+
+If AS $ <object file name> is specified in the COMPILE or BIND command and that file
+exists, it is replaced by the new code file only if its FILEKIND value is between
+COMPILERCODEFILE (20) and CODEFILE (63) inclusive, denoting that it is a code file. A
+compile that will replace an existing source file or any other noncode file is rejected,
+and the following message is displayed:
+
+----
+#FILE ALREADY PRESENT
+----
+
+[[CANDE_COMMANDS_COMPILE_EXPLANATION_COMPILINGFORSYNTAXONLY]]
+===== Compiling Syntax Only
+The SYNTAX option informs the compiler to compile for syntax only. No object file
+results when this option is specified.
+
+When syntax errors are found, they are displayed. Syntax error messages can be sent
+to a backup file by including the $SET LIST record in the program to be compiled.
+
+[[CANDE_COMMANDS_COMPILE_EXPLANATION_COMPILINGWITHASPECIFIEDCOMPILERTASKEQUATIONLIST]]
+===== Compiling With a Specified Compiler Task Equation List
+Task attributes can be specified for the compile task. The following is an example of a
+task attribute that modifies the compile task and results in the compiler running with a
+priority of 30:
+
+----
+COMPILE; COMPILER PRIORITY=30
+----
+
+The following example results in the file ERRORS declared by the compiler to be
+equated to KIND=PRINTER.
+
+----
+COMPILE; COMPILER FILE ERRORS (KIND=PRINTER)
+----
+
+[[CANDE_COMMANDS_COMPILE_EXPLANATION_COMPILINGWITHCODEFILETASKATTRIBUTESSPECIFIED]]
+===== Compiling with Code File Task Attributes Specified
+Code file task attributes specified in the COMPILE statement get stored in the code
+file after a successful compile. These attributes take effect when the code file is
+executed.
+
+The following example shows the program UTIL/ALGOL/EXAMPLE which is to be
+compiled by the ALGOL compiler. The code-file task equation in the example equates
+the task attribute MAXPROCTIME to 50 seconds.
+
+----
+GET UTIL/ALGOL/EXAMPLE; C WITH ALGOL; MAXPROCTIME = 50
+----
+
+[[CANDE_COMMANDS_COMPILE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_COMPILE_EXAMPLES_EXAMPLE1]]
+===== Example1
+
+----
+c
+#COMPILING 3673
+#ET=7.2 PT=0.4 IO=0.4
+
+COMPILE WITH BDMSCOBOL
+#COMPILING 3698
+#3721 BOJ *DATABASE/INTERFACE ON USERPACK
+#3721/3721 EOJ JOB DATABASE/INTERFACE ON USERPACK
+#ET=2:01.1 PT=1:03.8 IO=12.9
+
+c a/b as $test/a/b:dcalgol
+#COMPILING 3725
+#ET=29.8 PT=5.6 IO=2.3
+
+COMPILE A ON B AS Z WITH MYCOMP ON MYPACK
+#COMPILING 3727
+#ET=1:28.6 PT=46.3 IO=36.4
+----

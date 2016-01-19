@@ -1,0 +1,108 @@
+[[CANDE_COMMANDS_FAMILY]]
+=== anchor:CANDE_COMMANDS_FAMILY[]FAMILY
+
+[[CANDE_COMMANDS_FAMILY_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FAMILY_SYNTAX_FAMILYSPECIFICATIONS]]
+===== <family specifications>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FAMILY_SYNTAX_TARGETFAMILY]]
+===== <target family>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FAMILY_SYNTAX_SUBSTITUTEFAMILY]]
+===== <substitute family>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FAMILY_SYNTAX_ALTERNATEFAMILY]]
+===== <alternate family>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FAMILY_EXPLANATION]]
+==== Explanation
+The FAMILY command allows interrogation and alteration of the family specifications
+that are to be applied to the current session. Default family specifications are obtained
+by CANDE from the USERDATAFILE. (Refer to the Security Administration Guide for
+further information about the USERDATAFILE.)
+
+All CANDE commands that reference files, except for the FILES, LFILES, CHANGE,
+TITLE, REMOVE, SECURITY, and TYPE commands, invoke family substitution. For a
+detailed explanation of how family substitution operates, refer to "Family Substitution"
+in Section 1, "General Information."
+
+When FAMILY is entered, CANDE displays the family currently in effect for the
+session.
+
+When FAMILY. is entered, the family specifications are deleted.
+
+When FAMILY * is entered, CANDE restores the current family specifications to the
+USERDATAFILE default specifications.
+
+If the FAMILY command is used to change the family specifications of the current
+session and an unsaved work file exists, CANDE displays the following message:
+
+----
+#REMOVE OR SAVE WORKFILE
+----
+
+The unsaved work file must either be removed or saved, and the FAMILY command
+must be re-entered.
+
+The target family, substitute family, and alternate family are all family names.
+
+The <family specification> construct is used to redirect references to files on the
+target family. Requests for an existing file on the target family search the substitute
+family and then the alternate family (if it exists). New files that request the target
+family are created on the substitute family.
+
+When creating or referencing files through CANDE, the files are always associated
+with the family DISK. Family substitution is effective for CANDE functions only if the
+target family is DISK. Thus, a family specification of PACK=X ONLY does not affect
+files referenced by CANDE but affects tasks that reference files on the family PACK. If
+the target family is not DISK, then CANDE creates all files on the family DISK.
+
+The word TAPE is an invalid family name.
+
+[[CANDE_COMMANDS_FAMILY_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_FAMILY_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+FAM DISK=PACK ONLY
+#FAMILY DISK = PACK ONLY
+----
+
+[[CANDE_COMMANDS_FAMILY_EXAMPLES_EXAMPLE2]]
+===== Example2
+----
+FAMILY.
+#FAMILY.
+----
+
+[[CANDE_COMMANDS_FAMILY_EXAMPLES_EXAMPLE3]]
+===== Example3
+----
+FAM*
+#FAMILY DISK = USERPACK OTHERWISE DISK
+----
+
+[[CANDE_COMMANDS_FAMILY_EXAMPLES_EXAMPLE4]]
+===== Example4
+----
+FAMILY X=Y OTHERWISE Z
+#FAMILY X = Y OTHERWISE Z
+----

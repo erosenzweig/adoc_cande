@@ -1,0 +1,16 @@
+[[CANDE_COMMANDS_ARCHIVE]]
+=== anchor:CANDE_COMMANDS_ARCHIVE[]ARCHIVE
+
+[[CANDE_COMMANDS_ARCHIVE_SYNTAX]]
+==== Syntax
+Refer to the WFL Programming Reference Manual for the complete syntax diagrams.
+
+[[CANDE_COMMANDS_ARCHIVE_EXPLANATION]]
+==== Explanation
+The ARCHIVE command manipulates files in the Archive Subsystem.
+
+The ARCHIVE command is processed by the Work Flow Language (WFL), not CANDE.
+The command (and any text appearing on the same line) is passed unedited to WFL.
+
+For a more detailed explanation, refer to the Archive Subsystem in the "Statements"
+section of the WFL Programming Reference Manual.

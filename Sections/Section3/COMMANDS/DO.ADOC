@@ -1,0 +1,405 @@
+[[CANDE_COMMANDS_DO]]
+=== anchor:CANDE_COMMANDS_DO[]DO
+
+[[CANDE_COMMANDS_DO_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DO_SYNTAX_PARAMETERLIST]]
+===== <parameter list>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DO_SYNTAX_STRINGCONSTANT]]
+===== <string constant>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DO_SYNTAX_REALCONSTANT]]
+===== <real constant>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DO_SYNTAX_INTEGERCONSTANT]]
+===== <integer constant>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DO_SYNTAX_BOOLEANCONSTANT]]
+===== <boolean constant>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DO_SYNTAX_STRINGCHARACTER]]
+===== <string character>
+Any character except quotation marks (").
+
+[[CANDE_COMMANDS_DO_DOFILESYNTAX]]
+==== DO File Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DO_DOFILESYNTAX_PARAMETERSPECIFICATION]]
+===== <parameter specification>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DO_DOFILESYNTAX_PARAMETER]]
+===== <parameter>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DO_DOFILESYNTAX_DEFAULTSPECIFICATION]]
+===== <default specification>
+----
+RAILROAD DIAGRAM HERE
+----
+
+Refer to Section 2, “Basic Constructs,” for syntax and definitions of <file title>,
+<sequence range list>, <special character>, <control char mnemonic>, <letter>,
+<digit>, <hyphen>, and <underscore>.
+
+[[CANDE_COMMANDS_DO_EXPLANATION]]
+==== Explanation
+The DO command executes the CANDE commands contained in a specified DO file or
+current work file.
+
+A DO file is much like a batch file that contains CANDE commands. The CANDE
+commands are run sequentially and are displayed on the screen when each command
+is executed. Valid input includes CANDE commands (except CANDE control
+commands) and single-line insertions. A DO file need not include the word DO in the
+file name.
+
+The DO command does not support long node file names. The traditional file naming
+constructs continue to apply to the file names used by this command. Regardless of
+whether a system is configured to support long file names, the DO command always
+truncates file name nodes that are greater than 17 characters. If you attempt to use a
+file name containing a node that is longer than 17 characters, a warning message is
+issued, and the command proceeds using a truncated form of the name.
+
+You can run the DO command in either of two ways:
+
+* You can specify parameter values with the DO command that are passed to the DO file.
+* You can run the DO command without parameter values specified.
+
+To use the parameter-passing capability of the DO command, you must declare the
+parameter variables in the first few lines of the DO file, with the CANDE commands
+following in subsequent lines. You can then specify the parameter values with the DO
+command to run the DO file.
+
+The DO command and its parameter-value passing capabilities is described fully under
+"Passing Parameter Values with the DO Command" later in this section.
+
+[[CANDE_COMMANDS_DO_EXPLANATION_USINGTHEDOCOMMAND]]
+===== Using the DO Command
+The DO command executes the CANDE commands in the specified DO file. The
+CANDE commands are entered in the user’s queue and performed sequentially.
+
+The queued input is treated like any other queued input except that each command is
+displayed when it is removed from the user’s queue. When the queue is displayed
+with the ?SHOW command, each entry from a DO file is preceded by a D.
+
+Most commands (such as CHANGE, SECURITY, and TITLE) attempting to act on a file
+that is not present cause the next command in the DO file to be queued and the
+message “#QUEUED INPUT PENDING” to be displayed at the originating station. The
+REMOVE command is an exception to this situation because the fact that a file is not
+present is interpreted as the successful removal of the file.
+
+CANDE can also invoke the DO command automatically when a user logs on. Refer to
+the discussion on startup files in Section 1, “General Information,” for additional
+information.
+
+The following options can be used with the DO command when no parameters are
+specified, but are also valid with the DO command when passing parameter values.
+The parameter list option, which is described under “Passing Parameter Values with
+the DO command,” applies only when using the parameter-value passing capabilities
+of the DO command.
+
+*<file title>* +
+You can specify a file title with a DO command. If you do not specify a file title, the DO
+command uses your work file.
+
+*<sequence range list>* +
+If you specify a sequence number range, the DO command processes only those
+CANDE commands in the specified range. If you do not specify a sequence range list,
+the DO command processes the entire file.
+
+*:EOL <special character>* +
+*:EOL <control char mnemonic>* +
+If you specify the :EOL <special character> option, you can use that special character
+to mark the end of an input line by placing it after the last column of valid input. All
+further information on the line is ignored; that is, the EOL character effectively ends
+the line. This option enables you to place comments on the line.
+
+Because only the text field of the file is significant, trailing blanks are ignored. If you
+want trailing blanks, use the end-of-line character after the desired number of blank
+spaces to indicate that the line is to include trailing blanks. For example, trailing blanks
+might be necessary as valid input in a FIX command.
+
+If you specify the :EOL <control char mnemonic> option, the control character
+mnemonic (listed in Section 2, “Basic Constructs”) marks the end of an input line.
+
+[[CANDE_COMMANDS_DO_EXPLANATION_PASSINGPARAMETERVALUESWITHTHEDOCOMMAND]]
+===== Passing Parameter Values with the DO Command
+The DO command can pass parameter values to a DO file, which gives you more
+flexibility with frequently used DO files. This feature enables you to do the following:
+
+* Declare parameter variables in the DO file.
+* Declare default values for each declared parameter.
+* Declare another parameter as a default value for a parameter, in which case the string value of the previously-declared parameter is used.
+* Specify string values in the DO command that are to be substituted for parameters in the DO file.
+
+For parameter values to be passed from a DO command to a DO file, the following
+conditions must exist:
+
+* Parameter variables are declared in the DO file.
+* Parameter values are specified with the DO command or default values are specified with parameter declarations in the DO file.
+
+[[CANDE_COMMANDS_DO_EXPLANATION_DECLARINGPARAMETERVARIABLESINADOFILE]]
+===== Declaring Parameter Variables in a DO File
+To use the parameter-passing feature of the DO command, declare the parameter
+variables in the first few lines (before any of the lines containing CANDE commands)
+of the DO file. Use the <parameter specification> and <parameter> syntax to declare
+parameters.
+
+*<parameter specification>* +
+*<parameter>* +
+You can specify as many as 100 parameters, and each parameter can be a maximum
+of 63 characters long. Parameter names are case insensitive. For example, the
+parameter names ACCOUNT, Account, and aCCount are equivalent.
+
+You can extend the parameter declaration over multiple lines. To do so, you must
+adhere to the following rules:
+
+* Do not split parameter names and quoted strings across lines.
+* Split long string values for parameters into multiple string constants.
+* Delimit segments of a long string value with quotation marks (").
+* Concatenate strings with an ampersand (&).
+
+*<default specification>* +
+You can specify a default value for a each parameter. The default value can be a string,
+real, integer, or Boolean constant. The default value is used for parameter substitution
+when a parameter value that corresponds to a parameter variable is not specified.
+
+You can substitute the value of another parameter as a default value for a parameter
+variable by assigning the parameter name as the value. If another parameter is
+specified as the default value, either the specified value or the default parameter value
+is used at run time.
+
+The following example shows a parameter declared in the file DO/EXAMPLE taking the
+value of another parameter specified in the DO command:
+
+----
+LIST DO/EXAMPLE
+
+100 PARAMETERS (P1, P2 DEFAULT="TEST1")
+200 GET #P1#
+300 RESEQ
+400 COMPILE
+500 SA AS #P2#
+
+DO DO/EXAMPLE ("TEMP/TEST")
+
+#WORKFILE TEMP/TEST: ALGOL, 3455 RECORDS, SAVED
+
+#UPDATING
+
+#COMPILING 4412
+
+#WORKSOURCE TEMP/TEST SAVED AS (TESTUSER)TEST1 ON TESTPACK
+----
+
+*:SUBCHAR <special character>* +
+The :SUBCHAR <special character> option identifies a substitution character, which is
+used to identify a parameter in a DO file.
+
+If a substitution character is not specified, the number sign (#) is the default
+substitution character.
+
+The substitution character must be used in pairs to delimit a parameter in a parameter
+substitution expression.
+
+[[CANDE_COMMANDS_DO_EXPLANATION_PARAMETERSUBSTITUTIONEXPRESSION]]
+===== Parameter Substitution Expression
+A parameter substitution expression is defined with the following syntax:
+
+----
+<subchar> <parameter> <subchar>
+----
+
+The string value of the parameter specified in the DO command is substituted in place
+of the substitution expression. This is a literal substitution. The substitution expression
+can appear anywhere within a DO file record.
+
+The following example shows a substitution expression that uses the dollar sign ($) as
+the substitution character and PR as the parameter:
+
+----
+$PR$
+----
+
+Blanks are not allowed between the delimiting substitution characters and the
+parameter.
+
+If the string between the delimiting substitution characters is not a parameter, the
+currently running DO file is stopped and an error message is displayed. None of the
+
+DO file records are queued. If no parameters are declared, none of the DO file records
+are scanned for parameter substitution.
+
+[[CANDE_COMMANDS_DO_EXPLANATION_SPECIFYINGPARAMETERVALUESINTHEDOCOMMAND]]
+===== Specifying Parameter Values in the DO Command
+Parameter values are passed to the DO file when specified with the DO command.
+Parameter values must be enclosed in parentheses (( )).
+
+Parameter string values must be delimited by quotation marks ("); however, quotation
+marks are optional for integer, real, or Boolean constants. Commas separate the
+parameter values. In the following examples, either method of declaring parameter
+values in the DO command is acceptable:
+
+----
+DO X ("50", "TRUE", "A/B/C")
+
+DO X (50, TRUE, "A/B/C")
+----
+
+String values can be null. To specify a null string value use two consecutive quotation
+marks ("") or skip a value, which you indicate with two consecutive commas (,,). When
+a string value is not specified, the default value is used. If a default value is not
+specified in the DO file, the DO file execution is stopped, an error message is
+displayed, and none of the DO file records are queued.
+
+The following example shows a DO command that specifies a null value and a skipped
+value:
+
+----
+DO X (50,,"")
+----
+
+A one-to-one correspondence of parameter string values to declared parameters is
+required. If the number of parameter values exceeds the number of declared
+parameters, the DO file execution stops, an error message is displayed, and no DO file
+commands are queued.
+
+*<file title>* +
+You can specify the name of the DO file in the DO command. If a file name is not
+specified, the work file is used.
+
+*<parameter list>* +
+You can specify as many as 100 parameter values in the DO command, which can
+comprise strings and, real, integer, and Boolean constants.
+
+*<string constant>* +
+String values must be enclosed in quotation marks ("). Although the length of string
+values is unlimited, when a long string must be split across multiple lines each string
+must be delimited with quotation marks. A null string is represented by two
+consecutive quotation marks ("").
+
+*<real constant>* +
+*<integer constant>* +
+*<Boolean constant>* +
+Real, integer, and Boolean constants can be enclosed in quotation marks ("), but the
+quotation marks are not required.
+
+
+[[CANDE_COMMANDS_DO_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_DO_EXAMPLES_EXAMPLE1]]
+===== Example1
+The following example shows a DO command without parameter values starting the
+DO file X that has no declared parameters:
+
+----
+LIST X
+#FILE (UZER)X ON USERPACK
+100 WHAT;REM;REM Y
+200 MAKE Y ALGOL
+300 100TEXT FOR Y
+400 200LIST Y
+500 300MORE TEXT FOR Y
+600
+700 SAVE;L
+800 DO 200
+900 WHAT
+#
+DO X
+#FILE (UZER)X ON USERPACK
+#
+WHAT;REM;REM Y
+#WORKFILE TEMP: SEQ, 5 RECORDS (THRU 5000), SAVED
+#
+# (UZER)Y ON USERPACK REMOVED
+MAKE Y ALGOL
+#WORKFILE Y: ALGOL
+100TEXT FOR Y
+200LIST Y
+300MORE TEXT FOR Y
+#
+SAVE;L
+#UPDATING
+#WORKSOURCE Y SAVED
+100 TEXT FOR Y
+200 LIST Y
+300 MORE TEXT FOR Y
+#
+DO 200
+#WORKFILE Y
+#
+LIST Y
+#FILE (UZER)Y ON USERPACK
+100 TEXT FOR Y
+200 LIST Y
+300 MORE TEXT FOR Y
+#
+WHAT
+#WORKFILE Y: ALGOL, 3 RECORDS (THRU 300), SAVED
+----
+
+[[CANDE_COMMANDS_DO_EXAMPLES_EXAMPLE2]]
+===== Example2
+The following example shows a DO file named PROCESS/TEST that contains formal
+parameters:
+
+----
+LIST PROCESS/TEST
+
+100 PARAMETER (P1, P2, P3 DEFAULT = "FILE1", P4,
+200 P5 = "", P6 DEFAULT = "THIS IS A LONG" &
+300 "STRING") : SUBCHAR $
+400 RUN $P1$;PRIORITY = $P2$;TASKSTRING = "$P6$"
+500 FILE $P3$
+600 FILE A$P4$ : 1
+700 LIST A$P4$B
+800 RUN $P4$B
+900 FILE $P5$
+----
+
+Lines 100 through 300 of file PROCESS/TEST declare the parameter variables and the
+remaining lines 400 through 900 contain CANDE commands for processing with the
+declared parameters.
+
+[[CANDE_COMMANDS_DO_EXAMPLES_EXAMPLE3]]
+===== Example3
+The following example shows a file with formal parameters specified with the DO file:
+
+----
+DO EXAMPLE/PROCESS ("PROG1",50,,"FILE2")
+
+RUN PROG1;PRIORITY = 50;TASKSTRING = "THIS IS AN EXAMPLE OF A STRING"
+FILE FILE1
+FILE AFILE2 : 1
+LIST AFILE2B
+RUN FILE2B
+FILE
+----

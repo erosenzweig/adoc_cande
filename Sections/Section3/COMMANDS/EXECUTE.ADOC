@@ -1,0 +1,92 @@
+[[CANDE_COMMANDS_EXECUTE]]
+=== anchor:CANDE_COMMANDS_EXECUTE[]EXECUTE or RUN
+
+[[CANDE_COMMANDS_EXECUTE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_EXECUTE_EXPLANATION]]
+==== Explanation
+The EXECUTE command causes execution of an object program. RUN is a synonym for
+EXECUTE.
+
+The object work file is assumed if no file title is specified. An attempt to execute the
+work file when it has no object file causes the work file to be compiled and then
+executed. An attempt to execute a file title that does not have an associated object
+file results in an error message; the program is not automatically compiled. A dollar
+sign ($) is specified to indicate that the given file title is not in the object file directory
+but is referenced as a normal user file. If the file title starts with an asterisk (*) instead
+of a usercode, CANDE executes the file title instead of the associated object file. For
+example, RUN *MYFILE is equivalent to RUN $*MYFILE. The file title must refer to a
+file accessible by the user.
+
+If the attributes assigned to a task using either the EXECUTE or RUN command are
+invalid, CANDE will use the default session values for the attributes when the task is
+run and will not issue any warning messages.
+
+In an EXECUTE command with file title specified, a single parameter may be optionally
+provided. The parameter must be a string whose length is limited only by the input
+record size of the terminal. The corresponding actual parameter must be a real array.
+If the file to be executed is the work file, an UPDATE is done prior to the EXECUTE.
+The EXECUTE and RUN commands do not support long node file names. The
+traditional file naming constructs continue to apply to the file names used by these
+commands. Regardless of whether a system is configured to support long file names,
+the EXECUTE and RUN commands always truncate file name nodes that are greater
+than 17 characters. If you attempt to use a file name containing a node that is longer
+than 17 characters, a warning message is issued, and the command proceeds using a
+truncated form of the name.
+
+For more information about the modifier construct, refer to the modifier syntax in
+Section 2, “Basic Constructs.” If modifier is used with the EXECUTE command, the
+attribute specified by the modifier applies to the executed task.
+Input of more than one line of text is often desired when the EXECUTE command is
+used. More than one line of text can be entered by using the default (or tasking only)
+continuation character (%), or the current continuation character. (Refer to the
+CONTINUE command for details.)
+
+If CANDE attempts to execute a code file that is not compatible with the machine, the
+following message is generated:
+
+----
+#DSED CODEFILE INCOMPATIBLE WITH THIS MACHINE
+----
+
+[[CANDE_COMMANDS_EXECUTE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_EXECUTE_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+EXECUTE
+#RUNNING 3437
+----
+
+[[CANDE_COMMANDS_EXECUTE_EXAMPLES_EXAMPLE2]]
+===== Example2
+----
+E $CODEFILE("WITH A STRING PARAMETER");FILE DCOM(KIND=REMOTE)
+#RUNNING 3441
+----
+
+[[CANDE_COMMANDS_EXECUTE_EXAMPLES_EXAMPLE3]]
+===== Example3
+----
+R UTILITY/LOADER ON MYPACK ("USING THIS STRING")
+#RUNNING 3445
+----
+
+[[CANDE_COMMANDS_EXECUTE_EXAMPLES_EXAMPLE4]]
+===== Example4
+----
+EX (ANYUSER)ANYPROGRAM ON HISPACK ("USING ANYSTRING")
+#RUNNING 3448
+----
+
+[[CANDE_COMMANDS_EXECUTE_EXAMPLES_EXAMPLE4]]
+===== Example4
+----
+RUN *SYSTEM/DUMPALL ON PACK ("TEACH");FILE LINE(KIND=REMOTE)
+#RUNNING 3449
+----

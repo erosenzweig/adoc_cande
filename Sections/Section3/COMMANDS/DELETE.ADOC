@@ -1,0 +1,50 @@
+[[CANDE_COMMANDS_DELETE]]
+=== anchor:CANDE_COMMANDS_DELETE[]DELETE
+
+[[CANDE_COMMANDS_DELETE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_DELETE_EXPLANATION]]
+==== Explanation
+The DELETE command causes the lines specified in the <sequence range list>
+construct to be deleted from the work file. If DELETE ALL is entered, the contents of
+the work file are deleted, but the title and other attributes are preserved. If the work
+file is unnamed, it is removed by the DELETE ALL form.
+
+[[CANDE_COMMANDS_DELETE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_DELETE_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+L
+1000 LINE1
+2000 LINE2
+3000 LINE3
+4000 LINE4
+5000 LINE5
+6000 LINE6
+#
+
+DELETE 1000
+#
+
+L
+2000 LINE2
+3000 LINE3
+4000 LINE4
+5000 LINE5
+6000 LINE6
+#
+
+DELETE 2500-3000,5000-END
+#
+
+L
+2000 LINE2
+4000 LINE4
+#
+----

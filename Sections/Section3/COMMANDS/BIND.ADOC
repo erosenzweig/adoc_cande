@@ -1,0 +1,41 @@
+[[CANDE_COMMANDS_BIND]]
+=== anchor:CANDE_COMMANDS_BIND[]BIND
+
+[[CANDE_COMMANDS_BIND_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_BIND_SYNTAX_SOURCEFILETITLE]]
+===== <source file title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_BIND_SYNTAX_REMOTEFILENAME]]
+===== <remote file name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_BIND_EXPLANATION]]
+==== Explanation
+The BIND command is similar to the COMPILE command except that if a compiler is
+not specified, the BINDER is invoked. For further information, refer to the COMPILE
+command in this section.
+
+[[CANDE_COMMANDS_BIND_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_BIND_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+BIND
+#BINDING 3291
+#ET=1:13.9 PT=6.3 IO=60.9
+
+BIND ALGOL/PROG WITH ALGOL
+#BINDING 3314
+#ET=1:19.6 PT=8.9 IO=50.6 
+----

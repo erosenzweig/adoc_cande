@@ -1,0 +1,74 @@
+[[CANDE_COMMANDS_CONVENTION]]
+=== anchor:CANDE_COMMANDS_CONVENTION[]CONVENTION
+
+[[CANDE_COMMANDS_CONVENTION_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_CONVENTION_SYNTAX_CONVENTIONNAME]]
+===== <convention name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_CONVENTION_EXPLANATION]]
+==== Explanation
+The CONVENTION command alters the convention specification of the current
+session. The convention specification identifies the format that is to be used for
+numbers, currency, time, and date for a particular system environment. The session
+convention is passed to the MCP when a system command is entered. Responses to
+the system command use the convention to format dates and times. The convention
+should be set in conjunction with the language specified for the CANDE session. Refer
+to the LANGUAGE command in this section for information about specifying the
+language in a CANDE session.
+
+Users might have a convention and language associated with their usercodes,
+however, the user can dynamically change the convention or language during a
+session. This can be performed through the CONVENTION command and the
+LANGUAGE command, respectively.
+
+When CONVENTION is entered, CANDE displays the convention currently in effect for
+the session.
+
+The CONVENTION * form restores the current convention for the session to the
+default convention. The default convention specification is obtained from the
+USERDATAFILE by CANDE. If no convention is specified for the user in the
+USERDATAFILE, the system convention is used. Refer to the Security Administration
+Guide for information about changing the default convention specifications in the
+USERDATAFILE.
+
+The CONVENTION <convention name> form changes the convention for the session
+to the convention represented by the convention name.
+
+The convention name is validated through the CENTRALSUPPORT library. If the
+specified convention is not valid, the CENTRALSUPPORT library returns the following
+error message:
+
+----
+INVALID CONVENTION NAME.
+----
+
+If the CENTRALSUPPORT library is not present, then the convention is not changed
+and the following warning is given:
+
+----
+WARNING: CENTRALSUPPORT NOT PRESENT, CONVENTION NOT CHANGED.
+----
+
+[[CANDE_COMMANDS_CONVENTION_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_CONVENTION_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+CONVENTION
+#CONVENTION: AMERICAN
+
+CONVENTION CANADIAN
+#CONVENTION CHANGED FROM AMERICAN TO CANADIAN
+
+CONVENTION *
+#CONVENTION CHANGED FROM CANADIAN TO AMERICAN
+----

@@ -1,0 +1,49 @@
+[[CANDE_COMMANDS_ARCHIVE]]
+=== anchor:CANDE_COMMANDS_ARCHIVE[]ARCHIVE
+
+[[CANDE_COMMANDS_ARCHIVE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_ARCHIVE_EXPLANATION]]
+==== Explanation
+The DISCARD command allows removal of unwanted recovery files. DISCARD must
+be followed by a recovery number or a list of recovery numbers. Refer to Section 1,
+“General Information,” for a definition of recovery number.
+
+*_Note:_* _Be cautious when you use the DISCARD command if your system is running
+multiple copies of CANDE, and you are logged on to at least two copies of CANDE.
+Because recovery files on one copy of CANDE are visible to other copies of CANDE,
+it is possible to discard recovery files created under other copies of CANDE.
+For more information about multiple copies of CANDE, refer to Section 1, "General
+Information."_
+
+
+[[CANDE_COMMANDS_ARCHIVE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_ARCHIVE_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+REC
+#RECOVERY DATA ON USERPACK
+150 A (04/24/78)
+151 Z (04/24/78)
+#
+
+DISCARD 150
+#
+
+REC
+#RECOVERY DATA ON USERPACK
+151 Z (04/24/78)
+#
+
+DIS 151
+#
+
+REC
+#
+----

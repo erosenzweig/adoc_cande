@@ -1,0 +1,1080 @@
+[[CANDE_COMMANDS_FILES]]
+=== anchor:CANDE_COMMANDS_FILES[]FILES
+
+[[CANDE_COMMANDS_FILES_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FILES_SYNTAX_FILENAME]]
+===== <file name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FILES_SYNTAX_FILEDIRECTORY]]
+===== <file directory>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FILES_SYNTAX_DIRECTORYNAME]]
+===== <directory name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FILES_SYNTAX_OUTPUTOPTIONS]]
+===== <output options>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FILES_EXPLANATION]]
+==== Explanation
+The FILES command lists the names and file types of files in your library. You can list
+unusercoded files (files that are prefixed with an asterisk (*) instead of a usercode),
+and with privileges, you can list files under other usercodes.
+
+The FILES command cannot be used to specify a long file name. However, if the FILES
+command is used to list the contents of a directory that contains files with long file
+names, those long names are displayed. The LFILES command with the ABBREVIATED
+option can be used to specify a long file name when necessary.
+
+Because there are several ways in which to search and list file names, the description,
+syntax diagrams, and examples for the FILES command are grouped according to the
+file selection method.
+
+The following file selection methods are described in this section:
+
+* Selecting files with directory name nodes
+This method requires the complete name of a directory node (and succeeding
+nodes of a directory name if more than one node is specified) to list files under the
+specified directory.
+
+* Selecting files with wild-card characters
+Wild-card characters can be used to substitute nodes of a file name or characters
+within file name nodes. This method enables you to list file names when only part
+of a file name is known.
+
+* Selecting files by pattern matching
+This method enables you to list files by specifying within brackets a pattern of
+characters or a range of alphanumeric characters. File names that match the
+pattern are listed
+
+* Selecting files by file attributes File names that meet the selection criteria specified by file attributes are listed.
+
+*ON <family name>* +
+If ON <family name> is specified with the FILES command, family substitution does not
+apply. Search for file names on the specified family pack.
+
+Refer to “Selecting Files by File Attributes” later in this section for the descriptions, syntax
+diagrams, and examples of the file options.
+
+*CDROM* +
+If ON <family name> is followed by CDROM, the family name refers to a CD-ROM reader
+rather than a pack or disk. A CD-ROM reader is a read-only device that reads files stored on a
+compact disc.
+
+*<output options>* +
+The output options enable you to specify a format to display file names and file attributes.
+The following output options are available:
+
+* SINGLELINE +
+The list of file names is displayed on the screen with each file name and file
+attributes listed on a line.
+
+* LONGFORMAT +
+The list of file names is displayed on the screen with each file name and file
+attributes listed on multiple lines, if necessary.
+
+* RESIDENT +
+The list of resident files is displayed. A resident file is the primary copy of the file
+that is stored on a disk, regardless of whether or not the disk is on-line. Backup
+copies of files stored on another disk family are not considered resident.
+
+* NONRESIDENT +
+A list of nonresident files and directory names is displayed. A nonresident file is a
+file stored on a backup tape, or a backup copy of a file that is stored on a different
+disk family from that on which the primary copy of the file is stored.
+
+* ALL +
+The ALL option lists both resident and nonresident files.
+
+* <depth> +
+The depth option is used to specify the number of directory levels (subdirectories)
+of file names to be listed.
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESWITHDIRECTORYNAMENODES]]
+===== Selecting Files with Directory Name Nodes
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESWITHDIRECTORYNAMENODES_EXPLANATION]]
+====== Explanation
+The FILES command lists the file names and corresponding file types in a user’s
+library.
+
+File names are composed typically of several names separated by forward slashes (/).
+Each name delimited by a forward slash is referred to as a node. This file naming
+convention can generate a hierarchy of files into subdirectories.
+
+When you list file names using file name nodes, the first node name must be given. If
+you specify additional nodes, they must be in hierarchical order—a level cannot be
+skipped. You can optionally specify your usercode, unless you want to list files under
+a usercode other than your own (privileges allowing).
+
+*FILES* +
+If FILES is entered without a specified file name or option, all of the directories and
+files in your library on the family pack are listed.
+
+*<file name>* +
+If a file name is given, the name and type of the file on the current family pack are
+listed. If the name supplied is both a file name and a directory name, all files under the
+directory name and the file name on the current family pack are listed.
+
+*<directory name>* +
+If a directory name is specified, the names and types of files under the directory for
+the current family pack are listed. If the name supplied is both a file name and a
+directory name, all files under the directory and the file name on the current family
+pack are listed. The equal sign (=) can be used to list all files under the directory. The
+following is an example of using the FILES command to list the files under a directory
+name:
+
+----
+FILES (LEDGER)PAYROLL/=
+----
+
+*<file directory>* +
+If a file directory is specified, the names and types of files under the directory for the
+current family pack are listed. If the name supplied is both a file name and a directory
+name, all files under the directory and the file name on the current family pack are
+listed.
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESWITHWILDCARDCHARACTERS]]
+===== Selecting Files with Wild-Card Characters
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESWITHWILDCARDCHARACTERS_WILDCARDFILESSYNTAX]]
+====== Wild-Card FILES Syntax
+When selection files with wild-card characters, the following railroad diagrams are
+used for <usercode> and <name> in place of those defined in the Basic Constructs
+section.
+
+*<usercode>* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+*<name>* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+*<unquoted name>* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+*<quoted name>* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESWITHWILDCARDCHARACTERS_WILDCARDFILESSYNTAX_EXPLANATION]]
+====== Explanation
+When only part of a file name is known, wild-card characters provide a good method
+for searching through file names.
+
+When files have been organized and named with groups or subdirectories in mind,
+searching for similarly grouped files is easier because part of each file name is the
+same. Wild-card characters are useful for finding similarly grouped files.
+
+The wild-card characters that follow provide a flexible and easy method for selecting
+files.
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESWITHWILDCARDCHARACTERS_WILDCARDFILESSYNTAX_EXPLANATION_CHARACTERMATCHINGWITHWILDCARDCHARACTERS]]
+====== Character Matching with Wild-Card Characters
+A wild-card character is a special character that can be used to replace none, one, or
+multiple characters in a file name.
+
+The FILES command accepts wild-card characters, when properly used, to list file
+names that match the files request. The valid wild-card characters are the following:
+
+* The equal sign (=)
+* The tilde (~)
+* The question mark (?)
+
+Any number and combination of the wild-card characters can be used to suit your
+purpose.
+
+A /= suffix is considered part of the wild-card string. For example, FILES X~/= does not
+return the file XXX because the file name does not contain a forward slash character
+(/).
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESWITHWILDCARDCHARACTERS_WILDCARDFILESSYNTAX_EXPLANATION_USINGTHEEQUALSIGNWILDCARDCHARACTER]]
+====== Character Matching with Wild-Card Characters
+The = (equal sign) wild-card character matches none, one, or multiple characters,
+including the forward slash character (/), of a file name. The = wild-card character does
+not match the left parenthesis and the right parenthesis of the file name’s usercode.
+
+*Using the = (Equal Sign) Wild-Card Character* +
+The = (equal sign) wild-card character matches none, one, or multiple characters,
+including the forward slash character (/), of a file name. The = wild-card character does
+not match the left parenthesis and the right parenthesis of the file name’s usercode.
+
+*Example 1: Using the = Wild-Card Character* +
+The file names that match the following file specification with the = wild-card
+character are listed:
+
+----
+*=SYSTEM=
+
+*40SYSTEM/CANDE *40/SYSTEM/CANDE *"4.1"/SYSTEM/CANDE
+*SYSTEM/COMS *SYSTEM *SYSTEMTEST
+----
+
+*Example 2: Using the = Wild-Card Character* +
+The following file names do not match the file specification in Example 1:
+
+----
+SYSTEM/CANDE (UC)SYSTEM SYSTEMTEST
+----
+
+*Example 3: Using the = Wild-Card Character* +
+The following example shows various file specifications with the = wild-card character
+that selects the following file:
+
+----
+*SYSTEM/MCP/DIAGNOSTICS
+
+*=
+*SYS=MCP=ICS
+*S=S
+*=MCP=
+*SYSTEM/=
+*SYSTEM/MCP/=
+*SYSTEM/MCP/D=
+*S=/MCP/=T=ICS
+*S=
+*=S=Y=S=T=E=M=M=C=P=D=I=A=G=N=O=S=T=I=C=S=
+----
+
+*Using the ~ (Tilde) Wild-Card Character* +
+The ~ (tilde) wild-card character matches none, one, or multiple characters. However,
+the ~ wild-card character does not match a forward slash character (/), the left
+parenthesis, and the right parenthesis of the file name’s usercode.
+
+*Example 1: Using the ~ Wild-Card Character* +
+The file names that match the following file specification with the ~ wild-card
+character are listed:
+
+----
+*~SYSTEM~
+
+*40SYSTEM *40SYSTEMCANDE *SYSTEM4_0
+*SYSTEMTEST
+----
+
+*Example 2: Using the ~ Wild-Card Character* +
+The following file names do not match the file specification in Example 1:
+
+----
+*40SYSTEM/CANDE *40/SYSTEM/CANDE *"4.1"/SYSTEM/CANDE
+(UC)SYSTEM
+----
+
+*Example 3: Using the ~ Wild-Card Character* +
+File names that match the following file specification with the ~ wild-card character
+are listed:
+
+----
+(UC)S~Y~M~B~O~L~
+
+(UC)SYMBOL (UC)SYMBOL_40 (UC)SYS40_SYMBOL
+(UC)SYMBOLIC
+----
+
+*Example 4: Using the ~ Wild-Card Character* +
+The following file names do not match the file specification in Example 3:
+
+----
+*S/Y/M/B/O/L (UC)SYM/BOLIC (UC)S/Y/M/BOL
+(UC)SYMBOL/WC
+----
+
+*Example 5: Using the ~ Wild-Card Character* +
+The following example shows various file specifications with the ~ wild-card character
+that selects the following file:
+
+----
+*SYSTEM/MCP/DIAGNOSTICS
+
+*~/~/~
+*SYS~/MCP/~ICS
+*S~/~/~S
+*~/MCP/~
+*SYSTEM/~/~
+*SYSTEM/MCP/~
+*SYSTEM/MCP/D~
+*S~/MCP/~T~ICS
+*S~/~/~
+*~S~Y~S~T~E~M~/~M~C~P~/~D~I~A~G~N~O~S~T~I~C~S~
+----
+
+*Using the ? (Question Mark) Wild-Card Character* +
+The ? (question mark) wild-card character matches a single character in a file name.
+However, the ? wild-card character does not match a forward slash (/), a quotation
+mark ("), or the left and right parentheses of a file name’s usercode name.
+
+*Example 1: Using the ? Wild-Card Character* +
+The file names that match the following file specification with the ? wild-card character
+are listed:
+
+----
+*??/SYSTEM
+
+*40/SYSTEM *41/SYSTEM *4_/SYSTEM
+----
+
+*Example 2: Using the ? Wild-Card Character* +
+The following file names do not match the file specification in Example 1:
+
+----
+*SYSTEM/CANDE *41/SYSTEM/CANDE *"4.1"/SYSTEM
+(UC)SYSTEM
+----
+
+*Example 3: Using the ? Wild-Card Character* +
+The following example shows a variety of file specifications with the ? wild-card
+character that selects the following file:
+
+----
+*SYSTEM/MCP/DIAGNOSTICS
+*SYS???/MCP/DI?????????
+*SYSTEM/???/????????ICS
+*S?????/???/??????????S
+*??????/MCP/???????????
+*SYSTEM/???/???????????
+*SYSTEM/MCP/???????????
+*SYSTEM/MCP/D??????????
+*S?????/MCP/???????TICS
+*S?????/???/???????????
+*??????/???/???????????
+----
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESBYPATTERNMATCHING]]
+===== Selecting Files by Pattern Matching
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESBYPATTERNMATCHING_PATTERNMATCHINGFILESSYNTAX]]
+====== Pattern Matching FILES Syntax
+
+*<bracket expression>* +
+----
+RAILROAD DIAGRAM HERE
+----
+*<range expression>* +
+----
+RAILROAD DIAGRAM HERE
+----
+*<quoted bracket expression>* +
+----
+RAILROAD DIAGRAM HERE
+----
+*<quoted range expression>* +
+----
+RAILROAD DIAGRAM HERE
+----
+*<collating symbol>* +
+----
+RAILROAD DIAGRAM HERE
+----
+*<equivalence class expression>* +
+----
+RAILROAD DIAGRAM HERE
+----
+*<character class expression>* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESBYPATTERNMATCHING_EXPLANATION]]
+====== Explanation
+Although wild-card characters provide a good method for selecting files, bracket
+expressions can provide a more focused search for file names. A succinct range of
+characters (alphabetic, numeric, or graphic) can be specified with bracket expressions.
+Even special characters for languages other than English can be specified with bracket
+expressions.
+
+Although only a single character of a file name can be substituted with the characters
+specified within a bracket expression, several bracket expressions can be used in a
+FILES command.
+
+A bracket expression can contain the following character-matching expressions:
+
+* Character class expression
+* Collating symbol
+* Equivalence class expression
+* Range expression
+
+*Bracket Expression* +
+A bracket expression can contain several unique character-matching expressions,
+which define classes of characters. Those character expressions are described later in
+this section.
+
+The bracket expression defines a small set of characters to match characters of a file
+name. The characters delimited by the square brackets ([ ]) are matched to the
+characters of file names. Spaces are unnecessary to separate each character.
+
+*Example 1: Bracket Expression* +
+The listed files match the following bracket expression; the characters within the
+square brackets only are to be matched.
+
+----
+PATCH[2 7 Y Z] or PATCH[27 YZ]
+
+PATCH2 PATCHY
+PATCH7 PATCHZ
+----
+
+*Example 2: Bracket Expression* +
+The following list of file names do not match the file specification in Example 1:
+
+----
+PATCH27 PATCHYZ
+----
+
+*Character Class Expression* +
+The character class bracket expression matches a discrete set of characters. A
+character class expression is specified by enclosing a character class set with
+delimiters composed of the square bracket-colon ([: :]) combination.
+The following character classes can be represented in a character class bracket
+expression:
+
+|====
+|Character Class |Character Representation
+
+|[:ALNUM:] |a through z, A through Z, 0 through 9
+|[:ALPHA:] |a through z, A through Z
+|[:LOWER:] |a through z
+|[:UPPER:] |A through Z
+|[:DIGIT:] |0 through 9
+|[:GRAPH:] |all printable characters excluding a through z, A through Z, and 0 through 9
+|====
+
+*_Note:_* Character class expressions represent actual characters only, and thus
+avoids the blanks and special characters embedded in EBCDIC character value
+representation. For example, the blanks between i through j, r through s, I through J,
+and R through S are not considered when a character class expression is specified.
+If a range expression is used, those blanks would be applied for character-matching
+purposes. Refer to range expressions later in this section.
+
+*Character Class Expression Examples* +
+The listed file names match the following file name with the embedded character class
+expression:
+
+----
+*4[[:DIGIT:]]/SYSTEM/COMS
+
+*40/SYSTEM/COMS
+*41/SYSTEM/COMS
+*43/SYSTEM/COMS
+----
+
+The following file names do not match the file name with the embedded character
+class expression in the previous example:
+
+----
+*4/SYSTEM/COMS
+*DIGIT/SYSTEM/COMS
+*4DIGIT/SYSTEM/COMS
+----
+
+*Collating Symbol* +
+To accommodate character sets of languages other than English, the collating symbol
+enables you to identify multi-character elements that exist in languages to be
+considered as a single element.
+
+The collating symbol encloses a multi-character collating element with delimiters
+composed of the square bracket-period ([. .]) combination.
+
+*Collating Symbol Example* +
+The following example shows how the double-L (LL) combination of letters in Spanish
+can be represented as a single character:
+
+----
+SOURCE/[[.LL.]]/SPANISH
+----
+
+The following bracket expression matches the strings that follow:
+
+----
+[[.AB.]L]
+
+AB
+L
+----
+
+The following strings do not match the bracket expression in the previous example:
+
+----
+A
+B
+AL
+BL
+----
+
+*Equivalence Class Expression* +
+The equivalence class expression is similar to the collating symbol; however, it is used
+to identify two or more characters that have the same collating value.
+
+Equivalence class expressions are used to accommodate character sets of languages
+other than English.
+
+For example, the letter c and the letter c with a grave accent (c`) can belong to the
+same equivalence class and have the same collating value.
+
+An equivalence class expression is identified with delimiters composed of a square
+bracket-equal sign ([= =]) combination. To equate two characters to the same collating
+value, consider the following example:
+
+----
+[[=c=]]
+[[=c`=]]
+----
+
+*Range Expression* +
+A range expression enables you to determine a range of characters for file name
+matching purposes. The square brackets ([ ]) delimit the range, and a hyphen (–) must
+separate the starting and ending range points.
+
+The ending range point must have a collating value that is higher than or equal to the
+starting range point’s collating value; otherwise the file specification is invalid.
+
+*Example 1: Using the Range Expression*+
+The files names that match the following file name with embedded range expressions are listed:
+
+----
+WFL/CANDE3[7-9]/[D-F]
+WFL/CANDE37/D WFL/CANDE38/D WFL/CANDE39/D
+WFL/CANDE37/E WFL/CANDE38/E WFL/CANDE39/E
+WFL/CANDE37/F WFL/CANDE38/F WFL/CANDE39/F
+----
+
+*Example 2: Using the Range Expression* +
+The following list of file names do not match the file specification in Example 1:
+
+----
+WFL/CANDE3789/DEF WFL/CANDE37-9/D-F
+WFL/CANDE3/789/DEF WFL/CANDE373839/DEF
+----
+
+*Example 3: Using the Range Expression* +
+The file names that match the following file name with an embedded range expression
+with graphic characters are listed:
+
+----
+*"[-#]"/SYSTEM/COMS
+
+*"-"/SYSTEM/COMS *"#"/SYSTEM/COMS
+----
+
+*Example 4: Using the Range Expression* +
+The following list of file names do not match the file specification in Example 3:
+
+----
+*"?"/SYSTEM/COMS    *" "/SYSTEM/COMS
+----
+
+*Example 5: Using the Range Expression* +
+The file names that match the following file name with an embedded range expression with graphic characters are listed:
+
+----
+*"[û?]"/SYSTEM/COMS
+
+*"-"/SYSTEM/COMS    *"%"/SYSTEM/COMS    *">"/SYSTEM/COMS
+*"|"/SYSTEM/COMS    *"?"/SYSTEM/COMS    *"/"/SYSTEM/COMS
+----
+
+*Example 6: Using the Range Expression* +
+The following list of file names do not match the file specification in Example 5:
+
+----
+*SYSTEM/COMS *    "û?"/SYSTEM/COMS    *"û"/SYSTEM/COMS
+----
+
+*Example 7: Specifying the Exclamation Point (!) in a Range Expression* +
+Sometimes, it can be easier to define characters that you do not want matched within
+a file name. The exclamation point (!) excludes specified characters from the character
+matching process. Precede the character range you do not want matched with the
+exclamation point.
+
+For example, the listed files can result from the following bracket expression:
+
+----
+PATCH/[!C-E]
+
+PATCH/A
+PATCH/B
+PATCH/F
+PATCH/G
+----
+
+*Example 8: Specifying an Exclamation Point (!) in a Range Expression* +
+The files names that match the following file name with embedded range expressions
+that includes the exclamation point (!) are listed:
+
+----
+WFL/CANDE3[!7-9]/[D-F]
+
+WFL/CANDE34/D     WFL/CANDE35/D     WFL/CANDE36/D
+WFL/CANDE34/E     WFL/CANDE35/E     WFL/CANDE36/E
+WFL/CANDE34/F     WFL/CANDE35/F     WFL/CANDE36/F
+----
+
+*Example 9: Specifying an Exclamation Point (!) in a Range Expression* +
+The following list of file names do not match the file specification in Example 8:
+
+----
+WFL/CANDE37/D WFL/CANDE38/E
+WFL/CANDE38/E WFL/CANDE38/F
+----
+
+*Example 10: Specifying an Exclamation Point (!) in a Range Expression* +
+The file names that match the following file name with embedded range expressions are listed:
+
+----
+PATCH[!1-3 6-8]/[!A 1]
+
+PATCH0/B PATCH4/B PATCH5/B PATCH9/B PATCHA/B PATCHB/B
+PATCH0/2 PATCH4/2 PATCH5/2 PATCH9/2 PATCHA/2 PATCHB/2
+----
+
+*Example 11: Specifying an Exclamation Point (!) in a Range Expression* +
+The following list of file names do not match the file specification in Example 10:
+
+----
+PATCH1/A PATCH2/A PATCH3/A PATCH6/A PATCH7/A PATCH8/A
+PATCH1/1 PATCH2/1 PATCH3/1 PATCH6/1 PATCH7/1 PATCH8/1
+----
+
+*Quoted File Names and Expressions* +
+Quotation marks ("") can be used to delimit special characters in names and bracket
+expressions. Because several characters have special properties, such as wild-card
+characters, these characters must be represented in another fashion if they are part of
+a file name that is being sought.
+
+The backslash character (\) causes the special properties of wild-card characters and
+bracket expressions to be disregarded so that the question mark (?), tilde (~), equal
+sign (=), and left bracket ([) are taken literally. The special character must be preceded
+by the backslash (\) and enclosed within quotation marks ("").
+
+*Example 1: Quoted File Names and Expressions* +
+The file names that match the file specification follow:
+
+----
+"\="/AFILE matches "="/AFILE
+
+"\\"/AFILE matches "\"/AFILE
+
+"\"/AFILE is invalid
+----
+
+*Example 2: Quoted File Names and Expressions* +
+The listed file names match the file specification with the equal sign because it is not
+preceded by the backslash:
+
+----
+"="/SYSTEM/CANDE
+
+"4.1"/SYSTEM/CANDE "old"/SYSTEM/CANDE "A15"/SYSTEM/CANDE
+----
+
+*Example 3: Quoted File Names and Expressions* +
+The listed file name treats the left bracket literally and not as the beginning of a
+bracket expression because the left bracket is preceded by the backslash.
+
+----
+REL/"\[REMARK]=" matches REL/"[REMARK]ABLE"
+----
+
+*Example 4: Quoted File Names and Expressions* +
+The listed file name matches both following file names because the second left
+bracket is not preceded by a backslash, which treats the second left bracket as the
+beginning of a bracket expression to match the characters D and R.
+
+----
+REL/"\[[DR]EMARK]=" matches both REL/"[DEMARK]ABLE" and REL/"[REMARK]ABLE"
+----
+
+*Example 5: Quoted File Names and Expressions* +
+The listed file name is valid but contains a right bracket that is unnecessary because a
+right bracket has no special meaning without a bracket expression.
+
+----
+REL/"\[REMARK\]="
+----
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESBYPATTERNMATCHING_SELECTINGFILESBYYFILEATTRIBUTE]]
+===== Selecting Files by File Attributes
+
+*<file options>* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+*SELECT Expression* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+*SHOW Expression* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+*SORT Expression* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+*SEARCH Expression* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+*<file attribute expression>* +
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FILES_SYNTAX_SELECTINGFILESBYPATTERNMATCHING_SELECTINGFILESBYYFILEATTRIBUTE_EXPLANATION]]
+====== Explanation
+Files that have certain values for file attributes can be listed. You can set criteria for
+certain file attributes to list the files you want. File attributes such as FILEKIND,
+SECURITYTYPE, SECTORS, and so on can be specified to list certain files.
+
+The expressions you can use to select files by file attributes are
+
+* SELECT expression
+* SHOW expression
+* SORT expression
+* SEARCH expression
+
+The file option expressions are applied to the list of files selected in any of the
+methods (by directory node, wild-card character, pattern matching, or file attributes)
+described in this section. Any or all of the file option expressions can be applied to the
+files list.
+
+All file option expressions must be enclosed within braces ({ }).
+
+*Displaying File Attributes* +
+When you select file attributes with the SELECT, SEARCH, SORT, or SHOW
+expressions, you can choose the format in which file attributes are displayed by
+specifying an output option of either LONGFORMAT or SINGLELINE.
+
+If you choose LONGFORMAT, the format of the file names and selected file attributes
+is as follows:
+
+----
+<1st file name>     <file attribute 1>=<value> <file attribute 2>=<value>
+                    <file attribute 3>=<value> <file attribute 4>=<value>
+
+<2nd file name>     <file attribute 1>=<value> <file attribute 2>=<value>
+                    <file attribute 3>=<value> <file attribute 4>=<value>
+     .                          .                         .
+     .                          .                         .
+     .                          .                         .
+ <number> Files found
+----
+
+If you choose SINGLELINE, the format of the file names and selected file attributes is
+as follows. If more than five file attributes are selected (including the file name, which
+is always returned), the LONGFORMAT format is used.
+
+----
+FILE NAME     <attrib 1> <attrib 2> <attrib 3> <attrib 4>
+-----------------------------------------------------------------
+<file name>     <value>     <value>   <value>     <value>
+     .             .           .         .           .
+     .             .           .         .           .
+     .             .           .         .           .
+ <number> Files found
+----
+
+If you choose neither display output option, then the following format is used with the
+values for the file attributes FILEKIND, RECORDS, SECTORS, and CREATIONTIME:
+
+
+----
+FILE NAME     FILEKIND  RECORDS   SECTORS   CREATIONTIME
+-----------------------------------------------------------------
+<file name>   <value>   <value>   <value>   <value>
+     .          .          .         .         .
+     .          .          .         .         .
+     .          .          .         .         .
+ <number> Files found
+----
+
+CANDE does not place any restriction on the file attribute value. In the following
+example, the date February 29, 2001 is listed:
+
+----
+FILES ON APT {SELECT CREATIONTIME = 20010229}
+#NO MATCHING FILES FOUND
+#
+----
+
+Although 2001 is not a leap year, CANDE accepts the date without issuing an error or
+warning message. CANDE issues the following message:
+
+----
+#NO MATCHING FILES FOUND
+----
+
+*Listing Files with the SELECT Expression* +
+The SELECT expression selects files based on the specified values given for file
+attributes.
+
+*<file attribute expression>* +
+A SELECT expression can be made up of a single file attribute expression or multiple
+file attribute expressions.
+
+A file attribute expression assigns a value to a file attribute; if several file attribute
+expressions are specified, they are connected by a logical AND or logical OR operator.
+
+The following operators assign file attribute values to file attributes or group file
+attributes in execution-precedence order:
+
+* = (equal sign)
+The equal sign (=) assigns the file attribute value to the file attribute.
+
+* != (not-equal sign)
+The not-equal sign (!=) excludes the file attribute value for the file attribute.
+
+* < > (not-equal sign)
+The not-equal sign (<>) is the same as the not-equal sign (!=).
+
+* >= (greater-than-or-equal-to sign)
+The greater-than-or-equal-to sign (>=) assigns the file attribute values to the file
+attribute.
+
+* <= (less-than-or-equal-to sign)
+The less-than-or-equal-to sign (<=) assigns the file attribute values to the file
+attribute.
+
+* > (greater-than sign)
+The greater-than sign (>) assigns file attribute values greater than the specified
+value to the file attribute.
+
+* < (less-than sign)
+The less-than sign (<) assigns file attribute values less than the specified value to
+the file attribute.
+
+* AND
+The logical operator AND groups two or more file attribute assignments. The AND
+logical operator is secondary in order of precedence to the OR logical operator.
+
+* OR
+The logical operator OR groups two or more file attribute assignments. The OR
+logical operator is primary in order of precedence to the AND logical operator.
+
+Because the OR logical operator has a higher order precedence than the AND
+logical operator, and the parentheses cannot be used to group file attribute
+assignments for higher order precedence, you must be careful when combining
+several file attribute assignments.
+
+The following example shows how a SELECT expression is interpreted when multiple
+file attributes (represented as A, B, C, D, E, and F) are specified:
+
+----
+A OR B AND C OR D OR E AND F
+
+(A OR B) AND (C OR D OR E) AND F
+----
+
+*_Note:_* Parentheses are not permitted in a SELECT expression.
+
+The file attribute value can be Boolean, integer, real, or string-valued, depending on the
+type of file attribute specified. The uppercase letters of the file attribute names are
+the minimum abbreviation in a file attribute expression.
+
+Many of the file attributes that are available for use with the SELECT, SHOW, and
+SORT options of the FILES command are accessed through the MCP interface
+ASERIES_INFO procedure. Because the file attributes are not always mapped directly
+to standard ClearPath file attributes, it is recommended that you refer to the MCP
+System Interfaces Programming Reference Manual for the correct format when
+entering a file attribute expression. Refer to the File Attributes Programming
+Reference Manual for a description of the file attributes.
+
+The following file attributes can be specified in SELECT, SHOW, or SORT expressions:
+
+|====
+|ALtertime |FILELength |RESident
+|AREALength |FILEOrg |RESTrictedfile
+|AREAS |FILEStructure |SAvefactor
+|AREASEctors |FILESTRUCTUREValue |SECadmin
+|AREASINuse |FILEType |SECADMINTrans
+|Blocksize |FRamesize |SECTors
+|Bytes |INuse |SECURITYGuard
+|CODEVersion |KERberos |SECUritytype
+|COMPILERMark |LAstaccesstime |SECURITYTYPEValue
+|COMPILERCycle |LEvels |SECURITYUse
+|CONtrol |LOCKed |SECURITYUSEValue
+|COREestimate |LOCKEDFile |SENsitive
+|CREationtime |MAxrecsize |STACksize
+|CRUnched |MInrecsize |SUPpressed
+|EXECUTIoncount |NOte |TASKINGTrans
+|Cycle |NAme |TASKing
+|EXTmode |ONEonly |TImestamp
+|EXTMODEValue |PU |UNits
+|FAmilyname |PUTrans |UNITSValue
+|FILEkind |RECord |USerinfo
+|FILEKINDValue |RELeaseid |VErsion
+|====
+
+The following granulated-privileges file attributes can be specified in SELECT, SHOW,
+or SORT expressions:
+
+|====
+|GPCHange |GPGSDIRECTORYTrans |GPREMove
+|GPCHANGETrans |GPIdc |GPREMOVETrans
+|CPCHANGESec |GPIDCTrans |GPSETstatus
+|GPCHANGESECTrans |GPLOCalcopy |GPSETSTATUSTrans
+|GPCREatefile |GPLOCALCOPYTrans |GPSYStemuser
+|GPCREATEFILETrans |GPLOGInstall |GPSYSTEMUSERTrans
+|GPExecute |GPLOGINSTALLTrans |GPUserdata
+|GPEXECUTETrans |GPLOGOthers |GPUSERDATATrans
+|GPGETstatus |GPLOGOTHERSTrans |GPWrite
+|GPGETSTATUSTrans |GPRead |GPWRITETrans
+|GPGSDirectory |GPREADTrans |
+|====
+
+*Listing Files with the SORT Expression* +
+The SORT expression controls the listing order of files that are chosen by a wild-card
+expression or SELECT expression.
+
+The SORT expression sorts the selected files by the file attribute values. The plus sign
+(+) or minus sign (-) preceding the SORT expression sorts the file list in ascending or
+descending order, respectively.
+
+If multiple file attributes are specified, the files are sorted first by the first file attribute
+specified, second by the next file attribute specified, and so on for each specified file
+attribute.
+
+The SORT expression must be delimited by braces ({ }) and immediately follow the file
+name specification.
+
+If a SORT expression is not used, files are listed in the order that the directory search
+function returns to CANDE.
+
+*Examples of the SORT Expression* +
+The following example sorts a file first by FILEKIND in ascending order and second by
+FILENAME in descending order:
+
+----
+FILES = {SORT + FILEKIND - NAME}
+----
+
+The following example sorts all ALGOL symbol files by FILEKIND in ascending order:
+
+----
+FILES = {SELECT FILEKIND = ALGOLSYMBOL SORT + FILEKIND}
+----
+
+*Listing Files with the SEARCH Expression* +
+The SEARCH expression enables you to specify the following options:
+* CDROM
+The CD-ROM option searches for files on a CD-ROM reader.
+
+* USERCODEONLY
+The USERCODEONLY option inhibits the secondary search of the system for
+nonusercoded files.
+
+The SEARCH expression must be delimited by braces ({ }) and specified immediately
+after the file name specification.
+
+*Example of the SEARCH Expression* +
+The following statement displays only the file names and FILEKIND attribute for each
+file that resides under the user’s directory.
+
+----
+FILES = {SHOW FILEKIND NAME SEARCH USERCODEONLY}
+----
+
+*Listing Files with the SHOW Expression* +
+The SHOW expression enables you to specify the file attributes to display. Although
+the file name attribute is always displayed first, other file attributes are displayed in
+the order specified.
+
+*<file attribute expression>* +
+The file attribute expression is the same as that for the SELECT expression. The file
+attribute expression is permitted in a SHOW expression to both select and display the
+file attributes of selected files. A separate SELECT expression is unnecessary.
+
+*Examples of the SHOW Expression* +
+The following example shows only the file name and file kinds for the chosen files:
+
+----
+FILES = {SHOW FILEKIND NAME}
+----
+
+The following example displays the file name and number of records for all ALGOL
+symbol files that have more than 23 records.
+
+----
+FILES = {SELECT FILEKIND = ALGOLSYMBOL SHOW RECORDS > 23}
+----
+
+[[CANDE_COMMANDS_FILES_FILESECURITY]]
+==== File Security
+
+The following security issues control which files and directories can be seen using the
+FILES command:
+
+If you are
+
+* A privileged user, you can see files and directories that do not belong to you.
+
+* Not a privileged user, you can see files and directories that do not belong to you if
+the files are marked PUBLIC and the usercode that owns the files has the value
+SHOWFILES specified in the USERDATAFILE.
+
+The SHOWFILES option will also enable non-privileged users to specify the number of
+subdirectory levels that the user wants to view. If no files are found within the
+specified levels, no files or subdirectories are displayed.
+
+The following table provides examples of what a non-privileged user could view for a
+public file (U)A/B/C/D.
+
+|====
+|The FILES command... |Enables the user to view...
+|FILES (U) : 3 |A/B/C
+|FILES (U) : 1 |A
+|FILES (U) : 2 |A/B
+|====
+
+[[CANDE_COMMANDS_FILES_EXAMPLES]]
+==== Examples
+
+
+
+[[CANDE_COMMANDS_FILES_EXAMPLES_EXAMPLE1]]
+===== Example1
+
+----
+FILES
+(AVERAGEUSER) ON DISK
+. AFILE
+. . A1 : SEQDATA
+. . A2 : SEQDATA
+. BFILE
+. . B1 : SEQDATA
+. . B2 : SEQDATA
+. CFILE : SEQDATA
+#
+files : 1
+(AVERAGEUSER) ON DISK
+. AFILE
+. BFILE
+. CFILE : SEQDATA
+#
+----

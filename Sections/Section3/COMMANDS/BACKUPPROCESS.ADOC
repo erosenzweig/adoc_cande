@@ -1,0 +1,101 @@
+[[CANDE_COMMANDS_BACKUPPROCESS]]
+=== anchor:CANDE_COMMANDS_BACKUPPROCESS[]BACKUPPROCESS
+
+[[CANDE_COMMANDS_BACKUPPROCESS_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_BACKUPPROCESS_EXPLANATION]]
+==== Explanation
+The BACKUPPROCESS command calls the Backup Processor utility. Through this
+utility, backup files can be copied to disk, listed on a terminal, printed, or removed.
+
+The <directory name> specifies the directory that is to be searched for backup files.
+Only backup files found in this directory are presented to the user.
+
+The ON <family name> construct allows the specification of an arbitrary disk family
+that is to be searched.
+
+If :REMOVE is entered, all files in the directory are removed.
+
+If :REMOVE is not entered, the Backup Processor utility enters interactive mode.
+
+The :OPTION <option list> construct specifies Backup Processor utility options. Refer
+to the Backup Processor utility documentation in the Printing Utilities Operations
+Guide for the complete command syntax using the :OPTION or :REMOVE options.
+
+[[CANDE_COMMANDS_BACKUPPROCESS_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_BACKUPPROCESS_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+BACK
+#RUNNING 1101
+#?
+A15 Backup Processor (37.000.000).
+You have one backup file in your directory.
+
+Please enter a command or HELP for a list of commands.
+
+File # 1:       *BD/0001090/0001100/000OUTFILE ON PACK
+Created on:     09:53 ON 09/01/89
+Job:            1090 "Session"
+Task:           1100 (UZER)"CANDE WRITER"
+Print Status:   Not yet queued Length: 202 lines
+Printer Kind:   IP/LP Print Copies: 1
+%
+HELP
+
+-------------------------
+COPY:       Copies a backup file to disk.
+DIRectory:  Displays or changes a directory.
+FIrst:      Displays the first page of a backup file.
+HELP HELP:  Displays the available HELP options.
+LAst:       Displays the last page of a backup file.
+List:       Lists a backup file.
+Next:       Selects a backup file (same as SELECT).
+OPtion:     Displays or sets program options.
+PRINT:      Initiates a print request.
+QUERY:      (same as WHAT).
+Quit:       Terminates a Backup Processor session.
+REmove:     Removes a backup file or directory.
+SAme:       Restores the current text page.
+Select:     Selects a backup file.
+WHAT:       Displays information about a backup file.
++:          Scrolls forward through the file.
+-:          Scrolls backwards through the file.
+
+Enter HELP <command> for more information about a command.
+%
+WHAT
+File # 1:     *BD/0001090/0001100/000OUTFILE ON PACK
+Created on:   09:53 ON 09/01/89
+Job:          1090 "Session"
+Task:         1100 (UZER)"CANDE WRITER"
+Print Status: Not yet queued            Length: 202 lines
+Printer Kind: IP/LP                     PrintCopies: 1
+Usercode:     (UZER)                    TrimBlanks: True
+Chargecode:   9999                      Checkpoint: False
+Origin:       TA141/CANDE/3             Trainid: None
+Host: A15                               Banner: False
+Disposition:                            EOJ After: As soon as possible
+Save Status: Remove after printing      Alignment: False
+
+PCF:          Not Specified
+Destination:  Not Specified
+FormID:       Not Specified
+Transform:    Not Specified
+Note:         Not Specified
+Alignfile:    Not Specified
+%
+back :rem
+#RUNNING 4897
+> Remove in progress...
+#4897 PK67 *BD/0004889/0004894/000OUTFILE REMOVED ON PACK
+#4897 PK67 *BD/0004889/0004895/000OUTFILE REMOVED ON PACK
+The backup files from SESSION 4889 have been removed.
+2 files removed.
+#

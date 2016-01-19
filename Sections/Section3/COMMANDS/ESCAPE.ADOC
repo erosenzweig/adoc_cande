@@ -1,0 +1,164 @@
+[[CANDE_COMMANDS_ESCAPE]]
+=== anchor:CANDE_COMMANDS_ESCAPE[]ESCAPE
+
+[[CANDE_COMMANDS_ESCAPE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_ESCAPE_EXPLANATION]]
+==== Explanation
+The ESCAPE command sets or resets the hexadecimal escape character. The
+assigned character can be a special character that is used to delimit a sequence of
+EBCDIC hexadecimal values for nonprintable characters. Any EBCDIC internal code that
+does not represent an alphanumeric character, a special character, or a blank
+represents a nonprintable character. Refer to Section 2, “Basic Constructs,” for the list
+of valid special characters.
+
+Because nonprintable characters cannot be directly entered or displayed in a file that
+is being edited, they are represented by the corresponding EBCDIC hexadecimal
+values. When entering nonprintable characters into a file, the EBCDIC hexadecimal
+values must be delimited with the hexadecimal escape character. The EBCDIC
+hexadecimal values of those nonprintable characters are displayed with the
+hexadecimal escape character delimiters when the file is listed.
+
+While the hexadecimal escape character is set, each nonprintable character is
+displayed in its corresponding 2-digit EBCDIC hexadecimal value, with single blank
+spaces before and after it. The value, including the spaces, is delimited by the
+hexadecimal escape character. If two or more nonprintable characters appear as a
+string—that is, with no printable characters between them—the entire string is
+delimited by the hexadecimal escape character; single blank spaces appear between
+each hexadecimal value, as well as before and after the string. Printable characters
+appear as they are entered.
+
+For example, suppose you enter into a file the text string ABC, followed by the
+nonprintable characters end-of-text (ETX) and line feed (LF), followed by the text string
+def, and the hexadecimal escape character is the at sign (@); the resulting series of
+text and nonprintable characters is displayed as follows:
+
+----
+ABC@ 03 25 @def
+----
+
+The ETX and LF characters are represented by the EBCDIC hexadecimal values 03 and
+25, respectively, and the at sign (@) delimits these nonprintable characters.
+The EBCDIC hexadecimal values A to F must be entered in uppercase letters.
+ESCAPE HEXADECIMAL can be abbreviated as ESC HEX.
+
+*ESCAPE HEX* +
+*ESCAPE HEX ?* +
+When the ESCAPE HEX or ESCAPE HEX ? form of the command is entered, CANDE
+displays the currently set hexadecimal escape character. If an escape character is not
+set, then the following message is displayed:
+
+----
+#NO ESCAPE HEXADECIMAL CHARACTER DEFINED
+----
+
+*ESCAPE HEX NONE* +
+*ESCAPE HEX.* +
+When the ESCAPE HEX NONE or ESCAPE HEX. form of the command is entered, the
+hexadecimal escape character is reset. Note that you must define a hexadecimal
+escape character if you want to insert nonprintable characters into a file and display
+their EBCDIC hexadecimal values.
+
+If a hexadecimal escape character is not defined and a file contains nonprintable
+characters, then those nonprintable characters are sent to the terminal when the file is
+displayed. It is recommended that you define a hexadecimal escape character because
+terminal communication can be adversely affected if the hexadecimal escape
+character is not set and the system attempts to display a file containing data comm
+control characters.
+
+*ESCAPE HEX = <special character>* +
+When the ESCAPE HEX = <special character> form of the command is entered, the
+character indicated is set as the escape character for hexadecimal values. Note that
+the semicolon (;) cannot be set as a hexadecimal escape character.
+
+To prevent confusion, avoid setting the hexadecimal escape character to a character
+that is used frequently in a file and is subject to display. If a character is used in a file
+and that character is also defined as the hexadecimal escape character, then you must
+enter that character twice for each time it should occur in the file.
+
+For instance, if the dollar sign ($) is defined as the hexadecimal escape character, and
+the dollar sign must be entered in the file, then two dollars signs must be entered and
+both dollar signs are displayed. Suppose you want to enter the following line in a file:
+
+----
+A compiler control record begins with a $ in column one.
+----
+
+When the dollar sign is set as the hexadecimal escape character, you must enter the line as follows. Both dollar signs are also displayed.
+
+----
+A compiler control record begins with a $$ in column one.
+----
+
+*ESCAPE HEX = <special character> SQUASHED* +
+The ESCAPE HEX = <special character> SQUASHED form of the command strips the
+blank spaces from between the hexadecimal values of the nonprintable characters.
+This option is useful for displaying a file in CANDE page mode because a line with
+hexadecimal values is not wider when it is displayed than it is when it is entered. The
+displayed line is therefore less likely to exceed the terminal line width and be
+truncated.
+
+The SQUASHED option is reset whenever the hexadecimal escape character is reset
+or whenever the hexadecimal escape character is set without the use of the
+SQUASHED option.
+
+[[CANDE_COMMANDS_ESCAPE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_ESCAPE_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+ESCAPE HEX
+#NO ESCAPE HEXADECIMAL CHARACTER DEFINED
+----
+
+[[CANDE_COMMANDS_ESCAPE_EXAMPLES_EXAMPLE2]]
+===== Example2
+----
+ESCAPE HEX = @
+#ESCAPE HEXADECIMAL = @
+----
+
+[[CANDE_COMMANDS_ESCAPE_EXAMPLES_EXAMPLE3]]
+===== Example3
+----
+ESCAPE HEX ?
+#ESCAPE HEXADECIMAL = @
+----
+
+[[CANDE_COMMANDS_ESCAPE_EXAMPLES_EXAMPLE4]]
+===== Example4
+----
+MAKE TEMP
+#WORKFILE TEMP: SEQ
+
+100SAMPLE TEXT @0074@ SOME MORE TEXT
+200 @ 03 @
+
+LIST
+100 SAMPLE TEXT @ 00 74 @ SOME MORE TEXT
+200 @ 03 @
+#
+
+300ENTER AT SIGN @@
+LIST
+100 SAMPLE TEXT @ 00 74 @ SOME MORE TEXT
+200 @ 30 @
+300 ENTER AT SIGN @@
+#
+
+ESCAPE HEX = @ SQUASHED
+
+LIST TEMP
+100 SAMPLE TEXT @0074@ SOME MORE TEXT
+200 @30@
+300 ENTER AT SIGN @@
+#
+
+ESCAPE HEX NONE
+#NO ESCAPE HEXADECIMAL CHARACTER DEFINED
+----
