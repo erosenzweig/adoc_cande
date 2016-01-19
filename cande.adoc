@@ -1,0 +1,1666 @@
+[[CANDE]]
+= CANDE
+
+:toc:
+Table of Contents
+
+:numbered!:
+:sectids!:
+
+[[CANDE_GENERALINFO]]
+== General Info
+
+Command and Edit (CANDE) is a message control system (MCS) that enables you to
+
+* Create, edit, and manage files.
+* Control and initiate tasks (such as compiling or executing programs).
+* Interrogate and control tasks.
+* Initiate and query data comm networking tasks.
+
+This section explains general characteristics and features of CANDE such as
+
+* Logging on to CANDE
+* CANDE startup files and restart files
+* Family substitution
+* Transaction Server windows and pseudostations
+
+Limitations of CANDE and CANDE files are also covered in this section.
+
+[[CANDE_GENERALINFO_DOCUMENTATIONUPDATES]]
+=== Documentation Updates
+This document contains all the information that was available at the time of
+publication. Changes identified after release of this document are included in problem
+list entry (PLE) 19017486. To obtain a copy of the PLE, contact your Unisys service
+representative or access the current PLE from the Unisys Product Support Web site:
+
+  http://www.support.unisys.com/all/ple/19017486
+
+*_Note_*: If you are not logged into the Product Support site, you will be asked to do so.
+
+[[CANDE_GENERALINFO_WHATSNEW]]
+=== What's New
+
+[options="headers"]
+|====
+|New or Revised Information | Location
+
+|Updated the information about changing the usercode password.
+|Section 1: +
+User Identification and Logging on
+
+|Added a new limitation to files that can be processed by CANDE.
+|Section 1: +
+Limitations of CANDE Files
+
+|Updated the definition for <type>.
+|Section 2: +
+<type>
+
+|Updated the definition for <output options> definition
+|Section 3: +
+FILES Syntax
+
+|Updated the explanation for the TYPE command.
+|Section 3: +
+TYPE
+|====
+
+[[CANDE_GENERALINFO_USERIDENTIFICATIONANDLOGGINGON]]
+=== User Identification and Logging On
+Before you can use most of the CANDE commands, your station must be active and
+logged on to the system. To log on, a valid usercode, and in most cases a password,
+must be presented to the system. A given usercode can be assigned none, one, or
+several passwords in the USERDATAFILE. The CANDE PASSWORD command can be
+used to change the list of passwords for a usercode in the USERDATAFILE.
+
+To log on, enter the usercode without the password. The system then requests the
+password to be entered in a protected field on the screen. If no password is assigned
+to the usercode, enter a period (.). If no password is assigned to the usercode and the
+usercode is allowed one or more passwords, you can assign a password to that
+usercode by entering the desired password.
+
+There is an optional method of logging on that can be used on systems in which the
+SECOPT CLASS option is set to U (unspecified) or S0. Refer to the Security
+Administration Guide for additional information about the CLASS option. To log on,
+enter the usercode followed by a slash (/) or space and then the password. If no
+password is assigned to the usercode, enter a period (.) following the usercode.
+
+CANDE checks the usercode/password against the file of authorized users
+(USERDATAFILE) of the system. The user is informed and asked to re-enter the
+usercode/password if
+
+* The usercode has password aging and the password has expired.
+* The password is marked to be changed.
+* The usercode/password is not valid.
+
+If the usercode/password is valid, CANDE responds with an appropriate message and
+the user is logged on. If the usercode has password aging and the password is about
+to expire, CANDE indicates the number of days before the password becomes invalid.
+In general, CANDE cannot be used unless a successful log on occurs.
+
+If a user fails to provide a valid usercode and password in 10 consecutive log-on
+attempts, the station is made NOT READY and the following message is displayed:
+
+----
+STATION CLEARED BECAUSE OF SECURITY VIOLATIONS
+----
+
+If the station is on a switched line, the line is disconnected. If the station is not owned
+by CANDE, it is returned to the controlling MCS.
+
+Although 10 log-on attempts is the system default, the number of log-on attempts can
+be changed to suit the security needs of the site. You can set the number of log-on
+attempts by specifying a value in the LOGONATTEMPTS option of the SECOPT system
+command. The valid values range from 0 (zero) to 15. Values 1 through 15 indicate the
+number of log-on attempts permitted, and 0 (zero) means that a maximum number of
+log-on attempts is not enforced.
+
+In addition to a usercode and password, some installations require another
+accesscode and accesscode password, chargecode, or both as part of the log-on
+procedure. An accesscode restricts access to certain files and provides an additional
+layer of security over the usercode/password. A chargecode keeps track of the
+charges for computer time.
+
+If a chargecode or an accesscode/accesscode password is required for a particular
+usercode (as specified in the USERDATAFILE), CANDE emits an appropriate message
+after the user has given the usercode/password.
+
+Password aging can be enabled for an accesscode password. If the password expires
+or is marked to be changed, CANDE indicates the number of days before the
+password becomes invalid. If the password expires, the accesscode cannot be used.
+The warning is generated when the accesscode is used during the log-on process and
+when the accesscode is changed with the ACCESS command.
+
+Accesscode/accesscode password combinations are entered in a manner similar to
+usercode/password combinations. On systems where the CLASS security option is
+set to UNSPECIFIED or S0, you can enter the accesscode password directly after the
+accesscode, separated by a slash (/) or space. On all systems, you can enter the
+password on a separate line (using a protected field). If you do not have an
+accesscode password, enter a period (.) instead of the accesscode password.
+
+If a valid chargecode or accesscode/accesscode password is given, log on is
+completed. If the chargecode or accesscode/accesscode password is found to be
+invalid when checked in the USERDATAFILE, an error message is issued. A default
+chargecode can be assigned to a given usercode in the USERDATAFILE. If the default
+chargecode is set for the installation, it is automatically invoked at log-on time without
+any prompt to the user. (For further information about the USERDATAFILE where
+chargecodes, default chargecodes, usercodes, passwords and accesscodes are set up
+for an installation, refer to the Security Administration Guide.) For information about
+how to manipulate passwords, chargecodes, accesscodes, and accesscode
+passwords through CANDE commands, refer to the PASSWORD, CHARGE, ACCESS,
+and APASSWORD commands in Section 3.
+
+When you use CANDE through a Transaction Server window, Transaction Server can
+pass enough information to CANDE to enable your station to be automatically logged
+on. (Refer to "Pseudostations and Transaction Server Window Dialogs" later in this
+section for information about Transaction Server window dialogs.)
+
+To log on to a different usercode once you are already logged on, use the HELLO
+command. To log off of a CANDE session, use the BYE command.
+
+[[CANDE_GENERALINFO_CASESENSITIVEPWSECURITYOPTION]]
+=== CASESENSITIVEPW Security Option
+CANDE supports the security option CASESENSITIVEPW. If this option is set, you can
+use lowercase and special characters in your passwords without enclosing the
+password in quotes. This makes it easier to use the same password in both MCP and
+Windows environments. When the option is set, CANDE does not automatically make
+passwords uppercase; the passwords are case-sensitive. However, it is still
+acceptable to enclose a password in quotes.
+
+
+[[CANDE_GENERALINFO_CASESENSITIVEPWSECURITYOPTION_SPECIAL-PASSWORD-CHARACTER]]
+==== <special password character>
+The special characters that CANDE accepts in an unquoted password when the
+security option CASESENSITIVEPW is set are as follows:
+
+----
+~ tilde               ( left parenthesis     | split bar
+! exclamation mark    ) right parenthesis    [ left bracket
+@ at                  _ low line             ] right bracket
+# number              + plus sign            \ backslash
+$ dollar              ` grave accent         : colon
+% percent             - minus sign (hyphen)  ’ apostrophe
+^ circumflex (carat)  = equal                < less than
+& ampersand           { left brace           > greater than
+* asterisk            } right brace          , comma
+----
+
+The set of characters accepted without quotes varies among system interfaces. Of
+those characters listed above, Unisys recommends that you do not use the percent
+sign and comma in passwords.
+
+
+[[CANDE_GENERALINFO_STARTUPFILESANDRESTARTFILES]]
+=== Startup Files and Restart Files
+Startup files are ordinary text files that contain CANDE commands. They are identical
+to DO files, except that for startup files, CANDE invokes the DO command when a
+user logs on. Logging on in this case includes the initial log on, automatic log on via
+Transaction Server windows, and invocation of the HELLO command. Startup files are
+not invoked by commands that cause a new session to be created without a change
+of usercode, such as the SPLIT, CHARGE, and ACCESSCODE commands.
+
+If the startup file facility is enabled, CANDE searches for a particular startup file when
+a user logs on. CANDE first searches for a file called <startup name>/<station name>.
+If this file is not available, CANDE then searches for a file called <startup name>. In
+both cases, the normal file search rules apply; that is, files are first searched for under
+the user’s usercode, and then under the asterisk (*) usercode, on the user’s primary
+family. If a file cannot be found on the user’s primary family, an alternate family, if in
+effect, is searched. If CANDE cannot find a file, the search terminates.
+
+Default files can be set up under the asterisk (*) usercode, including separate defaults
+for particular terminals and windows. These default files can then be overridden by
+user files of the same name. The user files can invoke the default files if a DO
+command is included in the user files.
+
+The startup file is not processed when the work file from the previous session is
+recovered automatically. If the startup file facility is enabled and an automatic recovery
+of the work file is performed, CANDE searches for a file called <restart
+name>/<station name>. If this file is not available, CANDE searches for a file called
+<restart name>. In either case, the normal file search rules apply as with the startup
+file search. If CANDE cannot find a file, the search terminates. If the <restart
+name>/<station name> file or the <restart name> file exists, then the commands in
+the file are processed before the work file is recovered.
+
+Like startup files, restart files are text files that contain CANDE commands. Unlike
+startup files, restart files can perform any conditioning requests that are not part of
+the recovered work file state. For example, the user’s startup file might contain the
+command to run a mail facility program. The user must process any existing mail and
+then quit before the system can identify any recovery files. Although an active
+program does not prevent automatic recovery, it defers the automatic recovery until
+the program initiated by the startup file is terminated. Using a different restart file or
+using no restart file allows the recovery action to proceed.
+
+Restart and startup files can also be used indirectly. For example, the restart file might
+include all commands that condition the session for the user, such as TERM
+specifications, or RO and SO commands that are not defined in the USERDATAFILE.
+The startup file could contain the command DO <restart file>, followed by commands
+that the user wants performed only upon initial log-on.
+
+[[CANDE_GENERALINFO_STARTUPFILESANDRESTARTFILES_EXAMPLES]]
+=== Examples
+If the <startup name> is CANDE/STARTUP, user FRED is logged on to station STA1,
+and the USERDATA-defined family substitution statement DISK=PRIM OTHERWISE
+ALT is in effect, then files are searched for in the following order:
+
+. (FRED)CANDE/STARTUP/STA1 ON PRIM
+. *CANDE/STARTUP/STA1 ON PRIM
+. (FRED)CANDE/STARTUP/STA1 ON ALT
+. *CANDE/STARTUP/STA1 ON ALT
+. (FRED)CANDE/STARTUP ON PRIM
+. *CANDE/STARTUP ON PRIM
+. (FRED)CANDE/STARTUP ON ALT
+. *CANDE/STARTUP ON ALT
+
+The search for the restart file is similar to the search for the startup file.
+
+*_Note:_* _Transaction Server provides multiple logical connections between CANDE
+and a single physical station. CANDE treats each logical connection as an individual
+station (implemented as a data comm pseudostation). Transaction Server calls each
+connection a dialog of the CANDE window. Each pseudostation has a different
+name, for example, <physical station name>/CANDE/1_
+
+_In a pseudostation environment a station name that is used in the file name must be
+the pseudostation name._
+
+
+[[CANDE_GENERALINFO_ACCESSCODESANDRECOVERYFILES]]
+=== Accesscodes and Recovery Files
+CANDE stores the current accesscode of a CANDE session in the tankfile (a file
+CANDE maintains for storage) for each user when a work file is created with a MAKE
+or GET command. To recover a file, the accesscode on the session must be the same
+as in the tankfile if the accesscode is not null. If an attempt is made to recover a work
+file with a different accesscode, CANDE sends the following error message:
+
+----
+#INCOMPATIBLE ACCESSCODE
+----
+
+The recovery file is not recovered or purged. If the recovery file has an accesscode,
+the accesscode is indicated in the list of recovery files by a special character following
+the recovery number as follows:
+
+* # Accesscode is different from the accescode of the session
+* * Accesscode is the same as the accesscode of the session
+
+Refer to "Recovery Files" in this section for more information about recovery files.
+
+[[CANDE_GENERALINFO_ACCESSCODETASKATTRIBUTE]]
+=== ACCESSCODE Task Attribute
+CANDE recognizes the ACCESSCODE task attribute. (Refer to the Task Attributes
+Programming Reference Manual for additional information about task attributes.)
+Accesscodes are required only for tasks accessing files that are protected by a guard
+file that uses accesscodes to control access rights.
+
+For example, assume a session is running under usercode UA with
+accesscode/accesscode password AA/PA. The following is entered:
+
+----
+RUN (UB)P ON HISPACK; ACCESS AB/PB
+----
+
+AB is the accesscode for the task (UB)OBJECT/P. At task start-up time, AB/PB must
+be a valid accesscode/accesscode password for user UA; if not, the task is not
+initiated. Access to the program file (UB)OBJECT/P is determined by the security of
+the program code file; if the security is GUARDED or CONTROLLED, access is
+determined by the usercode UA and the accesscode AA of the session. Supplying an
+ACCESSCODE task attribute on a task does not change the accesscode of the session.
+The ACCESSCODE task attribute cannot be provided as a task attribute to a program
+being compiled from CANDE. For example, COMPILE; COMPILER ACCESS=A/B is valid;
+however, COMPILE; ACCESS=A/B is not valid.
+
+[[CANDE_GENERALINFO_MULTIPLECOMMANDS]]
+=== Multiple Commands
+More than one CANDE command (control commands excluded) can be entered on a
+single line by separating the commands with semicolons (;). The commands ADD, BYE,
+COPY, FIX, HELLO, SEQ, TAPE, WFL, and Single Line Entry or Deletion, however, must
+appear alone on a line or as the last command of that line. This information is shown in
+the railroad diagram of each command; a bar (|) termination symbol indicates that
+multiple entry is legal, and a percent (%) symbol indicates that this command must be
+the last or only command on that line.
+
+When task-initiating commands (such as RUN, EXECUTE, COMPILE, WRITE, WFL, and
+START) are entered, modifiers that have the same names as valid CANDE commands
+(for example, DESTNAME, PRINTDEFAULTS, the FILE abbreviation of FILES, and
+FAMILY) and follow these commands on the same line are treated by CANDE as
+modifiers for the initiated task, not as separate commands. For example, if FILES
+follows a task-initiating command, CANDE interprets it as a separate command.
+However, if FILE follows a task-initiating command, CANDE interprets it as a modifier.
+Note that CANDE does not look for trailing commands on the same line with
+commands handled by WFL, such as WFL, COPY, ADD, and PRINT. In such cases, the
+entire line is processed by WFL instead of CANDE.
+
+[[CANDE_GENERALINFO_FAMILYSUBSTITUTION]]
+=== Family Substitution
+All CANDE commands that reference files, except for the FILES, LFILES, CHANGE,
+TITLE, REMOVE, and SECURITY commands, always invoke family substitution. Family
+substitution is a method for redirecting references to files on a family (such as DISK) in
+order to avoid entering the actual family name in commands. The following paragraphs
+describe how the family substitution feature operates. Note that family substitution is
+effective for CANDE functions only if the target family is DISK. For an explanation of
+the terminology used in this discussion (family specifications, substitute family, target
+family, and alternate family), refer to the FAMILY command in Section 3, "CANDE
+Commands."
+
+If family substitution is desired, and the target family of the family specification is DISK
+(for example, FAMILY DISK = SUBPK OTHERWISE ALTPK), then whenever DISK is
+specified as the family name in a command (for example, LIST MYFILE ON DISK),
+family substitution takes effect. This means that in looking for the file to list, the
+system searches the substitute family pack and, possibly, the alternate family pack
+(SUBPK and ALTPK in this example).
+
+For commands involving input from an existing file (such as the LIST or RUN
+commands), the alternate family, when present, is also searched if the attempt to
+locate the file on the substitute family should fail (for example, file MYFILE ON ALTPK
+will be used if file MYFILE ON SUBPK cannot be found).
+
+If file MYFILE ON DISK is requested, and MYFILE is actually located on DISK and
+nowhere else, the file will be inaccessible to commands other than the commands
+listed previously as exceptions, unless the aforementioned FAMILY statement is
+changed to include DISK (for example, FAMILY DISK = SUBPK OTHERWISE DISK or
+FAMILY DISK = DISK ONLY), or the FAMILY specifications are deleted entirely.
+
+When family substitution is in effect, new files that request the target family are
+created on the substitute family.
+
+In the case of the commands listed previously as exceptions, family substitution is
+ignored if a family name is specified. That is, if the family substitution in effect is
+FAMILY DISK = SUBPK OTHERWISE ALTPK, then entering the command FILES is
+equivalent to entering FILES ON SUBPK; however, specifying FILES ON DISK yields
+files on DISK and not on SUBPK.
+
+[[CANDE_GENERALINFO_BREAKCONDITION]]
+=== Break Condition
+Although ?BRK is not a CANDE command, standard Unisys data comm software
+issues a break condition when a user enters ?BRK or presses the break key. When a
+break condition occurs, CANDE immediately notifies any output-capable open remote
+files assigned to the user’s station, and terminates any listing or similar activity that
+can generate output to a station. For example, ?BRK terminates the FIND, MATCH, and
+LIST commands.
+
+[[CANDE_GENERALINFO_RESPONSETOCANDECOMMANDS]]
+=== Response to CANDE Commands
+Except for single-line entry and certain control commands, all commands sent to
+CANDE result in the display of a number sign (\#) prompt, either alone or accompanied
+by a message. Progress in processing a command may be indicated by a number sign
+(#) with a response (for example, "\#UPDATING"). If the command has not been
+successfully completed, the number sign is followed by an error message. Successful
+completion of a CANDE command results in the display of the number sign (#) alone or
+with messages related to the command’s results.
+
+[[CANDE_GENERALINFO_SAVEDTEXTQUEUEMANIPULATION]]
+=== Saved Text Queue Manipulation
+Each user has a queue of saved text that CANDE maintains for reference. The most
+recent saved text can be edited and processed as the next line of input. The
+commands provided for listing and editing saved text are ?SHOW, ?EDIT, ?REPEAT,
+and ?RETRIEVE.
+
+Each normal line of input becomes the current saved text. A normal line of input
+begins with either
+
+* A character other than the control character defined for the user's station
+* A command other than a help-mode command.
+
+Each entry in the queue is then moved up one level. If the saved text queue contains
+the maximum number of entries, the oldest entry is discarded. The maximum number
+of entries that can be saved in the saved text queue can be altered by the CANDE
+control command ?DEPTH. You must be a CANDE control station to use the ?DEPTH
+command to change the saved text queue entry limit. The maximum number range
+from 0 to 20, inclusive. Refer to the CANDE Configuration Reference Manual for
+more information about the ?DEPTH command.
+
+If a line of input contains more than one CANDE command, each command is entered
+separately in the saved text queue. If a command does not complete successfully, the
+most recent saved text entry contains the failed command. Commands that follow the
+failed command are either part of this entry or are the first entry in the input queue
+(depending on the nature of the failure).
+
+Throughout this manual, the use of saved text without a queue entry number refers to
+the most recent entry.
+
+[[CANDE_GENERALINFO_INPUTQUEUEMANIPULATION]]
+=== Input Queue Manipulation
+CANDE can execute an unlimited number of queued entries. Queued input is in one of
+three states: normal, pending, or waiting.
+
+* The normal state occurs when CANDE is busy executing a command for a station
+and another command is entered before the first is completed. The message
+"#QUEUED" is issued to the user, indicating that the new command has been
+placed in the input queue. If the currently executing command completes
+normally, then the first queued command becomes the currently executing
+command, and so on. If an error occurs on the currently executing command and
+queued input exists, the queued input is then either pending or waiting. (Refer to
+the QWAIT option below.)
+
+* The pending state occurs if a "#QUEUED INPUT PENDING" message is given; if a
+normal line of input is entered after the message, then the queued input is
+discarded and the session continues with that line of input. If the queued input
+should not be discarded, then one of the queue manipulation commands can be
+used and the input queue can be set to the waiting state.
+
+* In the waiting state, any normal line of input is queued at the end of the queue and
+the message "#QUEUED" is given. A "#QUEUED INPUT WAITING" message is
+then displayed. The state of the queued input remains waiting until a ?GO,
+?PURGE, or ?REPEAT command is issued.
+
+While the state of the queued input is waiting or pending, queued input entries can be
+entered, removed, or edited. Insertion of an entry specifies that CANDE is to wait for
+intervention before performing that entry or that the session is resumed with the first
+entry in the queue or with the saved text.
+
+Certain queue manipulation commands are limited to operation on the visible portion
+of the user’s queue. Only the first 20 entries of the user’s queue are visible.
+
+QWAIT is a user option that is set or reset with the SO (or ?SO) and RO (or ?RO)
+commands, respectively. If QWAIT is set and an error occurs, the state of the user’s
+queued input is set to waiting; otherwise, it is set to pending.
+
+The commands provided for manipulation of queued entries are ?GO, ?WAIT, ?PURGE,
+?TAKE, and ?ENTER.
+
+[[CANDE_GENERALINFO_ATTRIBUTESOFCANDEFILES]]
+=== Attributes of CANDE Files
+CANDE can use files with 1-character records.
+Files created through CANDE have the following attributes by default:
+
+----
+KIND = DISK
+UNITS = WORDS (CHARACTERS FOR CDATA and CSEDATA)
+MAXRECSIZE = 14, 15, or 80 (refer to Table 2Q1)
+MINRECSIZE = 0
+BLOCKSIZE = 420 (2160 for CDATA and CSEDATA)
+AREAS = 15
+AREASIZE = 504 (1134 for CDATA and CSEDATA)
+SAVEFACTOR = 30
+SECURITYUSE = IO (refer to the MAKE command)
+SECURITYTYPE = PRIVATE (refer to the MAKE command)
+----
+
+[[CANDE_GENERALINFO_LIMITATIONSOFCANDEFILES]]
+=== Limitations of CANDE Files
+Files processed by CANDE must meet the following requirements and structural
+limitations:
+
+* The BLOCKSIZE attribute must be a multiple of the maximum record size (MAXRECSIZE) of the file. The BLOCKSIZE attribute must also be less than 65520 FRAMESIZE units.
+* The BLOCKSTRUCTURE attribute must be FIXED.
+* The EXTMODE attribute must be EBCDIC or ASCII.
+* The FILEORGANIZATION attribute must be NOTRESTRICTED.
+* The KIND attribute must be DISK or PACK.
+* The MAXRECSIZE attribute must be less than 255 characters (if UNITS=CHARACTERS), or less than or equal to 42 words (if UNITS=WORDS).
+* With the exception of the WRITE command, CANDE cannot process sequenced files containing more than 1,048,575 records, or data files containing more than 999,999 records.
+* The WRITE command does not recognize a file name that exceeds 11 nodes (excluding the usercode).
+* The sequence field must not be greater than eight characters. Files of type WIDE cannot be processed by CANDE. An attempt to do so, leads to the following message:
+----
+#NOTE DONE. SEQUENCE FIELD TOO LARGE.
+----
+
+[[CANDE_GENERALINFO_WORKFILES]]
+=== Work Files
+CANDE can access any file in the user’s library for various purposes, but changes can
+be effected only on the work file. A new work file can be made using the MAKE
+command, or an existing file can be used as the work file using the GET command. All
+editing commands apply to the work file. Single-line entries, as well as FIX commands
+and page mode input, are not applied to the work file immediately but are tanked until
+the next update.
+
+CANDE allows a limited number of changes to the work file between updates. If the
+number of changes to the work file exceeds this limit, CANDE performs an update.
+For details, refer to the UPDATE and SAVE commands in Section 3.
+
+
+[[CANDE_GENERALINFO_RECOVERYFILES]]
+=== Recovery Files
+The work file currently being updated resides in a TEXT file separate from the
+compiled object work file that exists as a CODE file. All other information about an
+active work file, including any changes since the last update, is kept in the tankfile. A
+recovery file is created by transcribing the information in the tankfile that pertains to
+the station whose session was aborted. This transcription is performed immediately,
+or when CANDE is next initiated.
+
+Recovery information is contained in three files:
+
+* A RECOVERY file contains any work file changes since the last update, as well as
+the title and other attributes of that work file. This file has the title
+CANDE/RECV<recovery number>.
+
+* A TEXT file is created if the work file has been updated but not yet saved. This file
+has the title CANDE/TEXT<recovery number>.
+
+* A CODE file is generated if the work file has been compiled but not yet saved. This
+file has the title of CANDE/CODE<recovery number>.
+
+A TEXT or CODE file is generated at update or compilation time and is written onto the
+work file family. The recovery file is produced when or after the session is aborted
+and can be written on one of two families. If possible, the recovery file is written on
+the default work file family, as defined by the work file family specifications
+established by the user at log-on time. If that family is not available, the recovery file is
+written on the family containing the code file for the CANDE MCS.
+
+The recovery number consists of the logical station number (LSN) (in decimal) followed
+by a digit to distinguish among multiple recovery files from the same station. The
+recovery number for a session is determined at the beginning of the session by using
+the system; this number is suffixed to the TEXT and CODE files created by updating
+and compiling the work file. If a recovery file must be created, the same number is
+suffixed to the RECV file.
+
+This scheme imposes a limit of 10 recovery files from the same station and a total of
+25 recovery files under any one usercode. (The second limit is an arbitrary define,
+MAXRECFILES, that the installation can modify by compiling CANDE; its upper bound is
+149.) If 25 or more recovery files exist, only the first 25 are listed at log-on time or by
+the RECOVER command, and any attempt to get or make another work file is rejected
+with the message:
+
+----
+#RECOVER OR DISCARD A WORKFILE.
+----
+
+For example, if 10 recovery files exist for LSN 23, any GET or MAKE or an attempt to
+recover a file created from another station is rejected with a message such as the
+following:
+
+----
+RECOVER OR DISCARD A WORKFILE IN THE RANGE 230-239
+----
+
+If one or more recovery files exist and the AUTORECOVER option of the
+USERDATAFILE file attribute is set to TRUE, then recovery files are not displayed when
+a user logs on. The AUTORECOVER option causes an automatic attempt to recover
+recovery files created under the user’s usercode and station.
+
+A high level of consistency checking is applied to recovery files to screen out files
+harmful to CANDE. If a CANDE fault or error occurs in a work file editing or output
+operation (a CANDE worker), the following actions are taken to invoke the consistency
+checking of CANDE work file recovery:
+
+. The tankfile data is saved in a recovery file, as though the station had disconnected.
+. CANDE displays the message "#AUTORECOVERY INITIATED."
+. The action of a RECOVER command is taken using the appropriate recovery file.
+
+If the consistency checking fails, normal invalid recovery file action follows. The
+contents of the RECV file are listed in the CANDE taskfile to permit diagnosis of the
+failure. The file is then purged. If a TEXT work file exists (that is, if the file was updated
+since GET or MAKE), then that file is recovered.
+
+The results of such recovery follow:
+
+----
+#WORKFILE IS NOT NAMED;     ALGOL, 347 RECORDS
+#INVALID RECOVERY FILE; NAME AND ANY CHANGES WERE LOST
+----
+
+If no text existed or if the recovery failed, the message is
+
+----
+#INVALID RECOVERY FILE
+----
+
+The RECOVER command displays and recovers recovery files in up to three places in
+the following order of precedence:
+
+. The USERDATAFILE default work file family
+. The CANDE MCS family
+. The current work file family
+
+The DISCARD command removes RECV, TEXT, and CODE files with the specified
+number or numbers from all three of these families.
+
+A display listing recovery files is grouped according to the family containing the
+recovery files. If a recovery file pertains to a work file on a different family, the phrase
+ON <family name> appears in the display.
+
+Recovering a work file sets the session specifications LANGUAGE, CONVENTION, and
+PRINTDEFAULTS to those in effect when the work file was saved. New session
+specifications are displayed if different from those in effect before recovery.
+
+[[CANDE_GENERALINFO_REMOTEFILES]]
+=== Remote Files
+Remote files are of a special nature in that an object program can treat a remote
+station as a file by setting the KIND file attribute to REMOTE. (Refer to the File Attributes Programming Reference Manual for additional information about setting
+file attributes.)
+
+More than one open file can be assigned simultaneously to a station. However, more
+than one input or input/output (I/O) file cannot be open at the same station at the
+same time.
+
+When a remote file is opened for input or input and output, all input received from the
+station is considered input to the file and not a command to CANDE. The only
+exception occurs when a line is preceded by the control character of the station. In
+that case, the input is to be a control command and is sent to CANDE for processing.
+
+You can direct output to another CANDE station by specifying the LSN of the station
+through the STATION <task equation list> construct (see the discussion of the <task
+equation list> construct in Section 2, "Basic Constructs").
+
+For example, the following command directs the remote output to LSN 15:
+
+----
+EXECUTE;STATION=15
+----
+
+You can also assign remote files to other CANDE stations by using the TITLE attribute
+and setting the STATION <task equation list> to zero. For example, the following
+command directs file R to the station name TTY3:
+
+----
+EXECUTE;STATION=0;FILE R(TITLE=TTY3)
+----
+
+[[CANDE_GENERALINFO_PAGEMODEOPERATIONS]]
+=== Page Mode Operations
+Page mode allows a full page (that is, screenful) of text to be entered and edited at
+one time and enables the user to move back and forth through the work file easily
+while executing other CANDE commands.
+
+[[CANDE_GENERALINFO_REQUIREMENTSFORPAGEMODE]]
+=== Requirements for Page Mode
+Page mode is available only for users of screen terminals that can receive, display, and
+transmit at least three lines of data at a time.
+
+The number of lines a terminal can receive and display is calculated from the
+PAGESIZE, LINEWIDTH, and MAXOUTPUT attributes of the terminal; the default values
+for these terminal attributes are defined by the MCP, which gets the terminal
+configuration information from the data comm software used by the installation, such
+as the NDLII, terminal gateway, and so on.
+
+For the proper page mode operation, the default terminal attributes must reflect the
+actual terminal characteristics.
+
+The terminal attributes can be checked and adjusted by the CANDE TERMINAL
+command. However, any differences between the adjusted values and the default
+values could result in an undesirable or unpredictable page mode operation.
+
+The display capacity of the terminal equals the smaller of either the PAGESIZE (number
+of lines received on the terminal screen at a time) or MAXOUTPUT (the number of
+characters a screen can display and hold in display terminal buffer memory) divided by
+LINEWIDTH (characters per line):
+
+----
+PAGESIZE  = 24 lines
+MAXOUTPUT = 1000 characters
+LINEWIDTH = 80 characters
+----
+
+For example, given the previously listed limits, the terminal’s display capacity (the size
+of a page) is 12 lines, which is the smaller of PAGESIZE (24 lines) and MAXOUTPUT
+divided by LINEWIDTH (1000/80 = 12 lines).
+
+The maximum possible value allowed for MAXOUTPUT is 9180.
+
+MAXINPUT is the number of characters a terminal is capable of transmitting at one
+time. The maximum possible value allowed for MAXINPUT is 9180. CANDE requests
+and receives the terminal configuration information from the MCP. The MCP gets the
+terminal configuration information from the data comm software used by the
+installation, such as the NDLII, terminal gateway, and so on. The TERMINAL command
+is used to list the MAXINPUT (refer to the TERMINAL command in this manual).
+
+CANDE sends a maximum of PAGESIZE*LINEWIDTH characters for each page. To
+PAGESIZE*LINEWIDTH add the resulting number of characters for the following
+conditions:
+
+* If WRAPAROUND is FALSE, add (PAGESIZE - 1)*2 characters (for the Carriage Return and Line Feed characters)
+* If FORMSCAPABLE is TRUE, add 5 for the five additional characters that are sent.
+
+For example, CANDE sends 1971 characters given the following values for
+PAGESIZE, LINEWIDTH, WRAPAROUND, and FORMSCAPABLE:
+
+----
+PAGESIZE = 24 lines
+LINEWIDTH = 80 characters
+PAGESIZE*LINEWIDTH =                1920
+(if WRAPAROUND=F, add (PAGESIZE-1)*2)+46
+(if FORMSCAPABLE=T, add 5 characters) +5
+----
+
+Total number of characters sent = 1971
+
+A display in page mode can be distorted for the following reasons:
+
+* The data comm buffer size for a terminal is not large enough to accommodate the
+number of characters CANDE sends. (Refer to the manual for your terminal for an
+explanation of how to set the data comm buffer size.)
+
+* The CANDE terminal settings do not match the physical characteristics of the
+device currently in use. The logical device and station characteristics defined in
+any portion of the data communication system, which may be sensitive to line and
+page parameters, must match the actual physical characteristics of the device.
+
+Proper page mode operation occurs when all portions of the communications path are
+in agreement on the page attributes, such as characters per line, lines per page, buffer
+limits, and so on.
+
+[[CANDE_GENERALINFO_INITIATINGPAGEMODEANDMOVINGTHROUGHTHEWORKFILE]]
+=== Initiating Page Mode and Moving Through the Work File
+The commands that initiate page mode and allow movement through the work file are
+briefly described in the following list. For more complete descriptions with examples,
+see Section 3, "CANDE Commands." Any of the five commands given below,
+except + and –, will initiate page mode and display the first page of records in the
+work file with the token NEXT+ in the upper left-hand corner on an unnumbered line.
+The exceptions are + and –, which always shift the indicated increment before
+displaying a page of records.
+
+After page mode is initiated, the page-invoking commands do the following:
+
+
+|====
+|Command |Definition
+
+|PAGE
+|Displays a page starting with a specified sequence number.
+
+|NEXT +/-
+|Displays a page after shifting from the currently displayed page forward (+) or backward (–) a specified number of pages.
+
+|SAME
+|Refreshes the currently displayed page.
+
+|+, -
+|Displays a page after shifting from the currently displayed page forward (+) or backward (–) a specified number of records.
+
+|SEQ
+|Displays a page with a column of sequence numbers, determined by the
+specified base and increment, at the leftmost locations on the screen.
+When SEQ is transmitted after a text already exists, the previously
+sequenced records are numerically inserted along with the new
+sequence numbers. As each page is transmitted, the next page of
+sequence numbers is displayed. If a CANDE command other than SEQ is
+transmitted, sequencing automatically stops. Sequencing resumes
+where it left off when a SEQ NEXT is transmitted.
+
+|====
+
+[[CANDE_GENERALINFO_THECOLUMNINDICATOR]]
+=== The Column Indicator
+Once page mode has been initiated, a column indicator appears on the top line of the
+screen that specifies actual text columns for a record in the file. The indicator is
+determined by the file type. The file type CSEQ has a blank column 6. In this case, a
+space for column 6 does not appear on the screen. When nonblank data is transmitted
+in columns past the end of the indicator but within the text field, the record is
+changed. If the nonblank data is not within the text field, an error message is
+displayed. If the sequence number field is shorter than five characters for a file type,
+the word NEXT+ overflows into the column indicator.
+
+[[CANDE_GENERALINFO_ENTERINGTEXTANDCOMMANDSINPAGEMODE]]
+=== Entering Text and Commands in Page Mode
+A whole page of text is transmitted to CANDE when the cursor is placed at home
+position (the upper left-hand corner of the screen) or at the end of the last line of text
+on the page and the XMIT (transmit) key is pressed. NEXT must always be the first
+token on the screen for text to be transmitted in page mode. When a page is
+transmitted that does not contain any CANDE commands other than VOID, a new page
+is displayed that begins with the last line transmitted. When the XMIT key is pressed,
+CANDE receives everything between the home position and the cursor if the cursor is
+not at home position.
+
+When the NEXT command is used as the page-invoking command, any records that
+are transmitted with the NEXT command are marked as changed or new records. If
+MARKID is set, the MARKID fields of these records are updated.
+
+After CANDE displays a page, this page can be edited and transmitted with the
+changes made.
+
+CANDE maintains a copy of the most recently displayed page. This page copy is
+compared to the edited page CANDE receives so that the modified existing records
+and the newly added records are identified.
+
+If CANDE receives a different page than the page most recently sent by CANDE, each
+of the records received could be marked by CANDE as a new or modified record to
+the work file, particularly when a MARKID value is set. Therefore, avoid transmitting a
+different page.
+
+The SAME command can be used to display the most recently displayed page.
+
+[[CANDE_ENTERINGTEXTANDCOMMANDSINPAGEMODE_SETTINGWRAPAROUNDFORSCREENDISPLAY]]
+==== Setting WRAPAROUND for Screen Display
+The setting of WRAPAROUND, which can be checked and modified by the TERMINAL
+command, affects how lines of text are ended. If WRAPAROUND is set to FALSE, each
+line of text ends with a carriage return and linefeed so the text can be displayed on
+the screen properly. If WRAPAROUND is set to TRUE, the terminal automatically does
+a linefeed and carriage return.
+
+[[CANDE_ENTERINGTEXTANDCOMMANDSINPAGEMODE_TRANSMITTINGRECORDSINPAGEMODE]]
+==== Transmitting Records in Page Mode
+Records must be transmitted in sequential order or a sequence error is flagged and
+record processing stops. The following message is given when the end of the file or
+the end of the sequence range requested by a page-invoking command has been
+reached:
+
+----
+#DISPLAY COMPLETE
+----
+
+Records can be inserted between the records given by CANDE. The sequence field
+can be left blank if a record prior to these inserted lines has a sequence number.
+CANDE calculates the sequence numbers for these inserted lines, and the largest
+sequence increment allowing all records to be numbered is assigned. The increments
+considered are 100, 50, 20, 10, 5, 2, and 1.
+
+If the records do not fit when the minimum increment of 1 is used, a message is
+displayed. Under certain conditions, an error message might be displayed although
+there is sufficient room for the inserted lines. Refer to the examples later in this
+section for an explanation of how this can occur.
+
+[[CANDE_ENTERINGTEXTANDCOMMANDSINPAGEMODE_ASSIGNINGSEQUENCENUMBERSTORECORDS]]
+==== Assigning Sequence Numbers to Records
+Sequence numbers can be assigned to records manually if the sequence is within the
+range of the numbered records.
+
+Leading zeros of sequence numbers can be replaced by blanks if desired. For
+example, if b signifies a blank space, 00000100 can be typed as bbbbb100.
+Unnumbered blank lines transmitted at the bottom of the page are ignored. However,
+if blank lines are desired at the bottom of the page, a sequence number or a command
+must be typed on the last of the blank lines.
+
+[[CANDE_ENTERINGTEXTANDCOMMANDSINPAGEMODE_USINGCANDECOMMANDSINPAGEMODE]]
+==== Using CANDE Commands in Page Mode
+Any valid CANDE command can begin in the first column of any line within the
+currently displayed page. However, transmitting any commands, except the VOID
+command, interrupts page mode.
+
+CANDE processes page mode input record by record until a command other than
+VOID is found. At this point CANDE processes the remaining text on the screen as a
+command or string of commands separated by semicolons or carriage returns.
+
+If a CANDE command followed by additional page mode text is transmitted, an error
+message is given. The cursor should be located immediately after the command when
+it is transmitted.
+
+[[CANDE_ENTERINGTEXTANDCOMMANDSINPAGEMODE_RETURNINGTOPAGEMODEAFTERPROCESSINGACANDECOMMAND]]
+==== Returning to Page Mode After Processing a CANDE Command
+To return to page mode after processing commands other than VOID or a page mode
+command, one of the page-invoking commands must be used.
+
+CANDE keeps track of the most recently displayed page of text as a location in the
+work file. When page mode is temporarily interrupted to process a nonpage-invoking
+command, the page-invoking commands can be used to return to page mode at that
+displayed page (SAME) or near it (NEXT, PAGE, + or –).
+
+It should be noted that these commands are always performed relative to the
+previous page mode command entered. For a better understanding of this behavior,
+see the examples that follow later in this section.
+
+CANDE maintains the current (or most recently) displayed page after the execution of
+all other CANDE commands, with the exception of one group. This group consists of
+the following commands, other than SAVE, that finalize the state of the work file:
+REMOVE, GET, MAKE, RECOVER, MCS, BYE, and HELLO.
+
+The asterisk (*) form of the FIX command and the at sign (@) form of the MARGIN
+command cannot be used within numbered lines while in page mode. (This differs
+from single-line sequencing mode.)
+
+Page mode input is processed only when the next UPDATE, LIST, or any page-invoking
+command is entered. Because of this, an error message may not be displayed at the
+time page mode input is transmitted.
+
+[[CANDE_ENTERINGTEXTANDCOMMANDSINPAGEMODE_EXAMPLES]]
+==== Examples
+In the following example (an ALGOL file), the XMIT key should be pressed when the
+cursor is in the last column of line 2400. Line 200 is deleted and a new page that
+begins with the sequence number 2400 is displayed.
+
+----
+NEXT+ ....*....1....*.. ... ..* ....6....*....7..
+00000100 ABC
+00000200 DEF <This line will be deleted.>
+00000300 GHI
+ .....
+ .....
+ .....
+00002400 JKL
+----
+
+In the following example, the FIND command is executed after lines 100-300 are
+processed, if the cursor follows the FIND command when XMIT is pressed:
+
+----
+NEXT+ ....*....1....*.. ... ..* ....6....*....7..
+00000100 ABC
+00000200 DEF <This line will be deleted.>
+00000300 GHI
+FIND LIT /ABC/ :TEXT
+----
+
+In this example, the cursor should be placed in the first column immediately following
+line number 300. As a result, a new page that begins with the sequence number 2400
+is displayed.
+
+----
+NEXT+ ....*....1....*.. ... ..* ....6....*....7..
+00000100 ABC
+00000200 DEF
+00000300 GHI
+.....
+.....
+00002400 JKL
+00002500 QWE
+00002600 TYU
+----
+
+In this example, the cursor should follow the NEXT+ command typed after line 300. As
+a result, a new page that begins with the sequence number 2400 is displayed.
+
+----
+NEXT+ ....*....1....*.. ... ..* ....6....*....7..
+00000100 ABC
+00000200 DEF
+00000300 GHI
+NEXT+
+.....
+.....
+00002400 JKL
+00002500 QWE
+00002600 TYU
+----
+
+The delay between transmitting a command and receiving an error message about
+that command is demonstrated in the following example:
+
+----
+NEXT+ ....*....1....*.. ... ..* ....6....*....7..
+00001000 ABC
+00002000 DEF
+00003000 GHI
+         JKL
+00003001 JKL
+DELETE 4000-END
+----
+
+Upon the next UPDATE, LIST, or page-invoking command, the following error message
+is given:
+
+----
+#CANNOT SEQUENCE WITHIN BOUNDS AT LINE 5
+----
+
+Notice that LINE 5 refers to the fifth line transmitted, the line with NEXT being the first
+line transmitted.
+
+The following example demonstrates how using a non-page-mode command (DELETE,
+in this example) while in page mode, and then entering unsequenced lines before
+using a page-invoking command to return to page mode, can cause CANDE to
+calculate sequence numbers incorrectly (the file type shown is ALGOL).
+
+The PAGE command, entered on page 1 of the terminal, returns the following screen:
+
+----
+NEXT+ ....*....1....*.. ... ..* ....6....*....7..
+00000005 ABC
+00000010 DEF
+00000012 GHI
+00000014 JKL
+00000025 MNO
+----
+
+After moving to page 2 of the terminal, the following command is entered:
+
+----
+DELETE 12
+----
+
+Then, moving back to page 1 of the terminal, the following screen is transmitted when
+you attempt to enter three unsequenced lines between lines 10 and 14, without first
+entering a page-invoking command (PAGE or SAME) to return to page mode:
+
+----
+NEXT+ ....*....1....*.. ... ..* ....6....*....7..
+00000005 ABC
+00000010 DEF
+         XXX
+         YYY
+         ZZZ
+<XMIT from here>
+----
+
+CANDE returns the error message:
+
+----
+#CANNOT SEQUENCE WITHIN BOUNDS AT LINE 4.
+LAST VALID SEQUENCE=10
+----
+
+Even though line 12 was deleted, since no page-invoking command was subsequently
+entered, the page mode tables were not updated with the deletion. Therefore, CANDE
+attempted to place the new unsequenced lines between line 10 and the next known
+line, which it had saved internally as line 12. The sequence error message was
+generated because CANDE could not fit three unsequenced lines between lines 10 and
+12.
+
+*_Note:_* If a command is included in the transmission (after the page-mode input),
+there could be a delay between transmitting the screen and receiving an error
+message. This is illustrated in a previous example.
+If PAGE or SAME had been entered upon returning to page 1 of the terminal, the page
+mode tables would have been correctly updated with the deletion, and there would
+have been sufficient room for the new lines.
+
+[[CANDE_PSEUDOSTATIONOSANDTRANSACTIONSERVERWINDOWDIALOGS]]
+== Pseudostations and Transaction Server Window Dialogs
+The Transaction Server message control system (MCS) is a Unisys product which,
+among other features, provides multiple logical connections between CANDE and a
+single physical station. Each logical connection is treated by CANDE as an individual
+station and is implemented as a data comm pseudostation. Transaction Server calls
+each connection a dialog of the CANDE window. Refer to the Transaction Server
+Operations Guide for information on logging onto Transaction Server, using windows
+and dialogs, and Transaction Server commands.
+
+These pseudostations (which are also used for stations transferred from a foreign
+host across a BNA network) are treated by CANDE almost identically to physical
+stations. However, because all input to and output from such stations is filtered
+through another MCS (for example, Transaction Server), there can be differences in
+behavior. In particular, commands intended for CANDE can instead be intercepted and
+acted upon by Transaction Server, and output for the station can be stored by
+Transaction Server, which can alter the usual pattern of flow control.
+
+If any control commands do not yield normal results when entered from a Transaction
+Server window dialog, the problem can be resolved by using an extra control
+character (usually a question mark [?]). For example, Transaction Server intercepts a
+?WRU command, but entering ??WRU directs the command to CANDE. Sometimes
+abbreviating the command can be helpful (Transaction Server does not recognize
+abbreviations). For example, a ?PURGE command will go to Transaction Server, but
+?PURG will go to CANDE.
+
+When a dialog of the CANDE window is opened, Transaction Server notifies CANDE of
+the usercode and if privileged or control status should apply. If the usercode does not
+require that a chargecode or accesscode be entered, CANDE then automatically logs
+on the user in a new session. Chargecodes and accesscodes are discussed later in
+this section. The CANDE HELLO command can be used to change to a different
+usercode.
+
+[[CANDE_MULTIPLECANDEMSCSSONASINGLESYSTEM]]
+== Multiple CANDE MCSs on a Single System
+CANDE can service a maximum of 255 stations; however, if you need to
+accommodate more than 255 stations, it is possible to have multiple copies of the
+CANDE MCS running on a single large system. Unisys recommends that you use only
+one copy of the CANDE MCS if you accommodate less than 255 stations.
+
+Running multiple copies of CANDE has some limitations and risks, which range from
+inaccurate information returned from CANDE to compromising the integrity of files.
+You must take precautions when users have access to more than one CANDE MCS on
+a single system.
+
+For example, if you get a file as your work file from CANDE and another user accesses
+the same file with the GET command from another copy of CANDE, then neither copy
+of CANDE detects the situation and warning messages indicating that the file is
+currently in use as a work file are not given.
+
+The following CANDE commands might return inaccurate information or otherwise be
+adversely affected under certain circumstances.
+
+----
+DISCARD     ?COUNTS
+GET         ?REPORT
+RECOVER     ?SS
+STATUS      ?TO
+STOP        ?WHERE
+----
+
+Refer to each of the CANDE commands that are described in Section 3, "CANDE
+Commands" for precautions to take when using a CANDE command in a multiple
+CANDE MCS environment.
+
+[[CANDE_FILENAMETRUNCATION]]
+== File Name Truncation
+Many variations for naming files and directories exist. Two types of naming
+conventions are supported by CANDE: the traditional CANDE file naming convention
+and the long node file naming convention. Only a selected set of CANDE commands
+support both conventions.
+
+File names consist of a series of name nodes seperated by slashes (/).
+
+With traditional file names
+
+* There can be at most 12 nodes
+* Each node can have at most 17 characters.
+
+With long node names
+
+* There can be up to 20 nodes.
+* Each node can have up to 215 characters.
+* The total number of characters including slashes is limited to 215.
+
+CANDE commands that take traditional file names as parameters truncate long name
+nodes. Furthermore, unless the administrator has configured the system to enable the
+use of long names, all commands truncate long name nodes to the traditional name
+limits. That is, nodes longer than 17 characters are truncated to 17 characters even in
+commands that are capable of accepting long names.
+
+Because CANDE provides limited integration with long file names, avoid using long file
+names unless necessary.
+
+Workstation programs can create files in the MCP environment of ClearPath systems.
+These files are generally byte-stream files and follow the long node file naming
+convention. The contents of these files are not intended to be manipulated by CANDE,
+and so such files cannot be retrieved as work file, listed, printed, or run as an MCP
+environment program. Instead, these types of operations are supported using
+workstation programs such as Notepad that access these files within an MCP
+directory share.
+
+The following CANDE commands support using long node file name parameters
+because these commands can be used to manipulate nontextual files:
+
+----
+ADD         ALTER       CHANGE        COPY       LFILES
+PRINT       REMOVE      SECURITY      TITLE      ?FA
+----
+
+The intent is to minimize the impact of the long file name capability on the existing job
+decks and DO files.
+
+[[CANDE_BASICCONSTRUCTS]]
+== Basic Constructs
+
+[[CANDE_BASICCONSTRUCTS_ALPHANUMERICCHARACTER]]
+=== <alphanumeric character>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_BASE]]
+=== <base>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_CHARACTER]]
+=== <character>
+Any <alphanumeric character>, any <special character>, or a blank.
+
+[[CANDE_BASICCONSTRUCTS_COLUMN]]
+=== <column>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_COMPILERNAME]]
+=== <compiler name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_COMPILERTYPE]]
+=== <compiler type>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_CONTROLCHARMNEMONIC]]
+=== <control char mnemonic>
+----
+NUL SOH STX ETX HT DEL VT FF CR  SO  SI  DLE DC1 DC2 DC3 NL
+BS  CAN EM  FS  GS RS  US LF ETB ESC ENQ ACK BEL SYN EOT NAK
+SUB SP
+----
+
+[[CANDE_BASICCONSTRUCTS_DIGIT]]
+=== <digit>
+Any one of the decimal digits 0, 1, 2, 3, 4, 5, 6, 7, 8, 9.
+
+[[CANDE_BASICCONSTRUCTS_DIRECTORYNAME]]
+=== <directory name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+As an alternate syntax for indicating a file associated with a usercode, instead of
+preceding the file name with the usercode within parentheses, you can precede the
+file name with *USERCODE/<usercode>. You can use this alternate form when you
+refer either to a file or to a directory of files under the specified usercode.
+
+[[CANDE_BASICCONSTRUCTS_DIRECTORYTITLE]]
+=== <directory title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_DLM]]
+=== <dlm>
+The <dlm> character is a delimiter; it can be any special character except the comma
+(,), colon (:), or at sign (@).
+
+[[CANDE_BASICCONSTRUCTS_DOMAINNAME]]
+=== <domain name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The domain name consists of one or more nodes with each node made up of one to
+63 alphanumeric characters. The total length of the domain name including the period
+(.) as delimiters must not exceed 255 characters.
+
+[[CANDE_BASICCONSTRUCTS_DOMAINNAMENODE]]
+=== <domain name node>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The domain name node consists of one to 63 alphanumeric characters. The hyphen (-)
+and underscore (_) are special characters that are allowed as part of the node but
+cannot be the last character of a node. Consecutive occurrences of the hyphen,
+underscore, or period are not allowed in the domain name node.
+
+[[CANDE_BASICCONSTRUCTS_EBCDICCHARACTEROTHERTHANQUOTATIONMARK]]
+=== <EBCDIC character other than quotation mark>
+Any EBCDIC character for which the hexadecimal code is greater than or equal to 4"40"
+and that is not the EBCDIC character quotation mark (").
+
+[[CANDE_BASICCONSTRUCTS_EBCDICCHARACTEROTHERTHANAPOSTROPHE]]
+=== <EBCDIC character other than apostrophe>
+Any EBCDIC character for which the hexadecimal code is greater than or equal to 4"40"
+and that is not the EBCDIC apostrophe (’).
+
+[[CANDE_BASICCONSTRUCTS_ENDCOLUMN]]
+=== <end column>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_FAMILYNAME]]
+=== <family name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_FILEDIRECTORY]]
+=== <file directory>
+----
+RAILROAD DIAGRAM HERE
+----
+
+As an alternate syntax for indicating a file associated with a usercode, instead of
+preceding the file name with the usercode within parentheses, you can precede the
+file name with *USERCODE/<usercode>. You can use this alternate form when you
+refer either to a file or to a directory of files under the specified usercode.
+
+[[CANDE_BASICCONSTRUCTS_FILENAME]]
+=== <file name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A file name is a sequence of 1 to 12 names separated by slashes (/). A file name can
+optionally be preceded by a usercode enclosed within parentheses or by an asterisk
+(*) if the file is an unusercoded file.
+
+An alternate syntax to indicate that a file is associated with a usercode is to precede
+the file name with *USERCODE/<usercode>. This form of file name can be used to
+refer to either a file or directory of files under the specified usercode.
+
+The WRITE command does not recognize a file name that exceeds 11 nodes (excluding
+the usercode).
+
+[[CANDE_BASICCONSTRUCTS_FILETITLE]]
+=== <file title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+On certain commands, if <file name> is a valid <sequence number> value, then it must
+be enclosed in quotation marks to avoid confusion with a real <sequence number>
+value. For example, in order to list the file 100-200, you would enter LIST "100-200",
+instead of LIST 100-200. To list lines 100 through 200 of the file 100-200, you would
+enter LIST 100-200 "100-200". The commands for which this constraint is valid are
+DO, EXCLUDE, FIND, INSERT, LIST, MATCH, MERGE, RANGE, RMERGE, and WRITE.
+
+[[CANDE_BASICCONSTRUCTS_HOSTNAME]]
+=== <host name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_HYPHEN]]
+=== <hyphen>
+The single hyphen (-).
+
+[[CANDE_BASICCONSTRUCTS_IDCHAR]]
+=== <ID char>
+Any EBCDIC character for which the hexadecimal code is greater than or equal to 4"40"
+and which is not a quotation mark (")
+
+[[CANDE_BASICCONSTRUCTS_IDENTIFIER]]
+=== <identifier>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_INC]]
+=== <inc>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_INTEGER]]
+=== <integer>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_IPADDRESS]]
+=== <IP address>
+An IP address can be either an IPv4 address or an IPv6 address. An IPv4 address
+consists of exactly four nodes. Each node consists of a numeric string from 0 to 255.
+For example, 15.233.7.143 is a valid IPv4 address. An IPv6 address consists of up to
+eight 16-bit numbers that are separated by colons. For example,
+FE80::4:23FF:FE08:150B is a valid IPv6 address.
+
+For additional information on IP address formats, refer to "IPv6 and IPv4 Common
+Utilities" in the MCP System Interfaces Programming Reference Manual.
+
+[[CANDE_BASICCONSTRUCTS_IPADDRESSNODE]]
+=== <IP address node>
+----
+RAILROAD DIAGRAM HERE
+----
+
+An IP address node is a numberic string from 0 to 255. For example, 143
+is a valid IP address node.
+
+[[CANDE_BASICCONSTRUCTS_LETTER]]
+=== <letter>
+Any one of the alphabetic characters from A through Z, inclusive, in uppercase or lowercase.
+
+[[CANDE_BASICCONSTRUCTS_LONGDIRECTORYNAME]]
+=== <long directory name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A long directory name is limited to 215 characters, excluding any usercode. Instead
+of preceding the file name with the usercode within parentheses, you can
+precede the file name with *USERCODE/<usercode>. This alternate form can be used
+when you refer either to a file or to a directory of files under the specified usercode.
+
+[[CANDE_BASICCONSTRUCTS_LONGDIRECTORYTITLE]]
+=== <long directory title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_LONGFILEDIRECTORY]]
+=== <long file directory>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A long file directory is limited to 215 characters, excluding any usercode.
+
+Instead of preceding the file name with the usercode within parentheses, you can
+precede the file name with *USERCODE/<usercode>. This alternate form can be used
+when you refer either to a file or to a directory of files under the specified usercode.
+
+[[CANDE_BASICCONSTRUCTS_LONGFILENAME]]
+=== <long file name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A long file name is a sequence of 1 to 20 names separated by slashes (/). A file name
+can optionally be preceded by a usercode enclosed within parentheses or by an
+asterisk (*), if the file is a nonusercoded file. A long file name is limited to 215
+characters, excluding any usercode.
+
+Instead of preceding the file name with the usercode within the parantheses, you can
+precede the file name with *USERCODE/<usercode>. This alternate form can be used
+to refer to either a file or directory of files under the specified usercode.
+
+The WRITE command does not recognize a file name that exceeds 11 nodes (excluding
+the usercode).
+
+[[CANDE_BASICCONSTRUCTS_LONGFILETITLE]]
+=== <long file title>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_LONGNAME]]
+=== <long name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_LSN]]
+=== <LSN>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The logical station number (LSN) is a unique integer assigned by NDLII to each station
+defined for a network. The most efficient method of station designation is by <LSN>.
+
+[[CANDE_BASICCONSTRUCTS_LSNRANGE]]
+=== <LSN range>
+The <LSN range> construct refers to a group of one or more LSNs. If a range is
+defined, the lower LSN must precede the higher LSN.
+
+[[CANDE_BASICCONSTRUCTS_MIXNUMBER]]
+=== <mix number>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_MIXNUMBERLIST]]
+=== <mix number list>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_NAME]]
+=== <name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+A period is allowed only in the following commands that correspond to Work Flow
+Language (WFL) statements of the same name: ADD, ALTER, COPY, PRINT, UNWRAP,
+and WRAP. Use of the period allows file names to be entered without quotation
+marks. It is intended to simplify the use of files that are shared with other operating
+systems.
+
+[[CANDE_BASICCONSTRUCTS_NLS]]
+=== <NLS>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The network line station or <NLS> construct identifies a station by the network
+support processor (NSP) number, line number, and relative station number within the
+line, as specified in the Network Definition Language II (NDLII) definition for the line to
+which the station is assigned.
+
+Integer1, integer2, and integer3 represent the NSP, line, and station numbers,
+respectively. All three must be specified to identify one station on a multidrop line. To
+determine the <NLS> value for a given station, the following information is required:
+
+* The relative NSP number
+* The line number, which is computed by multiplying the cluster or relative Line Support Processor (LSP) number by 16 and then adding the adaptor number
+* The station numbers on the line, which are numbered 0 through n–1, where n is the number of stations assigned to the line
+
+When CANDE is initialized via an NSP, users on the NSP receive a message that
+CANDE is available.
+
+[[CANDE_BASICCONSTRUCTS_NUMBER]]
+=== <number>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_OPTIONLIST]]
+=== <option list>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_PASSWORD]]
+=== <password>
+----
+RAILROAD DIAGRAM HERE
+----
+
+CANDE supports the security option CASESENSITIVEPW. If this option is set, you can
+use lowercase and special characters in your passwords without enclosing the
+password in quotes. This makes it easier to use the same password in both MCP and
+Windows environments. When the option is set, CANDE does not automatically make
+passwords uppercase; the passwords are case-sensitive. However, it is still
+acceptable to enclose a password in quotes.
+
+For additional information about passwords, refer to "User Identification and Logging
+On" in Section 1, "General Information."
+
+[[CANDE_BASICCONSTRUCTS_PERIOD]]
+=== <period>
+The period character (.).
+
+[[CANDE_BASICCONSTRUCTS_SEQUENCENUMBER]]
+=== <sequence number>
+An integer that represents a value for the sequence field of a record. The maximum
+number of digits that might comprise a sequence number is determined by the
+FILEKIND value of the work file. Refer to Table 2–1 later in this section.
+
+[[CANDE_BASICCONSTRUCTS_SEQUENCERANGE]]
+=== <sequence range>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_SEQUENCERANGELIST]]
+=== <sequence range list>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_SPECIALCHARACTER]]
+=== <special character>
+Any one of the following characters:
+
+----
+@ at          ( left parenthesis    ! exclamation point
+# number      ) right parenthesis   ? question mark
+$ dollar      [ left bracket        ’ apostrophe
+% percent     ] right bracket       " quotation mark
+& ampersand   { left brace          + plus sign
+* asterisk    } right brace         - minus sign (hyphen)
+= equal       < less than           | split bar
+, comma       > greater than        ~ tilde
+; semicolon   / slash               ^ circumflex (carat)
+: colon       \ backslash           ` grave accent
+. period      _ underscore          d DEL (rubout)
+----
+
+[[CANDE_BASICCONSTRUCTS_STANDARDCOMPILER]]
+=== <standard compiler>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_STARTCOLUMN]]
+=== <start column>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_STATIONNAME]]
+=== <station name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+The station name is a unique identifier chosen by the installation for each station that
+is a member of the network. Station names in NDLII follow the same syntactic
+conventions as file titles within the system, because any station may be assigned to a
+REMOTE file.
+
+[[CANDE_BASICCONSTRUCTS_STRING]]
+=== <string>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_BASICCONSTRUCTS_TASKEQUATIONLIST]]
+=== <task equation list>
+----
+RAILROAD DIAGRAM HERE
+----
+
+CANDE can process task equations used in WFL statements. Refer to the Work Flow
+Language (WFL) Programming Reference Manual for the descriptions of the task
+attribute assignment, file equation, library equation, database equation, and local data
+specification. If the attributes assigned to a task by using either the EXECUTE or RUN
+command are invalid, CANDE uses the default session values for the attributes when
+the task is run and does not issue any warning messages.
+
+[[CANDE_BASICCONSTRUCTS_TYPE]]
+=== <type>
+----
+RAILROAD DIAGRAM HERE
+----
+
+.Table 2-1. Record Formats
+[options="numbered=false"]
+|====
+|Type |Text Field |Sequence Field |ID Field | Default Record Length |MinimumRecord Length |Compiler Type
+
+|ALGOL |1-72 |73-80 |81-90 |15 WD | 80 CH | YES
+
+|BASIC |5-72 |1-4 |73-80 |14 WD |72 CH |YES
+
+|BINDER |1-72 |73-80 |NA 14 |WD |80 CH |YES
+
+|CC |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+
+|CDATA |1-80† |NA |NA‡ |80 CH |NA |NO
+
+|COBOL |7-72 |1-6 |73-80 |14 WD |72 CH |YES
+
+|CSEQ |7-80† |1-5 |NA |80 CH |NA |NO
+
+|C74 |7-72 |1-6 |73-80 |14 WD |72 CH |YES
+
+|C85 |7-72 |1-6 |73-80 |14 WD |72 CH |YES
+
+|DASDL |1-72 |73-80 |81-90 |15 WD |80 CH |YES
+
+|DATA |1-80 |NA |NA‡ |14 WD |80 CH |NO
+|====
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
+
+[[CANDE_BASICCONSTRUCTS_]]
+===
