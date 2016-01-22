@@ -128,4 +128,8 @@ include::Commands\EXCLUDE.ADOC[]
 include::Commands\EXCLUDE.ADOC[]
 include::Commands\EXECUTE.ADOC[]
 include::Commands\FAMILY.ADOC[]
+
+/////////////////////////////////
+This is a comment block not processed by asciidoc
 include::Commands\FILES.ADOC[]
+////////////////////////////////
