@@ -1,0 +1,211 @@
+[[CANDE_COMMANDS_GETLOAD]]
+=== anchor:CANDE_COMMANDS_GETLOAD[]GETLOAD
+
+[[CANDE_COMMANDS_GETLOAD_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_GETLOAD_EXPLANATION]]
+==== Explanation
+The GET command designates an existing saved file, or portions thereof, as the source
+for a new work file. LOAD is a synonym for GET.
+
+*_Note:_* _If your system is running multiple copies of CANDE, be aware that work
+files open on one copy of CANDE can be overwritten or removed from a station on
+another copy of CANDE, with no warning message issued to either station._
+
+CANDE scans its internal tables to check if the requested file is already loaded as a
+work file from another station. If the file is a work file of another station, a warning
+message is displayed to the requesting station.
+
+In an environment where multiple copies of CANDE are in use, it is possible to load a
+file as a work file on stations that are logged on to other copies of CANDE. CANDE is
+unable to detect whether the file is already a work file on another copy of CANDE.
+
+The integrity of files is compromised in a multiple CANDE environment. It is suggested
+that if multiple copies of CANDE are necessary on a single system, user stations be
+consistently assigned to a particular copy of CANDE (such as CANDE, CANDESYS,
+CANDEPAYROLL) to prevent users from inadvertently accessing open work files.
+
+For more information about multiple copies of CANDE, refer to Section 1, "General
+Information."
+
+The GET and LOAD commands do not support long node file names. The traditional file
+naming constructs continue to apply to the file names used by these commands.
+Regardless of whether a system is configured to support long file names, the GET and
+LOAD commands always truncate file name nodes that are greater than 17 characters.
+If you attempt to use a file name containing a node that is longer than 17 characters, a
+warning message is issued, and the command proceeds using a truncated form of the
+name.
+
+[[CANDE_COMMANDS_GETLOAD_EXPLANATION_GETFILETITLE]]
+===== GET <file title>
+The GET <file title> command form is used to specify any file to which the user is
+permitted access.
+
+If you specify your usercode and/or your primary family with the file name and the
+UNNAMED option of the SO command is set, then the file is retrieved as an unnamed
+work file.
+
+If you want the specified file to be your work file, reset the UNNAMED option (if
+UNNAMED is currently set) with the RO command and get the file. Refer to the SO
+and RO commands later in this section for more information about the UNNAMED
+option.
+
+[[CANDE_COMMANDS_GETLOAD_EXPLANATION_SEQUENCERANGELISTOPTION]]
+===== Sequence Range List Option
+If desired, a <sequence range list> can be specified, causing only a portion or portions
+of the file to be used as the source.
+
+[[CANDE_COMMANDS_GETLOAD_EXPLANATION_ASFILENAMEOPTION]]
+===== AS <file name> Option
+The name of the work file to be created can be specified by using the AS <file name>
+option; otherwise, the work file name is a temporary copy of the file title.
+
+The GET command might be unable to retrieve a file as a work file if the file name is
+not in the user’s directory and the AS <file name> option is absent. A file is not in the
+user’s directory when the file name is preceded with an asterisk (*) or another’s
+usercode, or an ON clause specifies a family name for the file.
+
+When you use the GET command to retrieve a file that is not in your directory, that file
+is considered a foreign file. That is, the retrieved file is an unnamed work file. The
+following message is an example of what is displayed when a file is retrieved as a
+foreign file:
+
+----
+#WORKFILE IS NOT NAMED; SOURCE IS *LEDGER/JANUARY ON GL: SEQ,
+27221 RECORDS
+----
+
+[[CANDE_COMMANDS_GETLOAD_EXPLANATION_USECATALOGOPTIONVERSIONOPTIONCYCLEOPTIONGENERATIONOPTION]]
+===== USECATALOG Option | VERSION Option | CYCLE Option | GENERATION Option
+For installations that use file cataloging, the GET command allows specification of
+USECATALOG, VERSION, CYCLE, and GENERATION. For an explanation of these file
+attributes, refer to the File Attributes Reference Manual
+
+[[CANDE_COMMANDS_GETLOAD_EXPLANATION_MARKIDOPTION]]
+===== MARKID Option
+The MARKID <dlm> <ID> <dlm> option establishes an initial MARKID. The MARKID
+command can still be used at any time afterwards to establish a new MARKID.
+
+The following CANDE commands display the correspondence between the ID field of
+a record and the current value of the MARKID, if the MARKID option is specified:
+
+* FIND on a work file using the TEXT option
+* RANGE on a work file using the TEXT option
+* LIST on a work file without the UNSEQUENCED or PUNCH options
+* REPLACE using the TEXT option, before the record ID field is replaced
+
+The displays from each of the preceding commands include the following:
+
+* The sequence number
+* An asterisk (*) if the record ID is the same as the MARKID; otherwise, a blank
+* The text
+
+[[CANDE_COMMANDS_GETLOAD_EXPLANATION_OVERRIDEOPTION]]
+===== OVERRIDE Option
+The OVERRIDE option allows the user to get a file that is currently in use at a different
+station. When CANDE detects that a file is a work file for another user, a message that
+is similar to the following example is returned:
+
+----
+# WORKFILE IS NOT NAMED; SOURCE IS (SMITH)UTIL/SUMOFF ON COMS (IN USE BY
+ TD146/CANDE/1, LSN = 385) : ALGOL, 4 RECORDS
+----
+
+If the file is assigned to another logical file when the GET command is issued, CANDE
+warns the user of this situation with a message similar to the following:
+
+----
+# WORKFILE UTIL/SUMOFF (MAY BE IN USE BY A PROGRAM) : ALGOL, 4 RECORDS,
+SAVED
+# OBJECT FILE PRESENT, SAVED
+----
+
+In either case, you can continue and get the file as your work file by specifying the
+OVERRIDE option.
+
+[[CANDE_COMMANDS_GETLOAD_EXPLANATION_ATTEMPTINGTOGETAFILEWHENANUNSAVEDWORKFILEEXISTS]]
+===== Attempting to Get a File When an Unsaved Work File Exists
+If an unsaved work file exists, the GET command is ignored and the following
+message is displayed:
+
+----
+#REMOVE OR SAVE WORKFILE
+----
+
+The work file must be removed or saved. To specify a new work file, reenter the GET
+or LOAD command.
+
+[[CANDE_COMMANDS_GETLOAD_EXPLANATION_GETTINGAFILEWHOSELOCKEDFILEATTRIBUTEISSET]]
+===== Getting a File Whose LOCKEDFILE Attribute is Set
+When the LOCKEDFILE attribute is set to TRUE for a file, that file is retrieved as a
+foreign file because that file cannot be removed and its file name cannot be changed.
+For more information about the LOCKEDFILE file attribute, refer to the File Attributes
+Reference Manual. See the ALTER command earlier in this section for information
+about changing the LOCKEDFILE attribute.
+
+
+
+
+[[CANDE_COMMANDS_GETLOAD_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_GETLOAD_EXAMPLES_EXAMPLE1]]
+===== Example1
+
+The following examples show the uses and results of some of the GET command
+options.
+
+----
+GET AFILE
+#WORKFILE AFILE: SEQ, 5 RECORDS, SAVED
+
+LOAD TERMPAPER 400-END AS INDEX
+#WORKFILE INDEX; SOURCE IS (UZER)TERMPAPER ON USERPACK: DATA
+
+GET (ANYUSER)ANYFILE ON HISPACK AS MYWORKFILE 0-150,400-END
+#WORKFILE MYWORKFILE; SOURCE IS (ANYUSER)ANYFILE ON HISPACK: ALGOL
+
+GET EXAMPLE: MARKID_10/01/81_
+#WORKFILE EXAMPLE:ALGOL,500 RECORDS, SAVED, MARKID "10/01/81 "
+----
+
+[[CANDE_COMMANDS_GETLOAD_EXAMPLES_EXAMPLE2]]
+===== Example2
+The following example shows how to get a file that is currently in use with the
+OVERRIDE option.
+
+----
+GET (INVENTORY)ZFILE 1000-END AS MYTESTFILE
+
+#WORKFILE IS NOT NAMED; SOURCE IS (INVENTORY)ZFILE ON PARTS (IN USE BY
+TD128/CANDE/1, LSN = 245) :SEQ,3865 RECORDS
+
+GET (INVENTORY)ZFILE 1000-END AS MYTESTFILE: OVERRIDE
+
+#WORKFILE MYTESTFILE; SOURCE IS (INVENTORY)ZFILE ON PARTS: SEQ
+----
+
+[[CANDE_COMMANDS_GETLOAD_EXAMPLES_EXAMPLE3]]
+===== Example3
+The following examples show the results of attempts to retrieve files where the
+LOCKEDFILE file attribute has either been set or reset.
+
+* The following example retrieves the file LEDGER/JUNE that is in the user’s
+directory and the LOCKEDFILE file attribute is reset to FALSE. +
+----
+GET LEDGER/JUNE
+#WORKFILE LEDGER/JUNE: SEQ, 23000 RECORDS, SAVED
+----
+
+* The following example retrieves the file LEDGER/JUNE that is in the user’s
+directory (ACCT) as a work file named LEDGER/2NDQTR. The LOCKEDFILE file
+attribute is reset to FALSE. +
+----
+GET LEDGER/JUNE AS LEDGER/2NDQTR
+#WORKFILE LEDGER/2NDQTR; SOURCE IS (ACCT)LEDGER/JUNE ON PACK: SEQ,
+23000 RECORDS
+----

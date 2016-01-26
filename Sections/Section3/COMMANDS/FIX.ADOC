@@ -1,0 +1,272 @@
+[[CANDE_COMMANDS_FIX]]
+=== anchor:CANDE_COMMANDS_FIX[]FIX
+
+[[CANDE_COMMANDS_FIX_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FIX_SYNTAX_EDITSPECS]]
+===== <edit specs>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_FIX_EXPLANATION]]
+==== Explanation
+The FIX command is used to edit a line of text by inserting new text within the original
+text, replacing original text with new text, or deleting text.
+
+The basic action of a FIX command is to locate an objective, which can be a character
+or group of adjacent characters to be deleted or replaced; the objective may also be a
+point between two characters where an insertion is to be made. When the objective is
+found, the deletion or insertion is performed. Text to the right of the objective is
+moved right or left if the insertion is longer or shorter than the deletion; trailing blanks
+are discarded or inserted as needed. If nonblank characters are pushed past the end of
+the text field, the FIX operation is performed, but an overflow error is noted.
+
+The asterisk (*) is a synonym for FIX and may be used to edit lines while in single-line
+sequencing mode. If the asterisk is the first character after the system-supplied
+sequence number, CANDE scans the line to determine if it is a valid FIX command. If
+the line is valid, the command is executed; otherwise, the line is entered as a line of
+text. The asterisk form of the FIX command cannot be used in page-mode sequencing.
+
+[[CANDE_COMMANDS_FIX_EXPLANATION_SEQUENCENUMBER]]
+===== <sequence number>
+The sequence number of the line to be fixed is specified as an integer or by an equal
+sign (=); an equal sign refers to the last line entered or fixed and is undefined if no
+entry or FIX has been entered since the work file was updated.
+
+[[CANDE_COMMANDS_FIX_EXPLANATION_STARTCOLUMNENDCOLUMN]]
+===== <start column> | <end column>
+The target search may be bounded or supplanted by column specifications; <start
+column> and <end column> represent integers;<end column> cannot be less than
+<start column>, and both must lie within the text field for the work file. Column
+specifications modify the <edit specs> construct as described at the end of the
+discussion of the <edit specs> construct.
+
+Note that the FIX command differs markedly from the REPLACE command. The FIX
+command acts on only one line, but the REPLACE command can act on a range of
+lines. If a line overflow does occur, FIX performs the action but REPLACE does not.
+(Both situations generate error messages.)
+
+[[CANDE_COMMANDS_FIX_EXPLANATION_EDITSPECS]]
+===== <edit specs>
+The <new text> construct can contain any sequence of characters and is null if the
+end-of-line (EOL) immediately follows the last <dlm>. (In a SCHEDULE session, the
+end-of-line is assumed to follow the last nonblank character on the line, unless an EOL
+character has been defined and used.)
+
+When a non-null target is specified, CANDE scans the text field of the specified line in
+the work file until a sequence of characters is found that exactly matches the target.
+All characters including blanks are significant. This target is to be replaced by the new
+text (or deleted if the new text is null) unless BEFORE or AFTER is specified. If BEFORE
+or AFTER appears, the new text is inserted just preceding or just following the target,
+respectively.
+
+If the new text is null when BEFORE or AFTER is specified, no change will be made in
+the line. If the new text is longer than the target text, an overflow of text beyond the
+right margin may occur, resulting in an error message. If the target is null, the new text
+is inserted at the beginning of the line of text.
+
+If <target1> and <target2> are specified, and both are non-null, CANDE scans the line
+of text for a pattern exactly matching <target1>, and then seeks <target2> in the
+remainder of the text field beyond the<target1>. The new text then replaces the
+aggregate of the two targets and the text between them (INCLUSIVE) or just the text
+between them (EXCLUSIVE). If <new text> is null, the line of text does not change. If
+the new text is shorter than the length of text it is to replace, blanks will replace the
+remainder of the text bounded by the two targets. If <target1> is null, it is treated by
+CANDE as the first character in the line of text, and is always included in the text to be
+replaced, even if EXCLUSIVE is specified. If <target2> is null, it is treated by CANDE as
+the last character in the line of text, and is always included in the text to be replaced,
+even if EXCLUSIVE is specified.
+
+If column specifications are included in the FIX command, they modify the <edit
+specs> construct. If <start column> or <start column>–<end column> is specified,
+then <target>, <target1> and <target2> are only sought within the inclusive boundaries
+of <start column> and the end of line, or <start column>–<end column>, respectively.
+An error message is issued if the specified target or targets are not found within
+those boundaries. If <target> or <target1> is null, then <start column> takes over their
+function. If <target2> is null, <end column> functions as <target2>. Column
+specifications affect determination of the objective but do not limit the text that may
+be shifted to effect the fix.
+
+If a hexadecimal escape character is set through the CANDE command ESCAPE, then
+<target>, <target1>, <target2>, and <new text> can contain hexadecimal values
+delimited by the defined hexadecimal escape character. However, the target delimiter
+(<dlm>) cannot be the same as the hexadecimal escape character. For more
+information about the hexadecimal escape character, refer to the ESCAPE command
+earlier in this section.
+
+The FIX commands are tanked and are executed only when the next UPDATE, LIST, or
+page-invoking command occurs. Because of tanking, any error messages that result
+are not displayed until the time of the next UPDATE, LIST, or page-invoking command;
+therefore, the error messages may not be displayed at the time the command is
+entered.
+
+The following listing summarizes the many variations of the FIX command. In the
+following listing, m and n represent integer column numbers; x and y represent text
+strings. A blank space in the listing denotes an absent <start column>, <end column>,
+or keyword; a hyphen denotes a null target. Where several variations achieve the
+same effect, only the simplest variation is shown (degenerate cases like BEFORE or
+AFTER an empty target are omitted).
+
+The following listing assumes that the new text is not null. If the new text is null, the
+word replace should be delete, and the word insert should be do nothing.
+
+----
+<start column>
+ | <end column>
+ | | <keyword>
+ | | | <target> or <target1>
+ | | | | <target2>
+ | | | | |
+ | | | | | Summary of Effect
+
+ - Insert at beginning.
+ m - Insert at column <m>.
+ m n - Replace columns <m> through <n>.
+ x Replace <target>.
+ m x Replace <target> found in <m> through end-of-text.
+ m n x Replace <target> found in <m> through <n>.
+ B x Insert before <target>.
+ A x Insert after <target>.
+ m B x Insert before <target> found in <m> through end-of-text.
+ m A x Insert after <target> found in <m> through end-of-text.
+ m n B x Insert before <target> found in <m> through <n>.
+ m n A x Insert after <target> found in <m> through <n>.
+
+ I - - Replace entire text field.
+ m I - - Replace text from column <m> onward.
+ I - x Replace text through <target2>.
+ E - x Replace text prior to <target2>.
+ m I - x Replace from column <m> through <target2>.
+ m E - x Replace from column <m> until <target2>.
+ m n I - x Replace from column <m> through bounded <target2>.
+ m n E - x Replace from column <m> until bounded <target2>.
+ I x - Replace <target1> and rest of text.
+ E x - Replace text beyond <target1>.
+ m I x - Replace bounded <target1> and beyond.
+ m E x - Replace beyond bounded <target1>.
+ m n I x - Replace bounded <target1> through column <n>.
+ m n E x - Replace after bounded <target1> until column <n>.
+ I x y Replace <target1> through <target2>.
+ E x y Replace between <targets>.
+ m I x y Replace as above with
+ m E x y <targets> bounded in <m> to end of text.
+ m n I x y Replace as above with
+ m n E x y <targets> bounded in <m> to <n>.
+----
+
+
+*_Notes:_*
+
+* The target search in a FIX command is satisfied by the first match encountered.
+Enough context (or a column restriction) must be provided to unambiguously
+specify the intended objective.
+
+* The <dlm> character may not appear in a target, but it may appear in the new
+text. Inadvertent use of the <dlm> character within the <target> construct is not
+detected as an error; CANDE processes a shorter <target> and a longer <new
+text> than is intended
+
+* The FIX command makes a distinction between uppercase and lowercase
+characters. Use the appropriate uppercase and lowercase characters in the
+<target>, <target1>, <target2>, and <new text> constructs to perform the
+intended search and insert, replace, or delete operations.
+
+[[CANDE_COMMANDS_FIX_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_FIX_EXAMPLES_EXAMPLE1]]
+===== Example1
+
+----
+L
+100 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+300 IF CARD.PRESENT THEN
+400 VIVID HUES OF RED, ORANGE, GREEN AND BLUE
+500 X = SQRT (3.1459 * R**4)
+#
+
+FIX 100:FG:HIJ
+#
+
+L =
+100 ABCDEHIJHIJKLMNOPQRSTUVWXYZ
+#
+
+FIX = EXCLUSIVE.HIJ..
+#
+
+L 100
+100 ABCDEHIJ
+#
+----
+
+The following example shows a correct change:
+----
+F 300/CARD.PRESENT/BOOLEAN(CARD.AVAILABLE)
+#
+L 300
+300 IF BOOLEAN(CARD.AVAILABLE) THEN
+#
+----
+
+[[CANDE_COMMANDS_FIX_EXAMPLES_EXAMPLE2]]
+===== Example2
+The following example shows an incorrect specification for the same change (the
+period is part of the target text and should not have been used as the delimiter
+character):
+
+----
+F 300.CARD.PRESENT.BOOLEAN(CARD.AVAILABLE)
+#
+
+L 300
+300 IF PRESENT.BOOLEAN(CARD.AVAILABLE).PRESENT THEN
+#
+
+F 400 A.NGE., YELLOW
+#
+
+L 400
+400 VIVID HUES OF RED, ORANGE, YELLOW, GREEN AND BLUE
+#
+
+FIX 400 20-50//
+#
+
+L 400
+400 VIVID HUES OF RED,
+#
+
+FIX 500 E/(/)/AREA
+#
+
+L 500
+500 X = SQRT (AREA)
+#
+----
+
+[[CANDE_COMMANDS_FIX_EXAMPLES_EXAMPLE3]]
+===== Example3
+The following example shows the use of the asterisk form from within a single-line
+sequence mode (note that the target text is not uniquely specified, so the first match
+is used):
+
+----
+M TEST
+#WORKFILE TEST:SEQ
+
+S
+100THIS IS A TEST
+200* 100/IS/ISNT
+300
+#
+
+L
+100 THISNT IS A TEST
+#
+----
