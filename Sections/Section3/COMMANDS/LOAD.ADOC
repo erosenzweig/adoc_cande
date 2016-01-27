@@ -1,0 +1,4 @@
+[[CANDE_COMMANDS_LOAD]]
+=== anchor:CANDE_COMMANDS_LOAD[]LOAD
+The LOAD and GET commands are synonyms. (Refer to the GET command in this
+section.)

@@ -209,3 +209,53 @@ GET LEDGER/JUNE AS LEDGER/2NDQTR
 #WORKFILE LEDGER/2NDQTR; SOURCE IS (ACCT)LEDGER/JUNE ON PACK: SEQ,
 23000 RECORDS
 ----
+
+* The following example shows an attempt to retrieve the file LEDGER/JUNE that is
+in the user’s directory (ACCT) as a work file. The LOCKEDFILE file attribute is set to
+TRUE. +
+----
+GET LEDGER/JUNE
+#WORKFILE IS NOT NAMED; SOURCE IS (ACCT)LEDGER/JUNE ON PACK(LOCKEDFILE):
+SEQ, 23000 RECORDS
+----
+
+* The following example retrieves the file LEDGER/JUNE that is in the user’s
+directory (ACCT) as a work file named LEDGER/COPY. The LOCKEDFILE file
+attribute is set to TRUE.
+----
+GET LEDGER/JUNE AS LEDGER/COPY
+#WORKFILE LEDGER/COPY; SOURCE IS (ACCT)LEDGER/JUNE ON PACK(LOCKEDFILE):
+SEQ, 23000 RECORDS
+----
+
+[[CANDE_COMMANDS_GETLOAD_EXAMPLES_EXAMPLE4]]
+===== Example4
+In the following example, the user specifies a GET command for a file name whose
+middle node contains 20 characters. The GET command is issued on a system
+configured to support long file names. The system issues a warning message about
+name truncation and tries to retrieve the file with the truncated name. This attempt
+fails because a file with the truncated name does not exist. Do not use long file
+names for files that you want to manipulate in CANDE.
+
+----
+GET X/A2345678901234567890/Y
+# WARNING: NAME TRUNCATED TO 17 CHARACTERS:
+A2345678901234567890
+#FILE NOT AVAILABLE: X/A2345678901234567/Y.
+----
+
+[[CANDE_COMMANDS_GETLOAD_EXAMPLES_EXAMPLE5]]
+===== Example5
+
+In the following example, the user specifies a GET command for a file name whose
+middle node contains 20 characters. The GET command is issued on a system not
+configured to support long file names. The system issues a warning message about
+name truncation and tries to retrieve the file with the truncated name. This attempt
+succeeds because the user previously created a file with the truncated name.
+
+----
+GET X/A2345678901234567890/Z
+# WARNING: NAME TRUNCATED TO 17 CHARACTERS:
+A2345678901234567890
+#WORKFILE X/A2345678901234567/Z: SEQ, 1 RECORD, SAVED
+----

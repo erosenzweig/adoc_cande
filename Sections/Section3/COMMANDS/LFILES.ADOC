@@ -1,0 +1,264 @@
+[[CANDE_COMMANDS_LFILES]]
+=== anchor:CANDE_COMMANDS_LFILES[]LFILES
+
+[[CANDE_COMMANDS_LFILES_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_LFILES_SYNTAX_CONTAINEROPTION]]
+===== <container option>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_LFILES_SYNTAX_OUTPUTOPTION]]
+===== <output option>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_LFILES_SYNTAX_ATTRIBUTEOPTION]]
+===== <attribute option>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION]]
+==== Explanation
+The LFILES command executes the utility SYSTEM/FILEDATA, which lists the names
+and file attributes of files. If a file name or directory name is not specified, the names
+and attributes of all files in the user’s library are listed.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_LFILEOPTIONS]]
+===== LFILE Options
+When you specify a file name, the file attribute information for that file is displayed.
+The file name can refer to any file to which the user is allowed access.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_LFILEOPTIONS_DIRECTORYNAME]]
+.Directory Name
+The directory name specifies a directory and results in a list of the file attribute
+information for each file subordinate to that directory. However, information is
+displayed only for those files to which the user is allowed access.
+
+If both a file and a directory exist for the name supplied, information is listed for both
+the file and the directory (plus the subordinate files of the directory).
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_LFILEOPTIONS_ONFAMILYNAME]]
+.ON Family Name
+If ON family name is specified, family substitution does not apply.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_LFILEOPTIONS_CDROM]]
+.CDROM
+If ON family name is followed by CDROM, the family name refers to a CD-ROM reader
+rather than a pack or disk. A CD-ROM reader is a read-only device that reads files
+stored on a compact disc.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_LFILEOPTIONS_CONTAINER]]
+.Directory Name
+Using the CONTAINER option to select individual files within a specified directory is
+not valid. Select an individual file by specifying the file name, and select a directory by
+specifying the directory name.
+
+The colon that precedes the output option resets all file attribute options except
+FILEKIND, so ALL or the <file attribute> parameter must be specified to see other
+attributes.
+
+The output options <depth>, ARCHIVE, CATALOGUE, and WRAPPEDFILES are ignored
+when the CONTAINER option is also specified.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_LFILEOPTIONS_EXAMPLES]]
+.Examples
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_LFILEOPTIONS_EXAMPLES_EXAMPLE1]]
+.Example1
+----
+LFILE :CONT=C/F
+FILES IN CONTAINER: C/F ON PS
+(LEKNARF) : DIRECTORY
+. SYSTEM : DIRECTORY
+. . 441 : DIRECTORY
+. . . FILEDATA : DCALGOLCODE
+. . 423A : DIRECTORY
+. . . FILEDATA : DCALGOLCODE
+. . 431A : DIRECTORY
+. . . FILEDATA : DCALGOLCODE
+. . 432A : DIRECTORY
+. . . FILEDATA : DCALGOLCODE
+. . FILEDATA : DCALGOLCODE
+. . DSAKEYSFILE : KEYSFILE
+----
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS]]
+.Output Option
+The available output options are discussed in the following paragraphs.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_DEPTH]]
+.Depth
+The <depth> construct must be an integer. This option restricts the depth of listing for
+multilevel file names.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_ABBREVIATED]]
+.ABBREVIATED
+The ABBREVIATED option causes the specified file attribute names to be abbreviated
+in the output.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_ALL]]
+.ALL
+The ALL option causes information for all file attributes, except USERINFO, to be
+listed. This option is assumed if no options are specified.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_ARCHIVE]]
+.ARCHIVE
+The ARCHIVE option reports archive information for resident and nonresident files. If
+neither ARCHIVE nor CATALOGUE is specified, only resident files are reported.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_CATALOGUE]]
+.CATALOGUE
+The CATALOGUE option reports the existence of nonresident, catalogued files.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_FILE]]
+.FILE
+The FILE option causes the output to be written to a file with the specified name.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_INUSE]]
+.INUSE
+The INUSE option specifies in the output whether a file is in use.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_PRINTER]]
+.PRINTER
+The PRINTER option causes the output to be sent to the line printer.
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_WRAPPEDFILES]]
+.WRAPPEDFILES
+The WRAPPEDFILES option displays the internal file attributes of wrapped files. Files
+that are not wrapped files are not displayed. Since each file is opened to obtain the
+wrapped file attributes, the LASTACCESSDATE for the disk files is updated.
+
+All files with a FILEKIND attribute of WRAPPEDDATA and all files on a CD-ROM are
+automatically accessed if the WRAPPEDFILES option is specified. In addition, any file
+can be accessed with the WRAPPEDFILES option, regardless of the FILEKIND attribute,
+if an individual file name is specified. However, individual files within a specified
+directory with a FILEKIND attribute other than WRAPPEDDATA are not accessed.
+
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_EXAMPLES]]
+.Examples
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_OUTPUTOPTIONS_EXAMPLES_EXAMPLE1]]
+.Example1
+----
+LFILES WRAPPED/FILEDATA :WRAP ALL ABBREV
+WRAPPED FILES INTERNAL INFORMATION ON PS
+(LEKNARF) : DIRECTORY
+. WRAPPED : DIRECTORY
+. . FILEDATA : DCALGOLCODE CODEV=45.1 VERSION= 45.0112.00025
+TADS-CAPABLE ALT=08/19/1997 07:24:17 PDT
+ALEN=15120 (504 RECORDS) AREAS=8 ASECT=504
+ATTMD=08/19/1997 07:26:35 PDT BLK=270 BLKST=FIXED
+CDATE=08/19/1997 07:24:17 PDT CRUNCHED CYCLE=1
+EXEC=08/19/1997 07:26:32 PDT EXT=SINGLE FLENG=111900
+FORG=NOTRESTRICTED FSTRC=ALIGNED180 FRAME=48
+ADATE=08/19/1997 07:26:32 PDT LAST=3729 MAX=30 MIN=30
+READ=08/19/1997 07:24:17 PDT SF=999
+SEC=OWNER LEKNARF:RWX, GROUP <none>:RX, OTHER:RX PUBLIC (IN)
+TS=08/19/1997 07:24:55 TOTSE=3735 NO WARNINGS
+----
+
+
+[[CANDE_COMMANDS_LFILES_EXPLANATION_ATTRIBUTEOPTIONS]]
+.Attribute Options
+The amount of file attribute information to be displayed depends on whether available
+options are set or reset. By default, all information regarding file attributes is displayed
+(that is, all options are set). The amount of file attribute information to be displayed
+can be restricted by naming attribute options and using the available output options.
+Options are recognized after the appearance of the colon (:). The colon resets all file
+attribute options except FILEKIND; the file attribute options can then be set
+selectively.
+
+Some of the file attribute option names are identical to the corresponding file attribute
+names but print more information than the file attributes contain.
+
+The file attribute options ALTERDATE, CREATIONDATE, and LASTACCESSDATE print
+both the date and the time.
+
+When the WARNINGS option is specified, the warnings that have been accumulated
+by a file are expanded into their corresponding text and reported.
+
+For more information about file attributes, refer to the File Attributes Reference
+Manual.
+
+[[CANDE_COMMANDS_LFILES_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_LFILES_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+LFILES BREAKER ON USERFILES
+#RUNNING 2497
+#?
+(TERRI) : DIRECTORY ON USERFILES
+. BREAKER : ALGOLSYMBOL AREAS=15 AREASIZE=450 BLOCKSIZE=450
+ CREATIONDATE= 2/12/81 @ 13:19:15 CYCLE=1 FILETYPE=0
+ INTMODE=4 LASTACCESSDATE= 2/12/81 @ 13:19:15
+ LASTRECORD=12 (225 SEGS) MAXRECSIZE=15 MINRECSIZE=0
+ SAVEFACTOR=30 SECURITY=PRIVATE (I/O)
+ TIMESTAMP= 2/12/81 @ 13:19:17 UNITS=0 VERSION=0
+ALTERDATE= 2/12/81 @ 13:19:15
+#
+
+LFILES (JOHNSON)ACCOUNT/SUMMARY:BLOCKSIZE AREASIZE MAXRECSIZE ABB
+#RUNNING 2513
+#?
+(JOHNSON) : DIRECTORY ON USERPACK
+. ACCOUNT : DIRECTORY
+. . SUMMARY : SEQDATA ASIZE=420 BLK=420 MAX=14
+#
+----
+
+[[CANDE_COMMANDS_LFILES_EXAMPLES_EXAMPLE2]]
+===== Example2
+The following example of the LFILES command lists the file attributes of the file
+README.DOC on a CD-ROM:
+
+----
+LFILES "README.DOC" ON PROGLIB_1A(CD)
+#RUNNING 5693
+#?
+*"README.DOC" : DATA ALTERDATE=06/30/1989 @ 01:01:00
+AREALENGTH=15220 (15220 RECORDS) AREAS=1 AREASECTORS=8
+BLOCKSTRUCTURE=FIXED CREATIONDATE=06/30/1989 @ 01:01:00
+CYCLE=1 EXTMODE=OCTETSTRING FILELENGTH=15220
+FILEORGANIZATION=NOTRESTRICTED FILESTRUCTURE=STREAM
+FRAMESIZE=8 LASTACCESSDATE=06/30/1989 @ 01:01:00
+LASTRECORD=15219 MAXRECSIZE=1 MINRECSIZE=1 SAVEFACTOR=1
+SECURITY=PUBLIC (IN) TIMESTAMP=06/30/1989 @ 01:01:00
+TOTALSECTORS=8 VERSION=0
+----
+
+[[CANDE_COMMANDS_LFILES_EXAMPLES_EXAMPLE3]]
+===== Example3
+The following is another example that lists the file attributes of the file
+SYSTEM/ALGOL ON SYS42:
+
+----
+LFILES SYSTEM/ALGOL ON SYS42
+ON SYS42
+*SYSTEM : DIRECTORY
+ ALGOL : COMPILERCODEFILE CODEVERSION=42 MC-ED
+ ALTERDATE=01/09/1995 21:39:47
+ AREALENGTH=15120 (504 RECORDS) AREAS=2
+ AREASECTORS=504 BLOCKSIZE=270 BLOCKSTRUCTURE=FIXED
+ CREATIONDATE=01/09/1995 21:39:47
+ CRUNCHED CYCLE=1 EXTMODE=SINGLE FILELENGTH=401460
+ FILEORGANIZATION=NONRESTRICTED
+ FILESTRUCTURE=ALIGNED180
+ FRAMESIZE=48 IDENTITY="ALGOL"
+ LASTACCESSDATE=01/19/1995 10:47:31
+ LASTRECORD=13381 MAXRECSIZE=30 MINRECSIZE=0
+ PRODUCT=A-SERIES/ALGOL/ALGOL
+ RELEASEID="DEV 42.3 (42.305.0099)" SAVEFACTOR=30
+ SECURITY=PUBLIC (IN) TIMESTAMP=01/17/1995 10:13:48
+ TOTALSECTORS=13383 VERSION=0 NO WARNINGS
+----

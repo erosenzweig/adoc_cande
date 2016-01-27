@@ -1,0 +1,50 @@
+[[CANDE_COMMANDS_LOG]]
+=== anchor:CANDE_COMMANDS_LOG[]LOG
+
+[[CANDE_COMMANDS_LOG_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_LOG_EXPLANATION]]
+==== Explanation
+The LOG command executes the LOGANALYZER utility. This utility extracts specific
+information, as specified by the LOGANALYZER option, from the system log file and
+displays the information at the user’s terminal. Output from this command is, by
+default, directed to the remote terminal.
+
+The LOGANALYZER option must be a string of one or several standard LOGANALYZER
+options. The LOGANALYZER option can be omitted, indicating the ALL option;
+however, the ALL option produces voluminous output.
+
+LOGANALYZER is documented in the System Software Utilities Operations
+Reference Manual. The syntax and explanation for LOGANALYZER options and
+examples of output from the LOG command are given in that manual.
+
+[[CANDE_COMMANDS_LOG_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_LOG_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+LOG MIX 6483
+----
+
+[[CANDE_COMMANDS_LOG_EXAMPLES_EXAMPLE2]]
+===== Example2
+----
+LOG PRINTER ALL
+----
+
+[[CANDE_COMMANDS_LOG_EXAMPLES_EXAMPLE3]]
+===== Example3
+----
+LOG ALL CREATE <file name>
+----
+
+[[CANDE_COMMANDS_LOG_EXAMPLES_EXAMPLE4]]
+===== Example4
+----
+LOG ALL APPEND <file name>
+----

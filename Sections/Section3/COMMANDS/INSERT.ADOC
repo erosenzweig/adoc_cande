@@ -1,0 +1,108 @@
+[[CANDE_COMMANDS_INSERT]]
+=== anchor:CANDE_COMMANDS_INSERT[]INSERT
+
+[[CANDE_COMMANDS_INSERT_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_INSERT_EXPLANATION]]
+==== Explanation
+The INSERT command copies lines from a file (by default, the work file) and places the
+copies in the work file as a contiguous block with new sequence numbers.
+
+If a MARKID value is currently set, that value is placed in the MARKID field of the
+copied records that are inserted to your work file. If you do not have a MARKID
+currently set, the copied records retain the existing MARKID value.
+
+An UPDATE is implicitly invoked after the INSERT has been executed.
+
+[[CANDE_COMMANDS_INSERT_EXPLANATION_FILETITLE]]
+===== <file title>
+The file title construct names the file to be inserted and can be any file to which your
+are allowed access. The work file is assumed if no file title is specified.
+
+[[CANDE_COMMANDS_INSERT_EXPLANATION_SEQUENCERANGELIST]]
+===== <sequence range list>
+The sequence range list construct specifies the sequence range or ranges of the lines
+of the file to be copied into the work file.
+
+[[CANDE_COMMANDS_INSERT_EXPLANATION_ATBASEATNEXTATEND]]
+===== AT <base> | AT NEXT | AT END
+The new sequence numbers of copied lines are determined by assigning an initial
+value to the first line and incrementing that value for each succeeding line. The initial
+value must be specified in one of three ways:
+
+* The base option specifies the value explicitly. The base value must be an integer.
+
+* The NEXT option sets the initial value to the next sequence number that would
+have resulted from the most recent MOVE, INSERT, RESEQ, or SEQ command. A
+default value of 100 is used if no such command has appeared since the last
+MAKE, GET, or DELETE ALL command.
+
+* The END option sets the initial value to the largest sequence number currently in
+the file, plus the currently specified (or default) increment.
+
+[[CANDE_COMMANDS_INSERT_EXPLANATION_PLUSINCREMENT]]
+===== + <increment>
+The increment construct defines the increment value to use for successive sequence
+numbers in the block. The increment value must be an integer. If the increment value
+is unspecified, the increment value from the most recent MOVE, INSERT, RESEQ, or
+SEQ command is used. 100 is used if none of these commands have appeared.
+
+The range of new sequence numbers cannot overlap any lines already in the file, nor
+can the numbers exceed the largest sequence number that may be expressed in the
+sequence number field.
+
+[[CANDE_COMMANDS_INSERT_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_INSERT_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+LIST
+#WORKFILE TESTONLY
+100 LINE 1
+200 LINE 2
+300 LINE 3
+400 LINE 4
+#
+
+INSERT 100-300 AT END+10
+#UPDATING
+#
+
+LIST
+#WORKFILE TESTONLY
+100 LINE 1
+200 LINE 2
+300 LINE 3
+400 LINE 4
+410 LINE 1
+420 LINE 2
+430 LINE 3
+#
+INS VEGETABLES AT 402+2
+#UPDATING
+#
+
+INSERT AT END FRUIT
+#UPDATING
+#
+
+LIST
+100 LINE 1
+200 LINE 2
+300 LINE 3
+400 LINE 4
+402 CARROT
+404 TOMATO
+406 EGGPLANT
+410 LINE 1
+420 LINE 2
+430 LINE 3
+432 BANANAS
+434 ORANGES
+436 APPLES
+----

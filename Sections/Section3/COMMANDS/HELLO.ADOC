@@ -1,0 +1,69 @@
+[[CANDE_COMMANDS_HELLO]]
+=== anchor:CANDE_COMMANDS_HELLO[]HELLO
+
+[[CANDE_COMMANDS_HELLO_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_HELLO_EXPLANATION]]
+==== Explanation
+The HELLO command terminates the current session and initiates a new session after
+log on is complete. Dial-up lines are not disconnected.
+
+When HELLO is entered, the current session ends and CANDE displays system
+resource usage statistics, followed by the usual greeting, which contains
+
+* System name and serial number
+* CANDE MCS name (usually CANDE) and version level
+* System host name
+* Station name and LSN
+
+System resource usage statistics are provided in the form of the session number,
+elapsed time of session (ET), processor time consumed (PT), I/O time consumed (IO),
+usercode, current time, and the date. They are printed in the following format:
+
+----
+#REMOVE OR SAVE WORKFILE
+----
+
+The user must save or remove the work file and re-enter the HELLO command before
+CANDE will terminate the session.
+
+The <usercode> . form is used to log on to a usercode that does not have a
+password.
+
+*_Note:_* _If the CASESENSITIVEPW security option is set, passwords must be entered
+in a case-sensitive form._
+
+For additional information about usercode/passwords and logging on, refer to “User
+Identification and Logging On” in Section 1, “General Information.”
+
+[[CANDE_COMMANDS_HELLO_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_HELLO_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+HELLO UZER/PSW
+#END SESSION 0383 ET=2:13:35.7 PT=21.7 IO=43.4
+#USER = PAYROLL CHARGE = 4736. 10:05:12 10/20/84
+
+#B7900:7 CANDE SSR 42.3 AT SITE7; YOU ARE TD12345(83)
+#SESSION = 0824 USER = PAYROLL CHARGE = 4736
+----
+
+[[CANDE_COMMANDS_HELLO_EXAMPLES_EXAMPLE2]]
+===== Example2
+----
+hello userid
+#ENTER PASSWORD PLEASE
+----
+
+[[CANDE_COMMANDS_HELLO_EXAMPLES_EXAMPLE3]]
+===== Example3
+----
+HELLO USERID PASSID
+#SESSION 3975 16:30:56 04/20/78
+----

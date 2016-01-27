@@ -1,0 +1,59 @@
+[[CANDE_COMMANDS_LANGUAGE]]
+=== anchor:CANDE_COMMANDS_LANGUAGE[]LANGUAGE
+
+[[CANDE_COMMANDS_LANGUAGE_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_LANGUAGE_SYNTAX_LANGUAGENAME]]
+===== <language name>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_LANGUAGE_EXPLANATION]]
+==== Explanation
+The LANGUAGE command alters the language specification of the current session.
+
+When LANGUAGE is entered, CANDE displays the language currently in effect for the
+session.
+
+[[CANDE_COMMANDS_LANGUAGE_EXPLANATION_LANGUAGESTAR]]
+===== LANGUAGE *
+The LANGUAGE * form restores the current language for the session to the default
+language. The default language specification is obtained by CANDE from the
+USERDATAFILE. If no language is specified for the user in the USERDATAFILE, the
+system language is used.
+
+If the language specified in the USERDATAFILE or the system default language is not
+bound in CANDE, then the following warning is displayed:
+
+----
+WARNING: THE REQUESTED LANGUAGE IS NOT BOUND IN THIS CODE.
+THE MESSAGE WILL CONTINUE TO BE DISPLAYED IN SYSTEMLANGUAGE
+OR THE FIRST AVAILABLE LANGUAGE.
+----
+
+[[CANDE_COMMANDS_LANGUAGE_EXPLANATION_LANGUAGELANGUAGENAME]]
+===== LANGUAGE <language name>
+The LANGUAGE <language name> form changes the language for the session to the
+language represented by the <language name>.
+
+Refer to the Security Administration Guide for information on changing the default
+language specifications in the USERDATAFILE.
+
+[[CANDE_COMMANDS_LANGUAGE_EXAMPLES]]
+==== Examples
+
+[[CANDE_COMMANDS_LANGUAGE_EXAMPLES_EXAMPLE1]]
+===== Example1
+----
+LANGUAGE
+#LANGUAGE: ENGLISH
+LANGUAGE FRANCAIS
+#LANGUAGE CHANGED FROM ENGLISH TO FRANCAIS
+LANGUAGE *
+#LANGUAGE CHANGED FROM FRANCAIS TO ENGLISH 
+----
