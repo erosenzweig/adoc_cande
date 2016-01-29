@@ -1,0 +1,49 @@
+[[CANDE_COMMANDS_MARGIN]]
+=== anchor:CANDE_COMMANDS_MARGIN[]MARGIN
+
+[[CANDE_COMMANDS_FILES_SYNTAX]]
+==== Syntax
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_MARGIN_SYNTAX_NUMBEROFCOLUMNS]]
+===== <number of columns>
+----
+RAILROAD DIAGRAM HERE
+----
+
+[[CANDE_COMMANDS_MARGIN_EXPLANATION]]
+==== Explanation
+The MARGIN command controls text entry at the left margin of a line by inserting a
+specified number of blanks to the left of the text being entered. If MARGIN is entered,
+the margin is set to column 1. If MARGIN ? is entered, the current margin setting is
+displayed.
+
+If the <column> option is specified, <column> represents an absolute column number
+where the text is to start. If the + <number of columns> or – <number of columns>
+option is specified, <number of columns> is relative to the previous margin setting.
+If a colon (:) is specified, the margin specification applies only to the single-line entry
+that follows.
+
+Margin specifications can be specified in single-line sequencing mode by using the at
+sign (@) as the first character after the system-supplied sequence number. The margin
+specification applies only to the line on which it appears. The :<sequence number>
+option cannot be used with the at sign (@). The @ form of the MARGIN command
+cannot be used in page mode. A line overflow may occur as a result of indentation. A
+message is displayed, and the resulting line is truncated.
+
+[[CANDE_COMMANDS_MARGIN_EXAMPLES]]
+==== Examples
+----
+MAR 20 : 100 IF A > 99 THEN
+@+4
+#
+MARGIN ?
+#MARGIN @5
+200%TEST COLUMN
+L
+100 IF A > 99 THEN
+200 %TEST COLUMN
+#
+----
